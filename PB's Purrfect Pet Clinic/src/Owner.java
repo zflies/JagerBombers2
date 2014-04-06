@@ -8,27 +8,30 @@ public class Owner {
 	final String City;
 	final String State;
 	final String Zip;
+	final String Phone;
 	
 	Vector<Pet> Pets;
 	
-	public Owner(String firstname, String lastname, String address, String city, String state, String zip){
+	public Owner(String firstname, String lastname, String address, String city, String state, String zip, String phone){
 		this.FirstName = firstname;
 		this.LastName = lastname;
 		this.Address = address;
 		this.City = city;
 		this.State = state;
 		this.Zip = zip;
+		this.Phone = phone;
 		
 		this.Pets = new Vector<Pet>();
 	}
 	
-	public Owner(String firstname, String lastname, String address, String city, String state, String zip, Vector<Pet> pets){
+	public Owner(String firstname, String lastname, String address, String city, String state, String zip, String phone, Vector<Pet> pets){
 		this.FirstName = firstname;
 		this.LastName = lastname;
 		this.Address = address;
 		this.City = city;
 		this.State = state;
 		this.Zip = zip;
+		this.Phone = phone;
 		
 		this.Pets = pets;
 	}
@@ -39,6 +42,10 @@ public class Owner {
 	
 	public String getLastName(){
 		return this.LastName;
+	}
+	
+	public String getFullName(){
+		return this.FirstName + " " + this.LastName;
 	}
 	
 	public String getAddress(){

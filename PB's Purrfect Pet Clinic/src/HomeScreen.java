@@ -30,6 +30,9 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JSeparator;
 
 
@@ -44,6 +47,9 @@ public class HomeScreen extends JFrame {
 	private JTextField txtLastName_Boarding;
 	private JTextField txtPetType_Boarding;
 	private JTextField txtPetSize_Boarding;
+	private JTextField txtFirstName;
+	private JTextField textField;
+	private JTextField txtPetName;
 
 	/**
 	 * Launch the application.
@@ -172,9 +178,11 @@ public class HomeScreen extends JFrame {
 		chckbxMicrochipping_Appointments.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
 		chckbxMicrochipping_Appointments.setBackground(UIManager.getColor("Desktop.background"));
 
+
 		JCheckBox chckbxHeartwormTesting_Appointments = new JCheckBox("Heartworm Testing");
 		chckbxHeartwormTesting_Appointments.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
 		chckbxHeartwormTesting_Appointments.setBackground(UIManager.getColor("Desktop.background"));
+
 
 		JCheckBox chckbxSpayNeuter_Appointments = new JCheckBox("Spay/Neuter");
 		chckbxSpayNeuter_Appointments.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
@@ -184,9 +192,11 @@ public class HomeScreen extends JFrame {
 		chckbxLabWork_Appointments.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
 		chckbxLabWork_Appointments.setBackground(UIManager.getColor("Desktop.background"));
 
+
 		JCheckBox chckbxDentalCleaning_Appointments = new JCheckBox("Dental Cleaning");
 		chckbxDentalCleaning_Appointments.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
 		chckbxDentalCleaning_Appointments.setBackground(UIManager.getColor("Desktop.background"));
+
 
 		JCheckBox chckbxXRay_Appointments = new JCheckBox("X-Ray");
 		chckbxXRay_Appointments.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
@@ -194,8 +204,8 @@ public class HomeScreen extends JFrame {
 		
 		JComboBox cbTime_Appointments = new JComboBox();
 		cbTime_Appointments.setModel(new DefaultComboBoxModel(new String[] {"Time"}));
-
 		cbTime_Appointments.setRenderer(dlcr);
+
 		
 		GroupLayout gl_desktopPaneCreate_Appointments = new GroupLayout(desktopPaneCreate_Appointments);
 		gl_desktopPaneCreate_Appointments.setHorizontalGroup(
@@ -234,6 +244,7 @@ public class HomeScreen extends JFrame {
 								.addComponent(chckbxMicrochipping_Appointments, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(chckbxOfficeVisit_Appointments, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(chckbxHeartwormTesting_Appointments, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+
 							.addGap(18)
 							.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
@@ -245,6 +256,7 @@ public class HomeScreen extends JFrame {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(chckbxDentalCleaning_Appointments, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))))
 					.addGap(12)
+
 					.addComponent(scrollPaneAppointment, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
 					.addContainerGap())
 		);
@@ -277,6 +289,7 @@ public class HomeScreen extends JFrame {
 								.addComponent(chckbxOfficeVisit_Appointments)
 								.addComponent(chckbxDentalCleaning_Appointments)
 								.addComponent(chckbxSpayNeuter_Appointments))
+
 							.addGap(1)
 							.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.BASELINE)
 								.addComponent(chckbxMicrochipping_Appointments)
@@ -338,19 +351,6 @@ public class HomeScreen extends JFrame {
 		desktopPaneView_Appointments.setLayout(gl_desktopPaneView_Appointments);
 		panelAppointments.setLayout(gl_panelAppointments);
 		
-		JPanel panelRecords = new JPanel();
-		tabbedPane.addTab("   Records   ", null, panelRecords, null);
-		GroupLayout gl_panelRecords = new GroupLayout(panelRecords);
-		gl_panelRecords.setHorizontalGroup(
-			gl_panelRecords.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 835, Short.MAX_VALUE)
-		);
-		gl_panelRecords.setVerticalGroup(
-			gl_panelRecords.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 568, Short.MAX_VALUE)
-		);
-		panelRecords.setLayout(gl_panelRecords);
-		
 		JPanel panelSales = new JPanel();
 		tabbedPane.addTab("    Sales    ", null, panelSales, null);
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
@@ -370,6 +370,7 @@ public class HomeScreen extends JFrame {
 		JDesktopPane desktopPaneView_Boarding = new JDesktopPane();
 		
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
+
 		GroupLayout gl_panelBoarding = new GroupLayout(panelBoarding);
 		gl_panelBoarding.setHorizontalGroup(
 			gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
@@ -379,6 +380,7 @@ public class HomeScreen extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(desktopPaneView_Boarding, GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
 					.addContainerGap())
+
 		);
 		gl_panelBoarding.setVerticalGroup(
 			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
@@ -388,6 +390,7 @@ public class HomeScreen extends JFrame {
 						.addComponent(desktopPaneCreate_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
 						.addComponent(desktopPaneView_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
 					.addContainerGap())
+
 		);
 		
 		JLabel lblOwner_Boarding = new JLabel("Owner");
@@ -620,7 +623,257 @@ public class HomeScreen extends JFrame {
 					.addContainerGap())
 		);
 		desktopPaneCreate_Boarding.setLayout(gl_desktopPaneCreate_Boarding);
+
 		panelBoarding.setLayout(gl_panelBoarding);
+		
+		JPanel panelRecords = new JPanel();
+		tabbedPane.addTab("   Records   ", null, panelRecords, null);
+		
+		JButton btnNewOwner = new JButton("New Owner");
+		
+		JPanel panel = new JPanel();
+		
+		JPanel panel_1 = new JPanel();
+		
+		JButton btnAddPet = new JButton("Add Pet");
+		
+		JTree tree = new JTree();
+		GroupLayout gl_panelRecords = new GroupLayout(panelRecords);
+		gl_panelRecords.setHorizontalGroup(
+			gl_panelRecords.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelRecords.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
+						.addComponent(tree, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+						.addComponent(btnNewOwner, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+					.addGroup(gl_panelRecords.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelRecords.createSequentialGroup()
+							.addGap(305)
+							.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
+								.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 465, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_panelRecords.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAddPet)))
+					.addContainerGap())
+		);
+		gl_panelRecords.setVerticalGroup(
+			gl_panelRecords.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelRecords.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelRecords.createSequentialGroup()
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE))
+						.addComponent(tree, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(42)
+					.addGroup(gl_panelRecords.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnNewOwner)
+						.addComponent(btnAddPet))
+					.addContainerGap())
+		);
+		
+		JLabel lblPet = new JLabel("Pet:");
+		lblPet.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblType = new JLabel("Type:");
+		lblType.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblSex = new JLabel("Sex:");
+		lblSex.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblSize = new JLabel("Size:");
+		lblSize.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblColor = new JLabel("Color:");
+		lblColor.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblDateOfBirth = new JLabel("Date of Birth:");
+		lblDateOfBirth.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblWeight = new JLabel("Weight:");
+		lblWeight.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel label_2 = new JLabel("10/25/01");
+		label_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblLbs = new JLabel("100 lbs");
+		lblLbs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblBlack = new JLabel("Black");
+		lblBlack.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblLarge = new JLabel("Large");
+		lblLarge.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblMale = new JLabel("Male");
+		lblMale.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblDog = new JLabel("Dog");
+		lblDog.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblFluffy = new JLabel("Fluffy");
+		lblFluffy.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblDateOfBirth)
+						.addComponent(lblWeight)
+						.addComponent(lblColor)
+						.addComponent(lblSize)
+						.addComponent(lblSex)
+						.addComponent(lblType)
+						.addComponent(lblPet))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblFluffy)
+						.addComponent(lblDog)
+						.addComponent(lblMale)
+						.addComponent(lblLarge)
+						.addComponent(lblBlack)
+						.addComponent(lblLbs)
+						.addComponent(label_2))
+					.addContainerGap(341, Short.MAX_VALUE))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPet)
+						.addComponent(lblFluffy))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblType)
+						.addComponent(lblDog))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSex)
+						.addComponent(lblMale))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSize)
+						.addComponent(lblLarge))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblColor)
+						.addComponent(lblBlack))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblDateOfBirth)
+						.addComponent(label_2))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblWeight)
+						.addComponent(lblLbs))
+					.addContainerGap(87, Short.MAX_VALUE))
+		);
+		panel_1.setLayout(gl_panel_1);
+		
+		JLabel lblOwner = new JLabel("Owner:");
+		lblOwner.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblPhone = new JLabel("Phone:");
+		lblPhone.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblAddress = new JLabel("Address:");
+		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblState = new JLabel("State:");
+		lblState.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblZip = new JLabel("ZIP:");
+		lblZip.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblSomewhereStreet = new JLabel("12489 Somewhere Street");
+		lblSomewhereStreet.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblLawrence = new JLabel("Lawrence");
+		lblLawrence.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblKansas = new JLabel("Kansas");
+		lblKansas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel label_1 = new JLabel("66047");
+		label_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel label = new JLabel("(913)468-0754");
+		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblJaneDoe = new JLabel("Jane Doe");
+		lblJaneDoe.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnEdit = new JButton("Edit");
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblOwner)
+							.addGap(18)
+							.addComponent(lblJaneDoe))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblAddress)
+								.addComponent(lblCity)
+								.addComponent(lblState)
+								.addComponent(lblZip)
+								.addComponent(lblPhone))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(label)
+								.addComponent(label_1)
+								.addComponent(lblKansas)
+								.addComponent(lblLawrence)
+								.addComponent(lblSomewhereStreet))))
+					.addContainerGap(255, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap(384, Short.MAX_VALUE)
+					.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblOwner)
+						.addComponent(lblJaneDoe))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPhone)
+						.addComponent(label))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblAddress)
+						.addComponent(lblSomewhereStreet))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblCity)
+						.addComponent(lblLawrence))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblState)
+						.addComponent(lblKansas))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblZip)
+						.addComponent(label_1))
+					.addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+					.addComponent(btnEdit)
+					.addContainerGap())
+		);
+		panel.setLayout(gl_panel);
+		panelRecords.setLayout(gl_panelRecords);
 		contentPane.setLayout(gl_contentPane);
 	}
 	
