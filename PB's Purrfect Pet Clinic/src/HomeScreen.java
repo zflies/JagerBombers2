@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,9 +19,17 @@ import com.jgoodies.looks.FontPolicy;
 import com.jgoodies.looks.FontSet;
 import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import com.toedter.calendar.IDateEditor;
+import com.toedter.calendar.JBoardingCalendar;
+import com.toedter.calendar.JBoardingDateChooser;
 import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.demo.BirthdayEvaluator;
+import com.toedter.calendar.demo.BoardingDateEvaluator;
+import com.toedter.calendar.demo.TestDateEvaluator;
 
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JScrollPane;
@@ -34,10 +44,11 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 
 
 public class HomeScreen extends JFrame {
-
+	
 	private JPanel contentPane;
 	private JTextField txtFirstName_Appointments;
 	private JTextField txtLastName_Appointments;
@@ -50,6 +61,13 @@ public class HomeScreen extends JFrame {
 	private JTextField txtFirstName;
 	private JTextField textField;
 	private JTextField txtPetName;
+	private JTable tableMonday_Appointments;
+	private JTable tableTuesday__Appointments;
+	private JTable tableWednesday_Appointments;
+	private JTable tableThursday_Appointments;
+	private JTable tableFriday_Appointments;
+	private JTable tableSaturday_Appointments;
+	private JTable tableSelected_Appointments;
 
 	/**
 	 * Launch the application.
@@ -304,6 +322,9 @@ public class HomeScreen extends JFrame {
 								.addComponent(btnCreate_Appointments, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap())
 		);
+		
+		tableSelected_Appointments = new JTable();
+		scrollPaneAppointment.setViewportView(tableSelected_Appointments);
 		desktopPaneCreate_Appointments.setLayout(gl_desktopPaneCreate_Appointments);
 		
 		JScrollPane scrollPaneMonday_Appointments = new JScrollPane();
@@ -348,6 +369,24 @@ public class HomeScreen extends JFrame {
 						.addComponent(scrollPaneTues_Appointments, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
 					.addContainerGap())
 		);
+		
+		tableSaturday_Appointments = new JTable();
+		scrollPaneSat_Appointments.setViewportView(tableSaturday_Appointments);
+		
+		tableFriday_Appointments = new JTable();
+		scrollPaneFriday_Appointments.setViewportView(tableFriday_Appointments);
+		
+		tableThursday_Appointments = new JTable();
+		scrollPaneThurs_Appointments.setViewportView(tableThursday_Appointments);
+		
+		tableWednesday_Appointments = new JTable();
+		scrollPaneWed_Appointments.setViewportView(tableWednesday_Appointments);
+		
+		tableTuesday__Appointments = new JTable();
+		scrollPaneTues_Appointments.setViewportView(tableTuesday__Appointments);
+		
+		tableMonday_Appointments = new JTable();
+		scrollPaneMonday_Appointments.setViewportView(tableMonday_Appointments);
 		desktopPaneView_Appointments.setLayout(gl_desktopPaneView_Appointments);
 		panelAppointments.setLayout(gl_panelAppointments);
 		
@@ -367,30 +406,51 @@ public class HomeScreen extends JFrame {
 		JPanel panelBoarding = new JPanel();						  
 		tabbedPane.addTab("  Boarding   ", null, panelBoarding, null);
 		
-		JDesktopPane desktopPaneView_Boarding = new JDesktopPane();
-		
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
+		
+		
+		JComponent dateChooser = new JBoardingDateChooser();
+		((JBoardingDateChooser) dateChooser).getJCalendar().getDayChooser()
+				.addDateEvaluator(new BoardingDateEvaluator());
+		
+		Calendar calendar = Calendar.getInstance();
+		Date date = ((JBoardingDateChooser)dateChooser).getDateEditor().getDate();
+		if (date != null) {
+			calendar.setTime(date);
+		}
+		((JBoardingDateChooser)dateChooser).getJCalendar().setCalendar(calendar);
+		
+		JComponent calendarViewBoarding = ((JBoardingDateChooser) dateChooser).getJCalendar();
 
+/*-------------------------------------------------------------------------------------------------------------------------------------------		
+---------------------------------------------------------------------------------------------------------------------------------------------		
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------		
+Remove the two comments below for calendarViewBoarding when running the code. To Work with HomeScreen in WindowBuilder view, comment them out
+Failure to do so will cause errors.
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------		
+---------------------------------------------------------------------------------------------------------------------------------------------		
+---------------------------------------------------------------------------------------------------------------------------------------------*/		
+		
 		GroupLayout gl_panelBoarding = new GroupLayout(panelBoarding);
 		gl_panelBoarding.setHorizontalGroup(
-			gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_panelBoarding.createSequentialGroup()
+			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBoarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(desktopPaneCreate_Boarding, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(desktopPaneView_Boarding, GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
-					.addContainerGap())
-
+					.addGap(18)
+//					.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(8))
 		);
 		gl_panelBoarding.setVerticalGroup(
-			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panelBoarding.createSequentialGroup()
+			gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelBoarding.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
-						.addComponent(desktopPaneCreate_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
-						.addComponent(desktopPaneView_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
+//						.addComponent(calendarViewBoarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+						.addComponent(desktopPaneCreate_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
 					.addContainerGap())
-
 		);
 		
 		JLabel lblOwner_Boarding = new JLabel("Owner");
@@ -461,10 +521,6 @@ public class HomeScreen extends JFrame {
 		lblScheduling_Boarding.setHorizontalAlignment(SwingConstants.CENTER);
 		lblScheduling_Boarding.setFont(new Font("Lucida Grande", Font.BOLD, 16));
 		
-		JCalendar calendarBoardingFrom = new JCalendar();
-		
-		JCalendar calendarBoardingTo = new JCalendar();
-		
 		JLabel lblFrom_Boarding = new JLabel("From:");
 		lblFrom_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		
@@ -478,6 +534,17 @@ public class HomeScreen extends JFrame {
 		lblKenel_Boarding.setFont(new Font("Lucida Grande", Font.BOLD, 16));
 		
 		JSeparator separator_2 = new JSeparator();
+		
+		JComponent dateChooserFrom_Boarding = new JBoardingDateChooser();
+		
+		((JBoardingDateChooser) dateChooserFrom_Boarding).getJCalendar().getDayChooser()
+				.addDateEvaluator(new BoardingDateEvaluator());
+		((JBoardingDateChooser) dateChooserFrom_Boarding).getJCalendar().getDayChooser()
+				.addDateEvaluator(new BirthdayEvaluator());
+		((JBoardingDateChooser) dateChooserFrom_Boarding).getJCalendar().getDayChooser()
+				.addDateEvaluator(new TestDateEvaluator());
+		
+		JComponent dateChooserTo_Boarding = new JBoardingDateChooser();
 
 		GroupLayout gl_desktopPaneCreate_Boarding = new GroupLayout(desktopPaneCreate_Boarding);
 		gl_desktopPaneCreate_Boarding.setHorizontalGroup(
@@ -514,10 +581,6 @@ public class HomeScreen extends JFrame {
 					.addContainerGap()
 					.addComponent(lblScheduling_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
 					.addContainerGap())
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblFrom_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-					.addGap(233))
 				.addComponent(separator_1, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
 				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addComponent(separator, GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
@@ -528,23 +591,16 @@ public class HomeScreen extends JFrame {
 					.addContainerGap())
 				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(calendarBoardingFrom, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblFrom_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+					.addGap(233))
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(dateChooserFrom_Boarding, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(20, Short.MAX_VALUE))
 				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblTo_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
 					.addGap(233))
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(calendarBoardingTo, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(20, Short.MAX_VALUE))
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblAvailableKenels_Boarding, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-					.addGap(18)
-					.addComponent(cbKennels_Boarding, 0, 113, Short.MAX_VALUE)
-					.addContainerGap())
-				.addComponent(separator_2, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
 				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblKenel_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
@@ -561,6 +617,16 @@ public class HomeScreen extends JFrame {
 					.addContainerGap()
 					.addComponent(chckbxDentalCleaning_Boarding, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
 					.addGap(113))
+				.addComponent(separator_2, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+							.addComponent(lblAvailableKenels_Boarding, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+							.addGap(27)
+							.addComponent(cbKennels_Boarding, 0, 106, Short.MAX_VALUE))
+						.addComponent(dateChooserTo_Boarding, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 				.addGroup(Alignment.TRAILING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addGap(207)
 					.addComponent(btnCreate_Boarding, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
@@ -599,12 +665,12 @@ public class HomeScreen extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblFrom_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(calendarBoardingFrom, GroupLayout.PREFERRED_SIZE, 14, Short.MAX_VALUE)
-					.addGap(14)
+					.addComponent(dateChooserFrom_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblTo_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(calendarBoardingTo, GroupLayout.PREFERRED_SIZE, 16, Short.MAX_VALUE)
-					.addGap(18)
+					.addComponent(dateChooserTo_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(16)
 					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblAvailableKenels_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbKennels_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -612,15 +678,19 @@ public class HomeScreen extends JFrame {
 					.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblKenel_Boarding)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(chckbxBathinggrooming_Boarding)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(chckbxAdditionalPlayTime_Boarding)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(chckbxDentalCleaning_Boarding)
-					.addGap(5)
-					.addComponent(btnCreate_Boarding, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(chckbxBathinggrooming_Boarding)
+							.addGap(3)
+							.addComponent(chckbxAdditionalPlayTime_Boarding)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(chckbxDentalCleaning_Boarding)
+							.addContainerGap(39, Short.MAX_VALUE))
+						.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnCreate_Boarding, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
 		);
 		desktopPaneCreate_Boarding.setLayout(gl_desktopPaneCreate_Boarding);
 
@@ -644,14 +714,14 @@ public class HomeScreen extends JFrame {
 				.addGroup(gl_panelRecords.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
-						.addComponent(tree, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-						.addComponent(btnNewOwner, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+						.addComponent(tree, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+						.addComponent(btnNewOwner, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
 					.addGroup(gl_panelRecords.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panelRecords.createSequentialGroup()
 							.addGap(305)
 							.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
 								.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 465, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(panel, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)))
 						.addGroup(gl_panelRecords.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnAddPet)))
@@ -666,7 +736,7 @@ public class HomeScreen extends JFrame {
 							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE))
-						.addComponent(tree, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(tree, GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE))
 					.addGap(42)
 					.addGroup(gl_panelRecords.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewOwner)
