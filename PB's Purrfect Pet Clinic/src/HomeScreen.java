@@ -35,6 +35,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 
 public class HomeScreen extends JFrame {
@@ -921,31 +923,37 @@ public class HomeScreen extends JFrame {
 		tabbedPane.addTab("   Records   ", null, panelRecords, null);
 		
 		JButton btnNewOwner = new JButton("New Owner");
+		btnNewOwner.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
 		JButton btnAddPet = new JButton("Add Pet");
+		btnAddPet.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JTree tree = new JTree();
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		GroupLayout gl_panelRecords = new GroupLayout(panelRecords);
 		gl_panelRecords.setHorizontalGroup(
 			gl_panelRecords.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelRecords.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
-						.addComponent(tree, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-						.addComponent(btnNewOwner, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+					.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnNewOwner, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panelRecords.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panelRecords.createSequentialGroup()
 							.addGap(305)
 							.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 465, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+								.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)))
 						.addGroup(gl_panelRecords.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAddPet)))
+							.addComponent(btnAddPet, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_panelRecords.setVerticalGroup(
@@ -957,13 +965,17 @@ public class HomeScreen extends JFrame {
 							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE))
-						.addComponent(tree, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE))
 					.addGap(42)
 					.addGroup(gl_panelRecords.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewOwner)
 						.addComponent(btnAddPet))
 					.addContainerGap())
 		);
+		panel_2.setLayout(new BorderLayout(0, 0));
+		
+		JTree tree = new JTree();
+		panel_2.add(tree, BorderLayout.CENTER);
 		
 		JLabel lblPet = new JLabel("Pet:");
 		lblPet.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -1006,6 +1018,9 @@ public class HomeScreen extends JFrame {
 		
 		JLabel lblFluffy = new JLabel("Fluffy");
 		lblFluffy.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnEditPetRecords = new JButton("Edit");
+		btnEditPetRecords.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -1028,7 +1043,11 @@ public class HomeScreen extends JFrame {
 						.addComponent(lblBlack)
 						.addComponent(lblLbs)
 						.addComponent(label_2))
-					.addContainerGap(341, Short.MAX_VALUE))
+					.addContainerGap(307, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+					.addContainerGap(382, Short.MAX_VALUE)
+					.addComponent(btnEditPetRecords, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -1061,7 +1080,9 @@ public class HomeScreen extends JFrame {
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblWeight)
 						.addComponent(lblLbs))
-					.addContainerGap(87, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+					.addComponent(btnEditPetRecords, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		panel_1.setLayout(gl_panel_1);
 		
@@ -1101,10 +1122,11 @@ public class HomeScreen extends JFrame {
 		JLabel lblJaneDoe = new JLabel("Jane Doe");
 		lblJaneDoe.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JButton btnEdit = new JButton("Edit");
+		JButton btnEditOwnerRecords = new JButton("Edit");
+		btnEditOwnerRecords.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
@@ -1126,10 +1148,10 @@ public class HomeScreen extends JFrame {
 								.addComponent(lblKansas)
 								.addComponent(lblLawrence)
 								.addComponent(lblSomewhereStreet))))
-					.addContainerGap(255, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-					.addContainerGap(384, Short.MAX_VALUE)
-					.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(233, Short.MAX_VALUE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap(382, Short.MAX_VALUE)
+					.addComponent(btnEditOwnerRecords, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -1159,8 +1181,8 @@ public class HomeScreen extends JFrame {
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblZip)
 						.addComponent(label_1))
-					.addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-					.addComponent(btnEdit)
+					.addPreferredGap(ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+					.addComponent(btnEditOwnerRecords)
 					.addContainerGap())
 		);
 		panel.setLayout(gl_panel);
