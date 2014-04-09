@@ -70,6 +70,8 @@ public class HomeScreen extends JFrame {
 	private JTable tableFriday_Appointments;
 	private JTable tableSaturday_Appointments;
 	private JTable tableSelected_Appointments;
+	private JTable table;
+	private JTextField textFieldDaysBoarded;
 
 	/**
 	 * Launch the application.
@@ -394,15 +396,303 @@ public class HomeScreen extends JFrame {
 		
 		JPanel panelSales = new JPanel();
 		tabbedPane.addTab("    Sales    ", null, panelSales, null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		
+		JButton btnPay = new JButton("Pay");
+		
+		JPanel panelServices = new JPanel();
+		
+		JPanel panelImmunizations = new JPanel();
+		
+		JPanel panelBoarding_2 = new JPanel();
+		
+		JPanel panelProducts = new JPanel();
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
 		gl_panelSales.setHorizontalGroup(
 			gl_panelSales.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 835, Short.MAX_VALUE)
+				.addGroup(gl_panelSales.createSequentialGroup()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addGap(73)
+							.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addContainerGap(22, Short.MAX_VALUE)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(panelServices, GroupLayout.PREFERRED_SIZE, 695, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panelProducts, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 695, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panelBoarding_2, GroupLayout.PREFERRED_SIZE, 695, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panelImmunizations, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 695, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		gl_panelSales.setVerticalGroup(
 			gl_panelSales.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 568, Short.MAX_VALUE)
+				.addGroup(gl_panelSales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(panelServices, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(panelImmunizations, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(panelBoarding_2, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(panelProducts, GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+							.addGap(18)
+							.addComponent(btnPay)
+							.addGap(47))))
 		);
+		
+		JLabel lblProducts = new JLabel("Products");
+		lblProducts.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnHeartwormCat = new JButton("Heartworm Cat");
+		btnHeartwormCat.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JButton btnHeartwormSM = new JButton("Heartworm S/M");
+		btnHeartwormSM.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		GroupLayout gl_panelProducts = new GroupLayout(panelProducts);
+		gl_panelProducts.setHorizontalGroup(
+			gl_panelProducts.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelProducts.createSequentialGroup()
+					.addGap(311)
+					.addComponent(lblProducts, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(301))
+				.addGroup(Alignment.LEADING, gl_panelProducts.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnHeartwormCat)
+					.addContainerGap(572, Short.MAX_VALUE))
+				.addGroup(Alignment.LEADING, gl_panelProducts.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnHeartwormSM)
+					.addContainerGap(572, Short.MAX_VALUE))
+		);
+		gl_panelProducts.setVerticalGroup(
+			gl_panelProducts.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelProducts.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblProducts)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnHeartwormCat)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnHeartwormSM)
+					.addContainerGap(42, Short.MAX_VALUE))
+		);
+		panelProducts.setLayout(gl_panelProducts);
+		
+		JLabel lblBoarding = new JLabel("Boarding");
+		lblBoarding.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnCat = new JButton("Cat");
+		
+		JButton btnPlayTime = new JButton("Play Time");
+		
+		JButton btnBathgroomCat = new JButton("Bath/Groom Cat");
+		
+		JButton btnBathgroomDog = new JButton("Bath/Groom Dog");
+		
+		JButton btnSmallDog = new JButton("Small Dog");
+		
+		JButton btnMediumDog = new JButton("Medium Dog");
+		
+		JButton btnLargeDog = new JButton("Large Dog");
+		
+		JLabel lblDaysBoarded = new JLabel("Days Boarded:");
+		
+		textFieldDaysBoarded = new JTextField();
+		textFieldDaysBoarded.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldDaysBoarded.setText("0");
+		textFieldDaysBoarded.setColumns(10);
+		GroupLayout gl_panelBoarding_2 = new GroupLayout(panelBoarding_2);
+		gl_panelBoarding_2.setHorizontalGroup(
+			gl_panelBoarding_2.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.TRAILING, gl_panelBoarding_2.createSequentialGroup()
+					.addGap(309)
+					.addComponent(lblBoarding, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(300))
+				.addGroup(gl_panelBoarding_2.createSequentialGroup()
+					.addGap(42)
+					.addGroup(gl_panelBoarding_2.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(btnCat, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnPlayTime, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelBoarding_2.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(btnBathgroomCat, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnBathgroomDog, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelBoarding_2.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(btnSmallDog, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnMediumDog, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(gl_panelBoarding_2.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelBoarding_2.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnLargeDog))
+						.addGroup(gl_panelBoarding_2.createSequentialGroup()
+							.addGap(15)
+							.addComponent(lblDaysBoarded)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textFieldDaysBoarded, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(89, Short.MAX_VALUE))
+		);
+		gl_panelBoarding_2.setVerticalGroup(
+			gl_panelBoarding_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBoarding_2.createSequentialGroup()
+					.addComponent(lblBoarding)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelBoarding_2.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnCat)
+						.addComponent(btnBathgroomCat)
+						.addComponent(btnSmallDog)
+						.addComponent(lblDaysBoarded)
+						.addComponent(textFieldDaysBoarded, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelBoarding_2.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnPlayTime)
+						.addComponent(btnBathgroomDog)
+						.addComponent(btnMediumDog)
+						.addComponent(btnLargeDog))
+					.addContainerGap(11, Short.MAX_VALUE))
+		);
+		panelBoarding_2.setLayout(gl_panelBoarding_2);
+		
+		JLabel lblImmunizations = new JLabel("Immunizations");
+		lblImmunizations.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnRabiesCat = new JButton("Rabies Cat");
+		
+		JButton btnRabiesDog = new JButton("Rabies Dog");
+		
+		JButton btnDistemperCat = new JButton("Distemper Cat");
+		
+		JButton btnDistempterDog = new JButton("Distempter Dog");
+		
+		JButton btnBordetella = new JButton("Bordetella");
+		GroupLayout gl_panelImmunizations = new GroupLayout(panelImmunizations);
+		gl_panelImmunizations.setHorizontalGroup(
+			gl_panelImmunizations.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelImmunizations.createSequentialGroup()
+					.addGap(45)
+					.addGroup(gl_panelImmunizations.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelImmunizations.createSequentialGroup()
+							.addGroup(gl_panelImmunizations.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(btnRabiesCat, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnRabiesDog, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(52)
+							.addGroup(gl_panelImmunizations.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panelImmunizations.createSequentialGroup()
+									.addComponent(btnDistemperCat)
+									.addGap(66)
+									.addComponent(btnBordetella))
+								.addComponent(btnDistempterDog))
+							.addGap(177))
+						.addGroup(gl_panelImmunizations.createSequentialGroup()
+							.addGap(255)
+							.addComponent(lblImmunizations, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(252))))
+		);
+		gl_panelImmunizations.setVerticalGroup(
+			gl_panelImmunizations.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelImmunizations.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblImmunizations)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelImmunizations.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnRabiesCat)
+						.addComponent(btnDistemperCat)
+						.addComponent(btnBordetella))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelImmunizations.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnRabiesDog)
+						.addComponent(btnDistempterDog))
+					.addContainerGap(7, Short.MAX_VALUE))
+		);
+		panelImmunizations.setLayout(gl_panelImmunizations);
+		
+		JLabel lblServices = new JLabel("Services");
+		lblServices.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnOfficeVisit = new JButton("Office Visit");
+		
+		JButton btnMicrochipping = new JButton("Microchipping");
+		
+		JButton btnHeartworm = new JButton("Heartworm");
+		
+		JButton btnSpayneuterDog = new JButton("Spay/Neuter Dog");
+		
+		JButton btnSpayneuterCat = new JButton("Spay/Neuter Cat");
+		
+		JButton btnLabWork = new JButton("Lab Work");
+		
+		JButton btnDentalDog = new JButton("Dental Dog");
+		
+		JButton btnDentalCat = new JButton("Dental Cat");
+		
+		JButton btnXrayDog = new JButton("X-Ray Dog");
+		
+		JButton btnXrayCat = new JButton("X-Ray Cat");
+		GroupLayout gl_panelServices = new GroupLayout(panelServices);
+		gl_panelServices.setHorizontalGroup(
+			gl_panelServices.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelServices.createSequentialGroup()
+					.addGap(61)
+					.addGroup(gl_panelServices.createParallelGroup(Alignment.TRAILING)
+						.addGroup(Alignment.LEADING, gl_panelServices.createSequentialGroup()
+							.addGroup(gl_panelServices.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(btnOfficeVisit)
+								.addComponent(btnHeartworm)
+								.addGroup(gl_panelServices.createSequentialGroup()
+									.addComponent(btnLabWork)
+									.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)))
+							.addGap(114)
+							.addGroup(gl_panelServices.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(btnSpayneuterCat, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnSpayneuterDog, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnMicrochipping, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(14)
+							.addComponent(btnXrayCat)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_panelServices.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(btnDentalDog, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnXrayDog)
+								.addComponent(btnDentalCat, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(12))
+						.addGroup(gl_panelServices.createSequentialGroup()
+							.addGap(251)
+							.addComponent(lblServices, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(306))))
+		);
+		gl_panelServices.setVerticalGroup(
+			gl_panelServices.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelServices.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblServices)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelServices.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnOfficeVisit)
+						.addComponent(btnDentalDog)
+						.addComponent(btnSpayneuterDog))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelServices.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnDentalCat)
+						.addComponent(btnLabWork)
+						.addComponent(btnSpayneuterCat))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelServices.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnHeartworm)
+						.addComponent(btnXrayDog)
+						.addComponent(btnXrayCat)
+						.addComponent(btnMicrochipping))
+					.addContainerGap(15, Short.MAX_VALUE))
+		);
+		panelServices.setLayout(gl_panelServices);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
 		panelSales.setLayout(gl_panelSales);
 		
 		JPanel panelBoarding = new JPanel();						  
