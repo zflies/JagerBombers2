@@ -47,6 +47,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import com.toedter.calendar.demo.BoardingDateEvaluator;
+
 /**
  * JDayChooser is a bean for choosing a day.
  * 
@@ -341,7 +343,7 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 		Color foregroundColor = getForeground();
 
 		while (day.before(firstDayInNextMonth)) {
-			days[i + n + 7].setText(Integer.toString(n + 1));
+			days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "</html>");
 			days[i + n + 7].setVisible(true);
 
 			if ((tmpCalendar.get(Calendar.DAY_OF_YEAR) == today
@@ -360,27 +362,35 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 				days[i + n + 7].setBackground(oldDayBackgroundColor);
 			}
 
-			Iterator iterator = dateEvaluators.iterator(); 
 			days[i + n + 7].setEnabled(true);
-			while (iterator.hasNext()) {
-				IDateEvaluator dateEvaluator = (IDateEvaluator) iterator.next();
-				if (dateEvaluator.isSpecial(day)) {
-					days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "<br><br>Titanic<br>Rex</html>"); // This Changes the text of each button if the day is Special
+			
+			BoardingDateEvaluator dateEvaluator = new BoardingDateEvaluator();
+			String sPets = dateEvaluator.getPetsBoarding(day);
+
+			//if ( sPets != "" ) {
+				days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "<br><br>" + sPets + "</html>"); // This Changes the text of each button if the day is Special
+				
+				if ( sPets != "" && tmpCalendar.get(Calendar.DAY_OF_YEAR) > today
+						.get(Calendar.DAY_OF_YEAR)
+						&& (tmpCalendar.get(Calendar.YEAR) >= today
+						.get(Calendar.YEAR)))
+				{
 					days[i + n + 7].setForeground(dateEvaluator
 							.getSpecialForegroundColor());
+
 					days[i + n + 7].setBackground(dateEvaluator
 							.getSpecialBackroundColor());
 					days[i + n + 7].setToolTipText(dateEvaluator.getSpecialTooltip());
 					days[i + n + 7].setEnabled(true);
-				} 
-				if (dateEvaluator.isInvalid(day)){
-					days[i + n + 7].setForeground(dateEvaluator
-							.getInvalidForegroundColor());
-					days[i + n + 7].setBackground(dateEvaluator
-							.getInvalidBackroundColor());
-					days[i + n + 7].setToolTipText(dateEvaluator.getInvalidTooltip());
-					days[i + n + 7].setEnabled(false);
 				}
+
+			if (dateEvaluator.isInvalid(day)){
+				days[i + n + 7].setForeground(dateEvaluator
+						.getInvalidForegroundColor());
+				days[i + n + 7].setBackground(dateEvaluator
+						.getInvalidBackroundColor());
+				days[i + n + 7].setToolTipText(dateEvaluator.getInvalidTooltip());
+				days[i + n + 7].setEnabled(false);
 			}
 
 			n++;
@@ -457,7 +467,7 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 		}
 
 		for (int i = 7; i < 49; i++) {
-			if (days[i].getText().equals(Integer.toString(day))) {
+			if (days[i].getText().equals(Integer.toString(day))) {		
 				selectedDay = days[i];
 				selectedDay.setBackground(selectedColor);
 				break;
@@ -581,7 +591,17 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 	public void actionPerformed(ActionEvent e) {
 		JButton button = (JButton) e.getSource();
 		String buttonText = button.getText();
+		
+		// Parse buttonText for the day number from the html code in the button label
+		for ( int i = 5; i < buttonText.length(); i++ )
+		{
+			if ( buttonText.charAt(i) == '<' )
+			{
+				buttonText = buttonText.substring(6, i);
+			}
+		}
 		int day = new Integer(buttonText).intValue();
+		
 		setDay(day);
 	}
 
