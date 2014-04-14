@@ -268,11 +268,11 @@ public class JMonthChooser extends JPanel implements ItemListener,
 	/**
 	 * Convenience method set a day chooser.
 	 * 
-	 * @param dayChooser
+	 * @param dayChooser2
 	 *            the day chooser
 	 */
-	public void setDayChooser(JDayChooser dayChooser) {
-		this.dayChooser = dayChooser;
+	public void setDayChooser(JDayChooser dayChooser2) {
+		this.dayChooser = dayChooser2;
 	}
 
 	/**

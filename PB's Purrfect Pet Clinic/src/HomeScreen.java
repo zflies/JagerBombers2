@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,9 +19,17 @@ import com.jgoodies.looks.FontPolicy;
 import com.jgoodies.looks.FontSet;
 import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import com.toedter.calendar.IDateEditor;
+import com.toedter.calendar.JBoardingCalendar;
+import com.toedter.calendar.JBoardingDateChooser;
 import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.demo.BirthdayEvaluator;
+import com.toedter.calendar.demo.BoardingDateEvaluator;
+import com.toedter.calendar.demo.TestDateEvaluator;
 
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JScrollPane;
@@ -35,6 +45,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
@@ -83,6 +94,16 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	private JLabel lblPetName_Records;
 	
 	private JTree OwnerTree;
+
+	private JTable tableMonday_Appointments;
+	private JTable tableTuesday__Appointments;
+	private JTable tableWednesday_Appointments;
+	private JTable tableThursday_Appointments;
+	private JTable tableFriday_Appointments;
+	private JTable tableSaturday_Appointments;
+	private JTable tableSelected_Appointments;
+	private JTable table;
+	private JTextField textFieldDaysBoarded_Sales;
 
 	/**
 	 * Launch the application.
@@ -398,6 +419,9 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 								.addComponent(btnCreate_Appointments, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap())
 		);
+		
+		tableSelected_Appointments = new JTable();
+		scrollPaneAppointment.setViewportView(tableSelected_Appointments);
 		desktopPaneCreate_Appointments.setLayout(gl_desktopPaneCreate_Appointments);
 		
 		JScrollPane scrollPaneMonday_Appointments = new JScrollPane();
@@ -442,49 +466,526 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						.addComponent(scrollPaneTues_Appointments, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
 					.addContainerGap())
 		);
+		
+		tableSaturday_Appointments = new JTable();
+		scrollPaneSat_Appointments.setViewportView(tableSaturday_Appointments);
+		
+		tableFriday_Appointments = new JTable();
+		scrollPaneFriday_Appointments.setViewportView(tableFriday_Appointments);
+		
+		tableThursday_Appointments = new JTable();
+		scrollPaneThurs_Appointments.setViewportView(tableThursday_Appointments);
+		
+		tableWednesday_Appointments = new JTable();
+		scrollPaneWed_Appointments.setViewportView(tableWednesday_Appointments);
+		
+		tableTuesday__Appointments = new JTable();
+		scrollPaneTues_Appointments.setViewportView(tableTuesday__Appointments);
+		
+		tableMonday_Appointments = new JTable();
+		scrollPaneMonday_Appointments.setViewportView(tableMonday_Appointments);
 		desktopPaneView_Appointments.setLayout(gl_desktopPaneView_Appointments);
 		panelAppointments.setLayout(gl_panelAppointments);
 		
 		JPanel panelSales = new JPanel();
 		tabbedPane.addTab("    Sales    ", null, panelSales, null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		
+		JButton btnPay = new JButton("Pay");
+		btnPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		
+		JDesktopPane desktopPaneServices_Sales = new JDesktopPane();
+		
+		JDesktopPane desktopPaneImmunizations_Sales = new JDesktopPane();
+		
+		JLabel label_4 = new JLabel("");
+		
+		JButton btnRabiesCat_Sales = new JButton("Rabies Cat");
+		btnRabiesCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnRabiesDog_Sales = new JButton("Rabies Dog");
+		btnRabiesDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnDistempterDog_Sales = new JButton("Distempter Dog");
+		btnDistempterDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnDistemperCat_Sales = new JButton("Distemper Cat");
+		btnDistemperCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnBordetella_Sales = new JButton("Bordetella");
+		btnBordetella_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JLabel label_5 = new JLabel("");
+		
+		JLabel lblImmunizations_Sales = new JLabel("Immunizations");
+		lblImmunizations_Sales.setHorizontalAlignment(SwingConstants.CENTER);
+		lblImmunizations_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		GroupLayout gl_desktopPaneImmunizations_Sales = new GroupLayout(desktopPaneImmunizations_Sales);
+		gl_desktopPaneImmunizations_Sales.setHorizontalGroup(
+			gl_desktopPaneImmunizations_Sales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneImmunizations_Sales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneImmunizations_Sales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPaneImmunizations_Sales.createSequentialGroup()
+							.addComponent(label_4, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneImmunizations_Sales.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(btnRabiesCat_Sales, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnRabiesDog_Sales, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneImmunizations_Sales.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(btnDistempterDog_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnDistemperCat_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnBordetella_Sales, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(label_5, GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+						.addComponent(lblImmunizations_Sales, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_desktopPaneImmunizations_Sales.setVerticalGroup(
+			gl_desktopPaneImmunizations_Sales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneImmunizations_Sales.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblImmunizations_Sales)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneImmunizations_Sales.createParallelGroup(Alignment.LEADING)
+						.addComponent(label_5, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_4, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_desktopPaneImmunizations_Sales.createSequentialGroup()
+							.addGroup(gl_desktopPaneImmunizations_Sales.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnRabiesCat_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnDistemperCat_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneImmunizations_Sales.createParallelGroup(Alignment.BASELINE, false)
+								.addComponent(btnBordetella_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnDistempterDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnRabiesDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		desktopPaneImmunizations_Sales.setLayout(gl_desktopPaneImmunizations_Sales);
+		
+		JDesktopPane desktopPaneBoarding_Sales = new JDesktopPane();
+		
+		JButton btnCat_Sales = new JButton("Cat");
+		btnCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnSmallDog_Sales = new JButton("Bath/Groom Cat");
+		btnSmallDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnMediumDog_Sales = new JButton("Bath/Groom Dog");
+		btnMediumDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnBathgroomCat_Sales = new JButton("Small Dog");
+		btnBathgroomCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnLargeDog_Sales = new JButton("Medium Dog");
+		btnLargeDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JLabel lblBoarding_Sales = new JLabel("Boarding");
+		lblBoarding_Sales.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBoarding_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnBathgroomDog_Sales = new JButton("Large Dog");
+		btnBathgroomDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		textFieldDaysBoarded_Sales = new JTextField();
+		textFieldDaysBoarded_Sales.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldDaysBoarded_Sales.setText("0");
+		textFieldDaysBoarded_Sales.setColumns(10);
+		
+		JLabel lblDaysBoarded_Sales = new JLabel("Days Boarded:");
+		lblDaysBoarded_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblDaysBoarded_Sales.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		JLabel label_6 = new JLabel("");
+		
+		JLabel lblA = new JLabel("");
+		GroupLayout gl_desktopPaneBoarding_Sales = new GroupLayout(desktopPaneBoarding_Sales);
+		gl_desktopPaneBoarding_Sales.setHorizontalGroup(
+			gl_desktopPaneBoarding_Sales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneBoarding_Sales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneBoarding_Sales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPaneBoarding_Sales.createSequentialGroup()
+							.addComponent(label_6, GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneBoarding_Sales.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnSmallDog_Sales, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnCat_Sales, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneBoarding_Sales.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_desktopPaneBoarding_Sales.createSequentialGroup()
+									.addComponent(btnBathgroomCat_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnLargeDog_Sales, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+									.addGap(6)
+									.addComponent(btnBathgroomDog_Sales, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_desktopPaneBoarding_Sales.createSequentialGroup()
+									.addComponent(btnMediumDog_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblDaysBoarded_Sales, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(textFieldDaysBoarded_Sales, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblA, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addComponent(lblBoarding_Sales, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE))
+					.addGap(0))
+		);
+		gl_desktopPaneBoarding_Sales.setVerticalGroup(
+			gl_desktopPaneBoarding_Sales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneBoarding_Sales.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblBoarding_Sales)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneBoarding_Sales.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblA, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+						.addComponent(label_6, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, gl_desktopPaneBoarding_Sales.createSequentialGroup()
+							.addGroup(gl_desktopPaneBoarding_Sales.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnBathgroomCat_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnLargeDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnBathgroomDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnCat_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneBoarding_Sales.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnMediumDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnSmallDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldDaysBoarded_Sales, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblDaysBoarded_Sales, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap())
+		);
+		desktopPaneBoarding_Sales.setLayout(gl_desktopPaneBoarding_Sales);
+		
+		JDesktopPane desktopPaneProducts_Sales = new JDesktopPane();
+		
+		JLabel label_7 = new JLabel("");
+		
+		JLabel label_8 = new JLabel("");
+		
+		JButton btnKittenFood = new JButton("Kitten Food (10lbs)");
+		btnKittenFood.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JButton btnHrtwrmPrvnt = new JButton("Heartworm");
+		btnHrtwrmPrvnt.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JButton btnlowFatAdult = new JButton("(Low Fat) Adult Food");
+		btnlowFatAdult.setFont(new Font("Dialog", Font.PLAIN, 10));
+		
+		JButton btnFleatick_2 = new JButton("Flea/Tick");
+		btnFleatick_2.setFont(new Font("Dialog", Font.PLAIN, 10));
+		
+		JButton btnredFatAdult = new JButton("(Low Fat) Adult Food");
+		btnredFatAdult.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JLabel lblProducts_Sales = new JLabel("Products");
+		lblProducts_Sales.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblProducts_Sales.setHorizontalAlignment(SwingConstants.CENTER);
+		lblProducts_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnPuppyFoodmedlg = new JButton("Puppy Food (med/lg)");
+		btnPuppyFoodmedlg.setFont(new Font("Dialog", Font.PLAIN, 10));
+		
+		JButton btnHeartwormlarge = new JButton("Heartworm (large)");
+		btnHeartwormlarge.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JButton btnseniorAdultFood_1 = new JButton("(Senior) Adult Food");
+		btnseniorAdultFood_1.setFont(new Font("Dialog", Font.PLAIN, 10));
+		
+		JButton btnseniorAdultFood = new JButton("(Senior) Adult Food");
+		btnseniorAdultFood.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JButton btnAdultCatFood = new JButton("Adult Food (15lbs)");
+		btnAdultCatFood.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JButton btnFleatick = new JButton("Flea/Tick");
+		btnFleatick.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JButton btnAdultFood = new JButton("Adult Food");
+		btnAdultFood.setFont(new Font("Dialog", Font.PLAIN, 10));
+		
+		JButton btnFleatick_1 = new JButton("Puppy Food (sm)");
+		btnFleatick_1.setFont(new Font("Dialog", Font.PLAIN, 10));
+		
+		JButton btnHeartwormsmmed = new JButton("Heartworm (sm/med)");
+		btnHeartwormsmmed.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JLabel lblNewLabel_1 = new JLabel("Dog");
+		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JLabel lblCat = new JLabel("Cat");
+		lblCat.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lblCat.setHorizontalAlignment(SwingConstants.CENTER);
+		GroupLayout gl_desktopPaneProducts_Sales = new GroupLayout(desktopPaneProducts_Sales);
+		gl_desktopPaneProducts_Sales.setHorizontalGroup(
+			gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+							.addComponent(lblProducts_Sales, GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+							.addGap(6))
+						.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+							.addComponent(label_8, GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnHrtwrmPrvnt, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnKittenFood, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnAdultCatFood, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnFleatick, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(lblCat, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+									.addComponent(btnredFatAdult, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnseniorAdultFood, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)))
+							.addGap(19)
+							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.TRAILING)
+										.addComponent(btnAdultFood, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.TRAILING, false)
+											.addComponent(btnFleatick_1, GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+											.addComponent(btnHeartwormsmmed, GroupLayout.PREFERRED_SIZE, 135, Short.MAX_VALUE))
+										.addComponent(btnseniorAdultFood_1, GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnFleatick_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnlowFatAdult, 0, 0, Short.MAX_VALUE)
+										.addComponent(btnHeartwormlarge, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+										.addComponent(btnPuppyFoodmedlg, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 134, Short.MAX_VALUE)))
+								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(label_7, GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)))
+					.addGap(3))
+		);
+		gl_desktopPaneProducts_Sales.setVerticalGroup(
+			gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblProducts_Sales)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+						.addComponent(label_8, GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+						.addComponent(label_7, GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+						.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblCat)
+								.addComponent(lblNewLabel_1))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnHrtwrmPrvnt, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnFleatick, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnHeartwormlarge, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnHeartwormsmmed, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
+									.addComponent(btnKittenFood, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnAdultCatFood, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
+									.addComponent(btnPuppyFoodmedlg, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnFleatick_1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
+									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
+										.addComponent(btnlowFatAdult, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnAdultFood, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
+										.addComponent(btnseniorAdultFood_1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnFleatick_2, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
+								.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
+									.addComponent(btnredFatAdult, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnseniorAdultFood, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
+							.addGap(45)))
+					.addGap(4))
+		);
+		desktopPaneProducts_Sales.setLayout(gl_desktopPaneProducts_Sales);
+		
+		JLabel lblA_1 = new JLabel("");
+		
+		JLabel lblA_2 = new JLabel("");
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
 		gl_panelSales.setHorizontalGroup(
-			gl_panelSales.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 835, Short.MAX_VALUE)
+			gl_panelSales.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelSales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+						.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+						.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+						.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+						.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_panelSales.setVerticalGroup(
 			gl_panelSales.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 568, Short.MAX_VALUE)
+				.addGroup(gl_panelSales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(desktopPaneServices_Sales, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneImmunizations_Sales, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneBoarding_Sales, GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(btnPay, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_panelSales.createSequentialGroup()
+									.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblA_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+									.addGap(6)))))
+					.addGap(6))
 		);
+		
+		JLabel lblServices = new JLabel("Services");
+		lblServices.setHorizontalAlignment(SwingConstants.CENTER);
+		lblServices.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnOfficeVisit_Sales = new JButton("Office Visit");
+		btnOfficeVisit_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnLabWork_Sales = new JButton("Lab Work");
+		btnLabWork_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnSpayneuterDog_Sales = new JButton("Spay/Neuter Dog");
+		btnSpayneuterDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnSpayneuterCat_Sales = new JButton("Spay/Neuter Cat");
+		btnSpayneuterCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnDentalDog_Sales = new JButton("Dental Dog");
+		btnDentalDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JButton btnDentalCat_Sales = new JButton("Dental Cat");
+		btnDentalCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JLabel lblNewLabel = new JLabel("");
+		
+		JLabel label_3 = new JLabel("");
+		GroupLayout gl_desktopPaneServices_Sales = new GroupLayout(desktopPaneServices_Sales);
+		gl_desktopPaneServices_Sales.setHorizontalGroup(
+			gl_desktopPaneServices_Sales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneServices_Sales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneServices_Sales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPaneServices_Sales.createSequentialGroup()
+							.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneServices_Sales.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnLabWork_Sales, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnOfficeVisit_Sales, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneServices_Sales.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(btnSpayneuterCat_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnSpayneuterDog_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneServices_Sales.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(btnDentalCat_Sales, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnDentalDog_Sales, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(label_3, GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+						.addComponent(lblServices, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_desktopPaneServices_Sales.setVerticalGroup(
+			gl_desktopPaneServices_Sales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneServices_Sales.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblServices)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneServices_Sales.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_desktopPaneServices_Sales.createSequentialGroup()
+							.addGroup(gl_desktopPaneServices_Sales.createParallelGroup(Alignment.BASELINE, false)
+								.addComponent(btnOfficeVisit_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnDentalDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnSpayneuterDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneServices_Sales.createParallelGroup(Alignment.BASELINE, false)
+								.addComponent(btnDentalCat_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnSpayneuterCat_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnLabWork_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))))
+					.addGap(0, 0, Short.MAX_VALUE))
+		);
+		desktopPaneServices_Sales.setLayout(gl_desktopPaneServices_Sales);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
 		panelSales.setLayout(gl_panelSales);
 		
 		JPanel panelBoarding = new JPanel();						  
 		tabbedPane.addTab("  Boarding   ", null, panelBoarding, null);
 		
-		JDesktopPane desktopPaneView_Boarding = new JDesktopPane();
-		
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
+		
+		
+		JComponent dateChooser = new JBoardingDateChooser();
+		
+		Calendar calendar = Calendar.getInstance();
+		Date date = ((JBoardingDateChooser)dateChooser).getDateEditor().getDate();
+		if (date != null) {
+			calendar.setTime(date);
+		}
+		((JBoardingDateChooser)dateChooser).getJCalendar().setCalendar(calendar);
+		
+		JComponent calendarViewBoarding = ((JBoardingDateChooser) dateChooser).getJCalendar();
 
+		//JBoardingCalendar calendarViewBoarding = new JBoardingCalendar();
+		
+/*-------------------------------------------------------------------------------------------------------------------------------------------		
+---------------------------------------------------------------------------------------------------------------------------------------------		
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------		
+Remove the two comments below for .addComponent(calendarViewBoarding... when running the code. To Work with HomeScreen in WindowBuilder view,
+comment them out.  Failure to do so will cause errors.
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------		
+---------------------------------------------------------------------------------------------------------------------------------------------		
+---------------------------------------------------------------------------------------------------------------------------------------------*/		
+		
 		GroupLayout gl_panelBoarding = new GroupLayout(panelBoarding);
 		gl_panelBoarding.setHorizontalGroup(
-			gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_panelBoarding.createSequentialGroup()
+			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBoarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(desktopPaneCreate_Boarding, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(desktopPaneView_Boarding, GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					//.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
 					.addContainerGap())
-
 		);
 		gl_panelBoarding.setVerticalGroup(
-			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panelBoarding.createSequentialGroup()
+			gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelBoarding.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
-						.addComponent(desktopPaneCreate_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
-						.addComponent(desktopPaneView_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
+						//.addComponent(calendarViewBoarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+						.addComponent(desktopPaneCreate_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
 					.addContainerGap())
-
 		);
 		
 		JLabel lblOwner_Boarding = new JLabel("Owner");
@@ -548,16 +1049,9 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		txtPetSize_Boarding.setEditable(false);
 		txtPetSize_Boarding.setColumns(10);
 		
-		JButton btnCreate_Boarding = new JButton("Create");
-		btnCreate_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		
 		JLabel lblScheduling_Boarding = new JLabel("Scheduling");
 		lblScheduling_Boarding.setHorizontalAlignment(SwingConstants.CENTER);
 		lblScheduling_Boarding.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		
-		JCalendar calendarBoardingFrom = new JCalendar();
-		
-		JCalendar calendarBoardingTo = new JCalendar();
 		
 		JLabel lblFrom_Boarding = new JLabel("From:");
 		lblFrom_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -572,10 +1066,20 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblKenel_Boarding.setFont(new Font("Lucida Grande", Font.BOLD, 16));
 		
 		JSeparator separator_2 = new JSeparator();
+		
+		JComponent dateChooserFrom_Boarding = new JBoardingDateChooser();
+		
+		JComponent dateChooserTo_Boarding = new JBoardingDateChooser();
+		
+		JEditorPane editorPaneNotes_Boarding = new JEditorPane();
+		editorPaneNotes_Boarding.setText("Notes");
+		
+		JButton btnCreate_Boarding = new JButton("Create");
+		btnCreate_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 
 		GroupLayout gl_desktopPaneCreate_Boarding = new GroupLayout(desktopPaneCreate_Boarding);
 		gl_desktopPaneCreate_Boarding.setHorizontalGroup(
-			gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
+			gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblOwner_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
@@ -605,59 +1109,65 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 							.addComponent(txtPetSize_Boarding, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)))
 					.addContainerGap())
 				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblScheduling_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-					.addContainerGap())
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblFrom_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-					.addGap(233))
-				.addComponent(separator_1, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addComponent(separator, GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
 					.addContainerGap())
 				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblPet_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
 					.addContainerGap())
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addComponent(separator_1, GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(calendarBoardingFrom, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblScheduling_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblFrom_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+					.addGap(233))
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(dateChooserFrom_Boarding, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(20, Short.MAX_VALUE))
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblTo_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
 					.addGap(233))
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(calendarBoardingTo, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
+					.addComponent(dateChooserTo_Boarding, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(20, Short.MAX_VALUE))
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblAvailableKenels_Boarding, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-					.addGap(18)
-					.addComponent(cbKennels_Boarding, 0, 113, Short.MAX_VALUE)
+					.addComponent(lblAvailableKenels_Boarding, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+					.addGap(27)
+					.addComponent(cbKennels_Boarding, 0, 106, Short.MAX_VALUE)
 					.addContainerGap())
-				.addComponent(separator_2, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+				.addComponent(separator_2, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblKenel_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
 					.addContainerGap())
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(chckbxBathinggrooming_Boarding, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(148))
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(chckbxAdditionalPlayTime_Boarding, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(136))
-				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(chckbxDentalCleaning_Boarding, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
 					.addGap(113))
-				.addGroup(Alignment.TRAILING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
-					.addGap(207)
-					.addComponent(btnCreate_Boarding, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+				.addGroup(Alignment.LEADING, gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(editorPaneNotes_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addGap(213)
+					.addComponent(btnCreate_Boarding, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		gl_desktopPaneCreate_Boarding.setVerticalGroup(
@@ -686,34 +1196,36 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtPetSize_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtPetType_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(5)
-					.addComponent(lblScheduling_Boarding, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+					.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblScheduling_Boarding)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblFrom_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(calendarBoardingFrom, GroupLayout.PREFERRED_SIZE, 14, Short.MAX_VALUE)
-					.addGap(14)
+					.addComponent(dateChooserFrom_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblTo_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(calendarBoardingTo, GroupLayout.PREFERRED_SIZE, 16, Short.MAX_VALUE)
-					.addGap(18)
+					.addComponent(dateChooserTo_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblAvailableKenels_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbKennels_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblKenel_Boarding)
+					.addComponent(lblKenel_Boarding, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(chckbxBathinggrooming_Boarding)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(chckbxAdditionalPlayTime_Boarding)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(chckbxDentalCleaning_Boarding)
-					.addGap(5)
-					.addComponent(btnCreate_Boarding, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(editorPaneNotes_Boarding, GroupLayout.PREFERRED_SIZE, 7, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnCreate_Boarding)
 					.addContainerGap())
 		);
 		desktopPaneCreate_Boarding.setLayout(gl_desktopPaneCreate_Boarding);
@@ -1090,13 +1602,11 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 
 	@Override
 	public void windowGainedFocus(WindowEvent e) {
-		// TODO Auto-generated method stub
 		OwnerTree.setModel(populateTree().getModel());
 	}
 
 	@Override
 	public void windowLostFocus(WindowEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 }

@@ -44,6 +44,7 @@ import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 /**
@@ -339,7 +340,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener,
 		Color foregroundColor = getForeground();
 
 		while (day.before(firstDayInNextMonth)) {
-			days[i + n + 7].setText(Integer.toString(n + 1));
+			days[i + n + 7].setText(Integer.toString(n + 1));	// This Changes the text of each button
 			days[i + n + 7].setVisible(true);
 
 			if ((tmpCalendar.get(Calendar.DAY_OF_YEAR) == today

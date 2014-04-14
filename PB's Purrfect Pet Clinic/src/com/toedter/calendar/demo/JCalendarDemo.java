@@ -95,6 +95,8 @@ import com.toedter.components.JTitlePanel;
  * @version $LastChangedDate: 2011-06-26 21:58:35 +0200 (So, 26 Jun 2011) $
  */
 public class JCalendarDemo extends JApplet implements PropertyChangeListener {
+	public JCalendarDemo() {
+	}
 	private static final long serialVersionUID = 6739986412544494316L;
 	private JSplitPane splitPane;
 	private JPanel calendarPanel;
