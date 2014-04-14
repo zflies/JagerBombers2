@@ -1,3 +1,7 @@
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
 import java.util.Vector;
 
 
@@ -48,6 +52,10 @@ public class Owner {
 		return this.FirstName + " " + this.LastName;
 	}
 	
+	public String getListName(){
+		return this.LastName + ", " + this.FirstName;
+	}
+	
 	public String getAddress(){
 		return this.Address;
 	}
@@ -64,11 +72,117 @@ public class Owner {
 		return this.Zip;
 	}
 	
+	public String getPhone(){
+		return this.Phone;
+	}
+	
 	public Vector<Pet> getPets(){
 		return this.Pets;
 	}
 	
 	public void addPet(Pet newPet){
 		this.Pets.add(newPet);
+	}
+	
+	public void getPetsDB() throws Exception{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = "SELECT * FROM pets WHERE Pets.Owner_ID = (SELECT ID FROM owner WHERE FirstName = '" + this.FirstName + "' AND LastName = '" + this.LastName + "') ORDER BY Name ASC;";
+		
+		if(state != null){
+			try {
+				ResultSet rs = state.executeQuery(commandstring);
+				while(rs.next()) {
+					String PetTypeString = rs.getString("Type");
+					Pet.Type PetType;
+					if(PetTypeString.compareTo("dog") == 0)
+						PetType = Pet.Type.dog;
+					else
+						PetType = Pet.Type.cat;
+					
+					String Name = rs.getString("Name");
+					String OwnerName = this.getFullName();
+					String PetSexString = rs.getString("Sex");
+					Pet.Sex PetSex;
+					if(PetSexString.compareTo("male") == 0)
+						PetSex = Pet.Sex.male;
+					else
+						PetSex = Pet.Sex.female;
+					
+					String PetSizeString = rs.getString("Size");
+					Pet.Size PetSize;
+					if(PetSizeString.compareTo("small") == 0)
+						PetSize = Pet.Size.small;
+					else if(PetSizeString.compareTo("medium") == 0)
+						PetSize = Pet.Size.medium;
+					else
+						PetSize = Pet.Size.large;
+					
+					String Color = rs.getString("Color");
+					java.sql.Date DbDate = rs.getDate("DOB");
+					Date DateOfBirth = new Date(DbDate.getTime());
+					
+					String Prescriptions = rs.getString("Prescriptions");
+					Double Weight = rs.getDouble("Weight");
+					String Breed = rs.getString("Breed");
+					String Notes = rs.getString("Notes");
+					
+					//create new pet object from DB info and add to the owners list of pets
+					Pet newPet = new Pet(PetType, Name, OwnerName, PetSex, PetSize, Color, DateOfBirth, Prescriptions, Weight, Breed, Notes);
+					this.Pets.add(newPet);
+				}
+			} catch (SQLException e) {
+				throw new Exception("Error in SQL Execution");
+				}
+		}
+		else
+			System.err.println("Statement was null.  No connection?");
+		state.close();
+	}
+	
+	public static Vector<Owner> getAllOwners() throws Exception{
+		Vector<Owner> Owners = new Vector<Owner>();
+		
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = "SELECT * FROM owner ORDER BY LastName ASC;";
+		
+		if(state != null){
+			try {
+				ResultSet rs = state.executeQuery(commandstring);
+				while(rs.next()) {
+					String FirstName = rs.getString("FirstName");
+					String LastName = rs.getString("LastName");
+					String Address = rs.getString("Address");
+					String City = rs.getString("City");
+					String State = rs.getString("State");
+					String Zip = rs.getString("Zip");
+					String Phone = rs.getString("Phone");
+					
+					Owner newOwner = new Owner(FirstName, LastName, Address, City, State, Zip, Phone);
+					newOwner.getPetsDB();
+					Owners.add(newOwner);
+				}
+			} catch (SQLException e) {
+				throw new Exception("Error in SQL Execution");
+				}
+		}
+		else
+			System.err.println("Statement was null.  No connection?");
+		state.close();
+		return Owners;
+	
+	}
+	
+	public void addOwnerDB() throws SQLException{
+		//add this Owner to the DB
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("INSERT INTO owner (FirstName, LastName, Address, City, State, Zip, Phone) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+				FirstName, LastName, Address, City, State, Zip, Phone);
+		
+		boolean success = state.execute(commandstring);
+		
+	}
+	
+	public String toString(){
+		return this.LastName + ", " + this.FirstName;
 	}
 }

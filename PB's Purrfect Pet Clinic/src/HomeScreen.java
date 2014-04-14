@@ -33,12 +33,24 @@ import javax.swing.JCheckBox;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 import javax.swing.JSeparator;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Vector;
+
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
 
-public class HomeScreen extends JFrame {
+public class HomeScreen extends JFrame implements WindowFocusListener {
 
 	private JPanel contentPane;
 	private JTextField txtFirstName_Appointments;
@@ -52,6 +64,25 @@ public class HomeScreen extends JFrame {
 	private JTextField txtFirstName;
 	private JTextField textField;
 	private JTextField txtPetName;
+	
+	//Owner labels for records tab
+	private JLabel lblAddress_Records;
+	private JLabel lblCity_Records;
+	private JLabel lblState_Records;
+	private JLabel lblZip_Records;
+	private JLabel lblPhone_Records;
+	private JLabel lblOwner_Records;
+	
+	//Pet labels for records tab
+	private JLabel lblDateOfBirth_Records;
+	private JLabel lblWeight_Records;
+	private JLabel lblColor_Records;
+	private JLabel lblSize_Records;
+	private JLabel lblSex_Records;
+	private JLabel lblType_Records;
+	private JLabel lblPetName_Records;
+	
+	private JTree OwnerTree;
 
 	/**
 	 * Launch the application.
@@ -69,6 +100,67 @@ public class HomeScreen extends JFrame {
 				}
 			}
 		});
+	}
+	
+	public JTree populateTree(){
+		//get owner and pet info from DB and populate tree
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Owners");
+		
+		try {
+			Vector<Owner> Owners = Owner.getAllOwners();
+			//for each owner, add them to the tree
+			for(int i = 0; i < Owners.size(); i++){
+				Owner curOwner = Owners.elementAt(i);
+				DefaultMutableTreeNode owner = new DefaultMutableTreeNode(curOwner);
+				//for each pet in the current owner add them as a node under their owner
+				for(int j = 0; j < curOwner.Pets.size(); j++){
+					owner.add(new DefaultMutableTreeNode(curOwner.Pets.elementAt(j)));
+				}
+				root.add(owner);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error Populating Tree.");
+		}
+		//create new tree from root
+		return new JTree(root);
+	}
+	
+	public void UpdateRecordLabels(Owner selectedOwner, Pet selectedPet){
+		//update labels for owner
+		lblOwner_Records.setText(selectedOwner.getFullName());
+		lblAddress_Records.setText(selectedOwner.getAddress());
+		lblCity_Records.setText(selectedOwner.getCity());
+		lblState_Records.setText(selectedOwner.getState());
+		lblZip_Records.setText(selectedOwner.getZip());
+		lblPhone_Records.setText(selectedOwner.getPhone());
+		//update labels for pet
+		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yyyy");
+		lblDateOfBirth_Records.setText(formatter.format(selectedPet.getDOB()));
+		lblWeight_Records.setText(selectedPet.getWeight().toString() + " lbs.");
+		lblColor_Records.setText(selectedPet.getColor());
+		lblSize_Records.setText(selectedPet.getPetSizeString());
+		lblSex_Records.setText(selectedPet.getPetSexString());
+		lblType_Records.setText(selectedPet.getTypeString());
+		lblPetName_Records.setText(selectedPet.getName());
+	}
+	
+	public void UpdateRecordLabels(Owner selectedOwner){
+		//update labels for owner
+		lblOwner_Records.setText(selectedOwner.getFullName());
+		lblAddress_Records.setText(selectedOwner.getAddress());
+		lblCity_Records.setText(selectedOwner.getCity());
+		lblState_Records.setText(selectedOwner.getState());
+		lblZip_Records.setText(selectedOwner.getZip());
+		lblPhone_Records.setText(selectedOwner.getPhone());
+		//update labels for pet
+		lblDateOfBirth_Records.setText("");
+		lblWeight_Records.setText("");
+		lblColor_Records.setText("");
+		lblSize_Records.setText("");
+		lblSex_Records.setText("");
+		lblType_Records.setText("");
+		lblPetName_Records.setText("");
 	}
 
 	/**
@@ -632,6 +724,14 @@ public class HomeScreen extends JFrame {
 		tabbedPane.addTab("   Records   ", null, panelRecords, null);
 		
 		JButton btnNewOwner = new JButton("New Owner");
+		btnNewOwner.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				NewOwnerFrame Frame = new NewOwnerFrame();
+				Frame.setVisible(true);
+				Frame.setLocationRelativeTo(null);
+				Frame.setAlwaysOnTop(true);
+			}
+		});
 		btnNewOwner.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JPanel panel = new JPanel();
@@ -640,7 +740,55 @@ public class HomeScreen extends JFrame {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
+		//NOTE: Begin Tree
+		addWindowFocusListener(this);
+		OwnerTree = populateTree();
+		OwnerTree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent arg0) {
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) OwnerTree.getLastSelectedPathComponent();
+			    if (node == null)
+			    //Nothing is selected.     
+			    return;
+		
+			    Object nodeInfo = node.getUserObject();
+			    if (node.isLeaf()) {
+			        Pet selectedPet = (Pet) nodeInfo;
+			        DefaultMutableTreeNode Parent = (DefaultMutableTreeNode) node.getParent();
+			        Owner selectedOwner = (Owner) Parent.getUserObject();
+			        UpdateRecordLabels(selectedOwner, selectedPet);
+			    } else {
+			        Owner selectedOwner = (Owner) nodeInfo;
+			        UpdateRecordLabels(selectedOwner);
+			    }
+			}
+		});
+		OwnerTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		
 		JButton btnAddPet = new JButton("Add Pet");
+		btnAddPet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//grab currently selected owner
+				Owner selectedOwner;
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) OwnerTree.getLastSelectedPathComponent();
+			    if (node == null)
+			    //Nothing is selected.     
+			    return;
+			    
+			    Object nodeInfo = node.getUserObject();
+			    if (node.isLeaf()) {
+			        DefaultMutableTreeNode Parent = (DefaultMutableTreeNode) node.getParent();
+			        selectedOwner = (Owner) Parent.getUserObject();
+			    } else {
+			        selectedOwner = (Owner) nodeInfo;
+			    }
+			    
+				//add pet to DB
+				NewPetFrame Frame = new NewPetFrame(selectedOwner);
+				Frame.setVisible(true);
+				Frame.setLocationRelativeTo(null);
+				Frame.setAlwaysOnTop(true);
+			}
+		});
 		btnAddPet.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JPanel panel_2 = new JPanel();
@@ -683,8 +831,7 @@ public class HomeScreen extends JFrame {
 		);
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
-		JTree tree = new JTree();
-		panel_2.add(tree, BorderLayout.CENTER);
+		panel_2.add(OwnerTree, BorderLayout.CENTER);
 		
 		JLabel lblPet = new JLabel("Pet:");
 		lblPet.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -707,26 +854,26 @@ public class HomeScreen extends JFrame {
 		JLabel lblWeight = new JLabel("Weight:");
 		lblWeight.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel label_2 = new JLabel("10/25/01");
-		label_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblDateOfBirth_Records = new JLabel("");
+		lblDateOfBirth_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblLbs = new JLabel("100 lbs");
-		lblLbs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblWeight_Records = new JLabel("");
+		lblWeight_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblBlack = new JLabel("Black");
-		lblBlack.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblColor_Records = new JLabel("");
+		lblColor_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblLarge = new JLabel("Large");
-		lblLarge.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSize_Records = new JLabel("");
+		lblSize_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblMale = new JLabel("Male");
-		lblMale.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSex_Records = new JLabel("");
+		lblSex_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblDog = new JLabel("Dog");
-		lblDog.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblType_Records = new JLabel("");
+		lblType_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblFluffy = new JLabel("Fluffy");
-		lblFluffy.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblPetName_Records = new JLabel("");
+		lblPetName_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JButton btnEditPetRecords = new JButton("Edit");
 		btnEditPetRecords.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -745,13 +892,13 @@ public class HomeScreen extends JFrame {
 						.addComponent(lblPet))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblFluffy)
-						.addComponent(lblDog)
-						.addComponent(lblMale)
-						.addComponent(lblLarge)
-						.addComponent(lblBlack)
-						.addComponent(lblLbs)
-						.addComponent(label_2))
+						.addComponent(lblPetName_Records)
+						.addComponent(lblType_Records)
+						.addComponent(lblSex_Records)
+						.addComponent(lblSize_Records)
+						.addComponent(lblColor_Records)
+						.addComponent(lblWeight_Records)
+						.addComponent(lblDateOfBirth_Records))
 					.addContainerGap(307, Short.MAX_VALUE))
 				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
 					.addContainerGap(382, Short.MAX_VALUE)
@@ -764,31 +911,31 @@ public class HomeScreen extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPet)
-						.addComponent(lblFluffy))
+						.addComponent(lblPetName_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblType)
-						.addComponent(lblDog))
+						.addComponent(lblType_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblSex)
-						.addComponent(lblMale))
+						.addComponent(lblSex_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblSize)
-						.addComponent(lblLarge))
+						.addComponent(lblSize_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblColor)
-						.addComponent(lblBlack))
+						.addComponent(lblColor_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblDateOfBirth)
-						.addComponent(label_2))
+						.addComponent(lblDateOfBirth_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblWeight)
-						.addComponent(lblLbs))
+						.addComponent(lblWeight_Records))
 					.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
 					.addComponent(btnEditPetRecords, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
@@ -813,23 +960,23 @@ public class HomeScreen extends JFrame {
 		JLabel lblZip = new JLabel("ZIP:");
 		lblZip.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblSomewhereStreet = new JLabel("12489 Somewhere Street");
-		lblSomewhereStreet.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblAddress_Records = new JLabel("");
+		lblAddress_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblLawrence = new JLabel("Lawrence");
-		lblLawrence.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCity_Records = new JLabel("");
+		lblCity_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblKansas = new JLabel("Kansas");
-		lblKansas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblState_Records = new JLabel("");
+		lblState_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel label_1 = new JLabel("66047");
-		label_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblZip_Records = new JLabel("");
+		lblZip_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel label = new JLabel("(913)468-0754");
-		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblPhone_Records = new JLabel("");
+		lblPhone_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblJaneDoe = new JLabel("Jane Doe");
-		lblJaneDoe.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblOwner_Records = new JLabel("");
+		lblOwner_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JButton btnEditOwnerRecords = new JButton("Edit");
 		btnEditOwnerRecords.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -842,7 +989,7 @@ public class HomeScreen extends JFrame {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblOwner)
 							.addGap(18)
-							.addComponent(lblJaneDoe))
+							.addComponent(lblOwner_Records))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblAddress)
@@ -852,11 +999,11 @@ public class HomeScreen extends JFrame {
 								.addComponent(lblPhone))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(label)
-								.addComponent(label_1)
-								.addComponent(lblKansas)
-								.addComponent(lblLawrence)
-								.addComponent(lblSomewhereStreet))))
+								.addComponent(lblPhone_Records)
+								.addComponent(lblZip_Records)
+								.addComponent(lblState_Records)
+								.addComponent(lblCity_Records)
+								.addComponent(lblAddress_Records))))
 					.addContainerGap(233, Short.MAX_VALUE))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap(382, Short.MAX_VALUE)
@@ -869,27 +1016,27 @@ public class HomeScreen extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblOwner)
-						.addComponent(lblJaneDoe))
+						.addComponent(lblOwner_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPhone)
-						.addComponent(label))
+						.addComponent(lblPhone_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblAddress)
-						.addComponent(lblSomewhereStreet))
+						.addComponent(lblAddress_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblCity)
-						.addComponent(lblLawrence))
+						.addComponent(lblCity_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblState)
-						.addComponent(lblKansas))
+						.addComponent(lblState_Records))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblZip)
-						.addComponent(label_1))
+						.addComponent(lblZip_Records))
 					.addPreferredGap(ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
 					.addComponent(btnEditOwnerRecords)
 					.addContainerGap())
@@ -939,5 +1086,17 @@ public class HomeScreen extends JFrame {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void windowGainedFocus(WindowEvent e) {
+		// TODO Auto-generated method stub
+		OwnerTree.setModel(populateTree().getModel());
+	}
+
+	@Override
+	public void windowLostFocus(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
