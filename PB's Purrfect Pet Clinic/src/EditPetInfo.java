@@ -28,8 +28,7 @@ import java.util.Date;
 import com.toedter.calendar.JBoardingDateChooser;
 import com.toedter.calendar.JDateChooser;
 
-
-public class NewPetFrame extends JFrame {
+public class EditPetInfo extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtPetName;
@@ -38,6 +37,13 @@ public class NewPetFrame extends JFrame {
 	private JTextField txtPetBreed;
 	private JTextField txtPetPrescriptions;
 	private JComponent DateChooser;
+	private JComboBox cboPetType;
+	private JComboBox cboPetSex;
+	private JTextArea txtPetNotes;
+	private JComboBox cboPetSize;
+	
+	private Pet oldPet;
+	private Owner oldOwner;
 
 	/**
 	 * Launch the application.
@@ -46,7 +52,8 @@ public class NewPetFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NewPetFrame frame = new NewPetFrame(new Owner("Alex", "Valentine", "4501 Wimbledon Dr.", "Lawrence", "KS", "66047", "(913)302-0754"));
+					EditPetInfo frame = new EditPetInfo(new Owner("Alex", "Valentine", "4501 Wimbledon Dr.", "Lawrence", "KS", "66047", "(913)302-0754"), 
+							new Pet(Pet.Type.cat, "Fluffykins", "Alex Valentine", Pet.Sex.female, Pet.Size.small, "White", new Date(), "", 8.00, "Kitty Cat", ""));
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,8 +74,10 @@ public class NewPetFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NewPetFrame(final Owner owner) {
-		setTitle("Add a Pet");
+	public EditPetInfo(final Owner owner, final Pet oldPet) {
+		oldOwner = owner;
+		this.oldPet = oldPet;
+		setTitle("Edit Pet");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 600);
 		contentPane = new JPanel();
@@ -95,16 +104,16 @@ public class NewPetFrame extends JFrame {
 		
 		JLabel lblNotes = new JLabel("Notes:");
 		
-		final JComboBox cboPetType = new JComboBox();
+		cboPetType = new JComboBox();
 		cboPetType.setModel(new DefaultComboBoxModel(new String[] {"dog", "cat"}));
 		
 		txtPetName = new JTextField();
 		txtPetName.setColumns(10);
 		
-		final JComboBox cboPetSex = new JComboBox();
+		cboPetSex = new JComboBox();
 		cboPetSex.setModel(new DefaultComboBoxModel(new String[] {"male", "female"}));
 		
-		final JComboBox cboPetSize = new JComboBox();
+		cboPetSize = new JComboBox();
 		cboPetSize.setModel(new DefaultComboBoxModel(new String[] {"small", "medium", "large"}));
 		
 		txtPetColor = new JTextField();
@@ -119,7 +128,7 @@ public class NewPetFrame extends JFrame {
 		txtPetPrescriptions = new JTextField();
 		txtPetPrescriptions.setColumns(10);
 		
-		final JTextArea txtPetNotes = new JTextArea();
+		txtPetNotes = new JTextArea();
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -131,8 +140,8 @@ public class NewPetFrame extends JFrame {
 			}
 		});
 		
-		JButton btnAddPet = new JButton("Add Pet");
-		btnAddPet.addActionListener(new ActionListener() {
+		JButton btnSavePet = new JButton("Save");
+		btnSavePet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					checkInput();
@@ -169,18 +178,30 @@ public class NewPetFrame extends JFrame {
 				Date DOB = ((JDateChooser) DateChooser).getDateEditor().getDate();
 				
 				
-				//create and add pet to DB
+				//create and update pet in DB
 				Pet newPet = new Pet(Type, Name, owner.getFullName(), Sex, Size, Color, DOB, Prescriptions, Double.valueOf(WeightString), Breed, Notes);
 				try {
-					newPet.addPetDB();
+					newPet.replacePet(oldPet.getID(oldOwner.getID()));
 					dispose();
 				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(contentPane, "Could not add Pet at this time.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(contentPane, "Could not add pet at this time.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		
 		DateChooser = new JDateChooser();
+		
+		JButton btnDeletePet = new JButton("Delete");
+		btnDeletePet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					oldPet.deletePet(oldOwner.getID());
+					dispose();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(contentPane, "Could not delete pet at this time.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -195,8 +216,10 @@ public class NewPetFrame extends JFrame {
 						.addComponent(lblNotes)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnCancel)
-							.addPreferredGap(ComponentPlacement.RELATED, 268, Short.MAX_VALUE)
-							.addComponent(btnAddPet))
+							.addGap(96)
+							.addComponent(btnDeletePet)
+							.addPreferredGap(ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+							.addComponent(btnSavePet))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblDateOfBirth)
@@ -265,12 +288,25 @@ public class NewPetFrame extends JFrame {
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCancel)
-						.addComponent(btnAddPet))
+						.addComponent(btnSavePet)
+						.addComponent(btnDeletePet))
 					.addContainerGap())
 		);
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		panel.add(txtPetNotes, BorderLayout.CENTER);
 		contentPane.setLayout(gl_contentPane);
+		
+		//fill in pet info 
+		txtPetName.setText(oldPet.getName());
+		txtPetColor.setText(oldPet.getColor());
+		txtPetWeight.setText(String.valueOf(oldPet.getWeight()));
+		txtPetBreed.setText(oldPet.getBreed());
+		txtPetPrescriptions.setText(oldPet.getPrescriptions());
+		((JDateChooser)DateChooser).setDate(oldPet.getDOB());
+		cboPetType.setSelectedItem(oldPet.getTypeString().toLowerCase());
+		cboPetSex.setSelectedItem(oldPet.getPetSexString().toLowerCase());
+		txtPetNotes.setText(oldPet.getNotes());
+		cboPetSize.setSelectedItem(oldPet.getPetSizeString().toLowerCase());
 	}
 }

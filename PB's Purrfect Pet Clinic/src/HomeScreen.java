@@ -43,6 +43,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -92,6 +93,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	private JLabel lblSex_Records;
 	private JLabel lblType_Records;
 	private JLabel lblPetName_Records;
+	private JLabel lblPetBreed_Records;
 	
 	private JTree OwnerTree;
 
@@ -164,6 +166,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblSex_Records.setText(selectedPet.getPetSexString());
 		lblType_Records.setText(selectedPet.getTypeString());
 		lblPetName_Records.setText(selectedPet.getName());
+		lblPetBreed_Records.setText(selectedPet.getBreed());
 	}
 	
 	public void UpdateRecordLabels(Owner selectedOwner){
@@ -182,8 +185,29 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblSex_Records.setText("");
 		lblType_Records.setText("");
 		lblPetName_Records.setText("");
+		lblPetBreed_Records.setText("");
 	}
 
+	public void ClearRecordLabels(){
+		//update labels for owner
+		lblOwner_Records.setText("");
+		lblAddress_Records.setText("");
+		lblCity_Records.setText("");
+		lblState_Records.setText("");
+		lblZip_Records.setText("");
+		lblPhone_Records.setText("");
+		//update labels for pet
+		lblDateOfBirth_Records.setText("");
+		lblWeight_Records.setText("");
+		lblColor_Records.setText("");
+		lblSize_Records.setText("");
+		lblSex_Records.setText("");
+		lblType_Records.setText("");
+		lblPetName_Records.setText("");
+		lblPetBreed_Records.setText("");
+		
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -1388,10 +1412,45 @@ comment them out.  Failure to do so will cause errors.
 		lblPetName_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JButton btnEditPetRecords = new JButton("Edit");
+		btnEditPetRecords.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//grab currently selected owner
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) OwnerTree.getLastSelectedPathComponent();
+			    if (node == null)
+			    //Nothing is selected.     
+			    return;
+		
+			    Object nodeInfo = node.getUserObject();
+			    Owner curOwner;
+			    Pet curPet;
+			    if (node.isLeaf()) {
+			        curPet = (Pet) nodeInfo;
+			        DefaultMutableTreeNode Parent = (DefaultMutableTreeNode) node.getParent();
+			        curOwner = (Owner) Parent.getUserObject();
+			    } else {
+			        return;
+			    }
+				//open new frame to begin editing
+				EditPetInfo Frame = new EditPetInfo(curOwner, curPet);
+				Frame.setVisible(true);
+				Frame.setLocationRelativeTo(null);
+				Frame.setAlwaysOnTop(true);
+			}
+		});
 		btnEditPetRecords.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblBreed = new JLabel("Breed:");
+		lblBreed.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		lblPetBreed_Records = new JLabel("");
+		lblPetBreed_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap(341, Short.MAX_VALUE)
+					.addComponent(btnEditPetRecords, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -1401,9 +1460,11 @@ comment them out.  Failure to do so will cause errors.
 						.addComponent(lblSize)
 						.addComponent(lblSex)
 						.addComponent(lblType)
-						.addComponent(lblPet))
+						.addComponent(lblPet)
+						.addComponent(lblBreed))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblPetBreed_Records)
 						.addComponent(lblPetName_Records)
 						.addComponent(lblType_Records)
 						.addComponent(lblSex_Records)
@@ -1411,11 +1472,7 @@ comment them out.  Failure to do so will cause errors.
 						.addComponent(lblColor_Records)
 						.addComponent(lblWeight_Records)
 						.addComponent(lblDateOfBirth_Records))
-					.addContainerGap(307, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
-					.addContainerGap(382, Short.MAX_VALUE)
-					.addComponent(btnEditPetRecords, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addContainerGap(289, Short.MAX_VALUE))
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -1448,7 +1505,11 @@ comment them out.  Failure to do so will cause errors.
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblWeight)
 						.addComponent(lblWeight_Records))
-					.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblBreed)
+						.addComponent(lblPetBreed_Records))
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(btnEditPetRecords, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
@@ -1491,6 +1552,29 @@ comment them out.  Failure to do so will cause errors.
 		lblOwner_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JButton btnEditOwnerRecords = new JButton("Edit");
+		btnEditOwnerRecords.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//grab currently selected owner
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) OwnerTree.getLastSelectedPathComponent();
+			    if (node == null)
+			    //Nothing is selected.     
+			    return;
+		
+			    Object nodeInfo = node.getUserObject();
+			    Owner curOwner;
+			    if (node.isLeaf()) {
+			        DefaultMutableTreeNode Parent = (DefaultMutableTreeNode) node.getParent();
+			        curOwner = (Owner) Parent.getUserObject();
+			    } else {
+			        curOwner = (Owner) nodeInfo;
+			    }
+				//open new frame to begin editing
+				EditOwnerInfo Frame = new EditOwnerInfo(curOwner);
+				Frame.setVisible(true);
+				Frame.setLocationRelativeTo(null);
+				Frame.setAlwaysOnTop(true);
+			}
+		});
 		btnEditOwnerRecords.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -1603,6 +1687,7 @@ comment them out.  Failure to do so will cause errors.
 	@Override
 	public void windowGainedFocus(WindowEvent e) {
 		OwnerTree.setModel(populateTree().getModel());
+		ClearRecordLabels();
 	}
 
 	@Override
