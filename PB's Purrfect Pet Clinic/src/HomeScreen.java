@@ -24,9 +24,9 @@ import com.toedter.calendar.JBoardingCalendar;
 import com.toedter.calendar.JBoardingDateChooser;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.demo.BirthdayEvaluator;
-import com.toedter.calendar.demo.BoardingDateEvaluator;
-import com.toedter.calendar.demo.TestDateEvaluator;
+//import com.toedter.calendar.demo.BirthdayEvaluator;
+//import com.toedter.calendar.demo.BoardingDateEvaluator;
+//import com.toedter.calendar.demo.TestDateEvaluator;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
@@ -665,11 +665,11 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		
 		JLabel label_8 = new JLabel("");
 		
-		JButton btnKittenFood = new JButton("Kitten Food (10lbs)");
-		btnKittenFood.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		JButton btnKittenFood_Sales = new JButton("Kitten Food (10lbs)");
+		btnKittenFood_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
-		JButton btnHrtwrmPrvnt = new JButton("Heartworm");
-		btnHrtwrmPrvnt.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		JButton btnHeartwormCat_Sales = new JButton("Heartworm");
+		btnHeartwormCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JButton btnlowFatAdult = new JButton("(Low Fat) Adult Food");
 		btnlowFatAdult.setFont(new Font("Dialog", Font.PLAIN, 10));
@@ -677,8 +677,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		JButton btnFleatick_2 = new JButton("Flea/Tick");
 		btnFleatick_2.setFont(new Font("Dialog", Font.PLAIN, 10));
 		
-		JButton btnredFatAdult = new JButton("(Low Fat) Adult Food");
-		btnredFatAdult.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		JButton btnredFatAdultCatFood_Sales = new JButton("(Low Fat) Adult Food");
+		btnredFatAdultCatFood_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JLabel lblProducts_Sales = new JLabel("Products");
 		lblProducts_Sales.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -688,29 +688,29 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		JButton btnPuppyFoodmedlg = new JButton("Puppy Food (med/lg)");
 		btnPuppyFoodmedlg.setFont(new Font("Dialog", Font.PLAIN, 10));
 		
-		JButton btnHeartwormlarge = new JButton("Heartworm (large)");
-		btnHeartwormlarge.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		JButton btnHeartwormLargeDog_Sales = new JButton("Heartworm (large)");
+		btnHeartwormLargeDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JButton btnseniorAdultFood_1 = new JButton("(Senior) Adult Food");
 		btnseniorAdultFood_1.setFont(new Font("Dialog", Font.PLAIN, 10));
 		
-		JButton btnseniorAdultFood = new JButton("(Senior) Adult Food");
-		btnseniorAdultFood.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		JButton btnseniorAdultCatFood_Sales = new JButton("(Senior) Adult Food");
+		btnseniorAdultCatFood_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
-		JButton btnAdultCatFood = new JButton("Adult Food (15lbs)");
-		btnAdultCatFood.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		JButton btnAdultCatFood_Sales = new JButton("Adult Food (15lbs)");
+		btnAdultCatFood_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
-		JButton btnFleatick = new JButton("Flea/Tick");
-		btnFleatick.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		JButton btnFleatickCat_Sales = new JButton("Flea/Tick");
+		btnFleatickCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JButton btnAdultFood = new JButton("Adult Food");
 		btnAdultFood.setFont(new Font("Dialog", Font.PLAIN, 10));
 		
-		JButton btnFleatick_1 = new JButton("Puppy Food (sm)");
-		btnFleatick_1.setFont(new Font("Dialog", Font.PLAIN, 10));
+		JButton btnPuppyFoodSmall_Sales = new JButton("Puppy Food (sm)");
+		btnPuppyFoodSmall_Sales.setFont(new Font("Dialog", Font.PLAIN, 10));
 		
-		JButton btnHeartwormsmmed = new JButton("Heartworm (sm/med)");
-		btnHeartwormsmmed.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		JButton btnHeartwormSmallMedDog_Sales = new JButton("Heartworm (sm/med)");
+		btnHeartwormSmallMedDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JLabel lblNewLabel_1 = new JLabel("Dog");
 		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
@@ -734,31 +734,31 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
 									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
-										.addComponent(btnHrtwrmPrvnt, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnKittenFood, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE))
+										.addComponent(btnHeartwormCat_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnKittenFood_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
-										.addComponent(btnAdultCatFood, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnFleatick, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)))
+										.addComponent(btnAdultCatFood_Sales, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnFleatickCat_Sales, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)))
 								.addComponent(lblCat, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
-									.addComponent(btnredFatAdult, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnredFatAdultCatFood_Sales, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnseniorAdultFood, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(btnseniorAdultCatFood_Sales, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)))
 							.addGap(19)
 							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.TRAILING, false)
 								.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
 									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.TRAILING)
 										.addComponent(btnAdultFood, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.TRAILING, false)
-											.addComponent(btnFleatick_1, GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-											.addComponent(btnHeartwormsmmed, GroupLayout.PREFERRED_SIZE, 135, Short.MAX_VALUE))
+											.addComponent(btnPuppyFoodSmall_Sales, GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+											.addComponent(btnHeartwormSmallMedDog_Sales, GroupLayout.PREFERRED_SIZE, 135, Short.MAX_VALUE))
 										.addComponent(btnseniorAdultFood_1, GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
 										.addComponent(btnFleatick_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addComponent(btnlowFatAdult, 0, 0, Short.MAX_VALUE)
-										.addComponent(btnHeartwormlarge, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+										.addComponent(btnHeartwormLargeDog_Sales, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
 										.addComponent(btnPuppyFoodmedlg, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 134, Short.MAX_VALUE)))
 								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -780,18 +780,18 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 								.addComponent(lblNewLabel_1))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnHrtwrmPrvnt, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnFleatick, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnHeartwormlarge, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnHeartwormsmmed, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+								.addComponent(btnHeartwormCat_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnFleatickCat_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnHeartwormLargeDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnHeartwormSmallMedDog_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
-									.addComponent(btnKittenFood, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-									.addComponent(btnAdultCatFood, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+									.addComponent(btnKittenFood_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnAdultCatFood_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
 									.addComponent(btnPuppyFoodmedlg, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-									.addComponent(btnFleatick_1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(btnPuppyFoodSmall_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_desktopPaneProducts_Sales.createSequentialGroup()
@@ -803,8 +803,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 										.addComponent(btnseniorAdultFood_1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 										.addComponent(btnFleatick_2, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
 								.addGroup(gl_desktopPaneProducts_Sales.createParallelGroup(Alignment.BASELINE)
-									.addComponent(btnredFatAdult, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-									.addComponent(btnseniorAdultFood, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(btnredFatAdultCatFood_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnseniorAdultCatFood_Sales, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
 							.addGap(45)))
 					.addGap(4))
 		);
@@ -943,7 +943,6 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
 		
-		
 		JComponent dateChooser = new JBoardingDateChooser();
 		
 		Calendar calendar = Calendar.getInstance();
@@ -1067,9 +1066,9 @@ comment them out.  Failure to do so will cause errors.
 		
 		JSeparator separator_2 = new JSeparator();
 		
-		JComponent dateChooserFrom_Boarding = new JBoardingDateChooser();
+		JComponent dateChooserFrom_Boarding = new JDateChooser();
 		
-		JComponent dateChooserTo_Boarding = new JBoardingDateChooser();
+		JComponent dateChooserTo_Boarding = new JDateChooser();
 		
 		JEditorPane editorPaneNotes_Boarding = new JEditorPane();
 		editorPaneNotes_Boarding.setText("Notes");

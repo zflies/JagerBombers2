@@ -99,6 +99,8 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 	protected boolean decorationBordersVisible;
 
 	protected boolean dayBordersVisible;
+	
+	protected boolean showDateEvaluator;
 
 	private boolean alwaysFireDayProperty;
 
@@ -124,6 +126,8 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 	public JBoardingDayChooser(boolean weekOfYearVisible) {
 		setName("JDayChooser");
 		setBackground(Color.blue);
+		
+		//showDateEvaluator = dateEvaluator;
 
 		dateEvaluators = new ArrayList(1);
 		minMaxDateEvaluator = new MinMaxDateEvaluator();
@@ -364,12 +368,14 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 
 			days[i + n + 7].setEnabled(true);
 			
-			BoardingDateEvaluator dateEvaluator = new BoardingDateEvaluator();
-			String sPets = dateEvaluator.getPetsBoarding(day);
+			//if ( showDateEvaluator )
+			//{
+				BoardingDateEvaluator dateEvaluator = new BoardingDateEvaluator();
+				String sPets = dateEvaluator.getPetsBoarding(day);
 
-			//if ( sPets != "" ) {
+				//if ( sPets != "" ) {
 				days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "<br><br>" + sPets + "</html>"); // This Changes the text of each button if the day is Special
-				
+
 				if ( sPets != "" && tmpCalendar.get(Calendar.DAY_OF_YEAR) > today
 						.get(Calendar.DAY_OF_YEAR)
 						&& (tmpCalendar.get(Calendar.YEAR) >= today
@@ -384,15 +390,16 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 					days[i + n + 7].setEnabled(true);
 				}
 
-			if (dateEvaluator.isInvalid(day)){
-				days[i + n + 7].setForeground(dateEvaluator
-						.getInvalidForegroundColor());
-				days[i + n + 7].setBackground(dateEvaluator
-						.getInvalidBackroundColor());
-				days[i + n + 7].setToolTipText(dateEvaluator.getInvalidTooltip());
-				days[i + n + 7].setEnabled(false);
-			}
-
+				if (dateEvaluator.isInvalid(day)){
+					days[i + n + 7].setForeground(dateEvaluator
+							.getInvalidForegroundColor());
+					days[i + n + 7].setBackground(dateEvaluator
+							.getInvalidBackroundColor());
+					days[i + n + 7].setToolTipText(dateEvaluator.getInvalidTooltip());
+					days[i + n + 7].setEnabled(false);
+				}
+			//}
+			
 			n++;
 			tmpCalendar.add(Calendar.DATE, 1);
 			day = tmpCalendar.getTime();
