@@ -149,8 +149,33 @@ public class Pet {
 				+ "VALUES ('%s', '%s', '%s', '%s' , '%s', '%s', '%s', %s, '%s', '%s', %s);",
 				Name, Size, Sex, Breed, Type, Color, DOB, OwnerID, Prescriptions, Notes, Weight);
 		
-		boolean success = state.execute(commandstring);
-		
+		state.execute(commandstring);
+	}
+	
+	public int getID(int OwnerID) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("SELECT ID FROM pets WHERE Name = '%s' AND Owner_ID = %d", Name, OwnerID);
+		ResultSet rs = state.executeQuery(commandstring);
+		rs.next();
+		int ID = rs.getInt("ID");
+		state.close();
+		return ID;
+	}
+	
+	public void deletePet(int OwnerID) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("DELETE FROM pets WHERE Name = '%s' AND Type = '%s' AND Owner_ID = %d", Name, getTypeString(), OwnerID);
+		state.execute(commandstring);
+		state.close();
+	}
+	
+	public void replacePet(int PetID) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("UPDATE pets "
+				+ "SET Name = '%s', Size = '%s', Breed = '%s', Type = '%s', Color = '%s', DOB = '%s', Prescriptions = '%s', Notes = '%s', Weight = %f  "
+				+ "WHERE ID = %d", Name, getPetSizeString(), Breed, getTypeString(), Color, new java.sql.Date(this.getDOB().getTime()), Prescriptions, Notes, Weight, PetID);
+		state.execute(commandstring);
+		state.close();
 	}
 	
 	public String toString(){
