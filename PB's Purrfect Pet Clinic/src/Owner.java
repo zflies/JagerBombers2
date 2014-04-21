@@ -138,6 +138,32 @@ public class Owner {
 					
 					//create new pet object from DB info and add to the owners list of pets
 					Pet newPet = new Pet(PetType, Name, OwnerName, PetSex, PetSize, Color, DateOfBirth, Prescriptions, Weight, Breed, Notes);
+					
+					//get Immunizations of pet
+					Statement state2 = DBConnection.OpenConnection();
+					int PetID = newPet.getID(this.getID());
+					commandstring = String.format("SELECT * FROM Immunizations WHERE Pet_ID = %d", PetID);
+					ResultSet rs2 = state2.executeQuery(commandstring);
+					while(rs2.next()){
+						Date StartDate = new Date(rs2.getDate("Start_Date").getTime());
+						Date EndDate = new Date(rs2.getDate("End_Date").getTime());
+						String ImmuneName = rs2.getString("Immunization");
+						
+						if(ImmuneName.compareTo("Rabies") == 0){
+							Immunization i = new Immunization(Immunization.ImmunizationType.Rabies, StartDate, EndDate);
+							newPet.addImmunization(i);
+						}
+						else if(ImmuneName.compareTo("Distemper") == 0){
+							Immunization i = new Immunization(Immunization.ImmunizationType.Distemper, StartDate, EndDate);
+							newPet.addImmunization(i);
+						}
+						else{
+							Immunization i = new Immunization(Immunization.ImmunizationType.Bordatella, StartDate, EndDate);
+							newPet.addImmunization(i);
+						}
+					}
+					
+					
 					this.Pets.add(newPet);
 				}
 			} catch (SQLException e) {
