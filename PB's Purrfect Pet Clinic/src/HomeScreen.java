@@ -1446,6 +1446,12 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		JDesktopPane desktopPaneBoarding_Sales = new JDesktopPane();
 
 		JButton btnCat_Sales = new JButton("Cat");
+		btnCat_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int daysBoarded = Integer.parseInt(textFieldDaysBoarded_Sales.getText());
+				updateTotal("Boarding Cat", daysBoarded);
+			}
+		});
 		btnCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnSmallDog_Sales = new JButton("Bath/Groom Cat");
@@ -1465,9 +1471,27 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		btnMediumDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnBathgroomCat_Sales = new JButton("Small Dog");
+		btnBathgroomCat_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int daysBoarded = Integer.parseInt(textFieldDaysBoarded_Sales.getText());
+				updateTotal("Boarding Small Dog", daysBoarded);
+			}
+		});
 		btnBathgroomCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnLargeDog_Sales = new JButton("Medium Dog");
+		btnLargeDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					int daysBoarded = Integer.parseInt(textFieldDaysBoarded_Sales.getText());
+					updateTotal("Boarding Medium Dog", daysBoarded);
+				}
+				catch(NumberFormatException nfe){
+					textFieldDaysBoarded_Sales.setText("0");
+				}
+				
+			}
+		});
 		btnLargeDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JLabel lblBoarding_Sales = new JLabel("Boarding");
@@ -1475,6 +1499,12 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblBoarding_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 
 		JButton btnBathgroomDog_Sales = new JButton("Large Dog");
+		btnBathgroomDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int daysBoarded = Integer.parseInt(textFieldDaysBoarded_Sales.getText());
+				updateTotal("Boarding Large Dog", daysBoarded);
+			}
+		});
 		btnBathgroomDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		textFieldDaysBoarded_Sales = new JTextField();
@@ -1820,8 +1850,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED))
 						.addGroup(gl_panelSales.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 485, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+							.addGap(31)
 							.addGroup(gl_panelSales.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblTotalText)
 								.addComponent(lblTotal))
@@ -3185,6 +3215,17 @@ comment them out.  Failure to do so will cause errors.
 		double currentTotal = getCurrentTotal();
 		currentTotal += itemPrice;
 		lblTotal.setText("$" + df.format(currentTotal));
+	}
+	
+	private void updateTotal(String itemName, int daysBoarded){
+		if(daysBoarded != 0){
+			double itemPrice = getItemPrice(itemName)*daysBoarded;
+			updateTicket(itemName, itemPrice);
+			double currentTotal = getCurrentTotal();
+			currentTotal += itemPrice;
+			lblTotal.setText("$" + df.format(currentTotal));
+		}
+		textFieldDaysBoarded_Sales.setText("0");
 	}
 	
 	public void windowGainedFocus() {
