@@ -1348,7 +1348,15 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 
 		JScrollPane scrollPane = new JScrollPane();
 
-		JButton btnPay = new JButton("Pay");
+		JButton btnPay = new JButton("Cash");
+		btnPay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CashPaymentDialog cashPaymentDialog = new CashPaymentDialog(Double.parseDouble(lblTotal.getText().substring(1)));
+				cashPaymentDialog.setVisible(true);
+				cashPaymentDialog.setLocationRelativeTo(null);
+				cashPaymentDialog.setAlwaysOnTop(true);
+			}
+		});
 		btnPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 
 		JDesktopPane desktopPaneServices_Sales = new JDesktopPane();
@@ -1811,6 +1819,9 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblTotal = new JLabel("$0.00");
 		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTotal.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnNewButton = new JButton("Credit Card");
+		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
 		gl_panelSales.setHorizontalGroup(
 			gl_panelSales.createParallelGroup(Alignment.TRAILING)
@@ -1819,24 +1830,26 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						.addGroup(gl_panelSales.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
 								.addGroup(gl_panelSales.createSequentialGroup()
-									.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+									.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
+									.addGap(36)
+									.addComponent(btnNewButton)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))))
+									.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))))
 						.addGroup(gl_panelSales.createSequentialGroup()
 							.addGap(21)
 							.addComponent(lblTotalText)
 							.addGap(18)
-							.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
+							.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
-						.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-						.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-						.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-						.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE))
+						.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panelSales.setVerticalGroup(
@@ -1851,22 +1864,20 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(desktopPaneBoarding_Sales, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED))
+							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
 						.addGroup(gl_panelSales.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
 							.addGap(31)
 							.addGroup(gl_panelSales.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblTotalText)
 								.addComponent(lblTotal))
-							.addGap(18)
-							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(btnPay, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_panelSales.createSequentialGroup()
-									.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblA_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-									.addGap(6)))))
+							.addPreferredGap(ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblA_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnPay, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))
+								.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))))
 					.addGap(6))
 		);
 
