@@ -397,7 +397,7 @@ public class JCalendar extends JPanel implements PropertyChangeListener {
 			// Thanks to Jeff Ulmer for correcting a bug in the sequence :)
 			yearChooser.setYear(c.get(Calendar.YEAR));
 			monthChooser.setMonth(c.get(Calendar.MONTH));
-			dayChooser.setDay(c.get(Calendar.DATE));
+			dayChooser.setDay(c.get(Calendar.DATE));	
 		}
 
 		firePropertyChange("calendar", oldCalendar, calendar);
@@ -620,6 +620,8 @@ public class JCalendar extends JPanel implements PropertyChangeListener {
 		dayChooser.setDay(day);
 
 		firePropertyChange("date", oldDate, date);
+		
+		
 	}
 
 	/**

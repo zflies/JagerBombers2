@@ -68,6 +68,27 @@ public class Pet {
 		return this.Name;
 	}
 	
+	public String getName( int Pet_ID ) throws SQLException{
+		
+		String name = "";
+		
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("SELECT Name FROM pets WHERE ID = '%s'", Pet_ID);
+		
+		if ( state != null )
+		{
+			ResultSet rs = state.executeQuery(commandstring);
+			while(rs.next()) 
+			{
+				name = rs.getString("Name");
+			}
+		}
+
+		state.close();
+		
+		return name;
+	}
+	
 	public String getOwnerName(){
 		return this.OwnerName;
 	}

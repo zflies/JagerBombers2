@@ -461,12 +461,14 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener,
 				break;
 			}
 		}
-
+		
 		if (alwaysFireDayProperty) {
 			firePropertyChange("day", 0, day);
 		} else {
 			firePropertyChange("day", oldDay, day);
 		}
+		
+		/* UPDATE APPOINTMENT TABLES HERE */
 	}
 
 	/**
@@ -507,6 +509,8 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener,
 		}
 
 		drawDays();
+		
+		/* UPDATE APPOINTMENT TABLES HERE */
 	}
 
 	/**
@@ -519,6 +523,8 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener,
 	public void setYear(int year) {
 		calendar.set(Calendar.YEAR, year);
 		drawDays();
+		
+		/* UPDATE APPOINTMENT TABLES HERE */
 	}
 
 	/**
