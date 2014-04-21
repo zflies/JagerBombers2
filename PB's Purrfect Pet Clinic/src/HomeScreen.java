@@ -1343,7 +1343,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		desktopPaneView_Appointments.setLayout(gl_desktopPaneView_Appointments);
 		panelAppointments.setLayout(gl_panelAppointments);
 
-		JPanel panelSales = new JPanel();
+		final JPanel panelSales = new JPanel();
 		tabbedPane.addTab("    Sales    ", null, panelSales, null);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -1821,6 +1821,11 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblTotal.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		
 		JButton btnNewButton = new JButton("Credit Card");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(panelSales, "Transaction Completed!");
+			}
+		});
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
 		gl_panelSales.setHorizontalGroup(

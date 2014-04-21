@@ -41,7 +41,7 @@ public class CashPaymentDialog extends JDialog {
 		JLabel lblTotal = new JLabel("Total:");
 		lblTotal.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		
-		JLabel lblTotalAmount = new JLabel("$" + currentTotal);
+		JLabel lblTotalAmount = new JLabel(df.format(currentTotal));
 		lblTotalAmount.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		
 		JLabel lblCash = new JLabel("Cash:");
@@ -114,7 +114,7 @@ public class CashPaymentDialog extends JDialog {
 			JPanel buttonPane = new JPanel();
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				okButton = new JButton("OK");
+				okButton = new JButton("Pay");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						JOptionPane.showMessageDialog(contentPanel, "Transaction Completed!");
