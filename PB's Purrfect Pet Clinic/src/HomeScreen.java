@@ -30,6 +30,7 @@ import com.toedter.calendar.JDateChooser;
 
 
 
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -79,6 +80,9 @@ import java.awt.event.WindowFocusListener;
 import java.awt.SystemColor;
 
 import javax.swing.ListSelectionModel;
+
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 
 
 public class HomeScreen extends JFrame implements WindowFocusListener {
@@ -1871,9 +1875,34 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblServices.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 
 		JButton btnOfficeVisit_Sales = new JButton("Office Visit");
+		btnOfficeVisit_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OfficeVisitDialog officeVisitDialog = new OfficeVisitDialog();
+				officeVisitDialog.setVisible(true);
+				officeVisitDialog.setLocationRelativeTo(null);
+				officeVisitDialog.setAlwaysOnTop(true);
+								
+				/*double visitPrice = officeVisitDialog.visitPrice;	
+				updateTicket("Office Visit", visitPrice);
+				double currentTotal = getCurrentTotal();
+				currentTotal += visitPrice;
+				lblTotal.setText("$" + df.format(currentTotal));*/
+				
+				//TODO Get user's input value here before calling updateTicket
+			}
+		});
 		btnOfficeVisit_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnLabWork_Sales = new JButton("Lab Work");
+		btnLabWork_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LabWorkDialog labWorkDialog = new LabWorkDialog();
+				labWorkDialog.setVisible(true);
+				labWorkDialog.setLocationRelativeTo(null);
+				labWorkDialog.setAlwaysOnTop(true);
+				//TODO Get user's input value here before calling updateTicket
+			}
+		});
 		btnLabWork_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnSpayneuterDog_Sales = new JButton("Spay/Neuter Dog");
