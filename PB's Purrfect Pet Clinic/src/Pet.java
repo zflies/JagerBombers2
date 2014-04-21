@@ -1,7 +1,9 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 
 
 public class Pet {
@@ -33,6 +35,8 @@ public class Pet {
 	final String Breed;
 	final String Notes;
 	
+	Vector<Immunization> Immunizations = new Vector<Immunization>();
+	
 	public Pet(Type type, String name, String owner, Sex sex, Size size, String color, Date dob, String prescriptions, Double weight, String breed, String notes){
 		if(type == Type.cat){
 			this.PetType = Type.cat;
@@ -51,6 +55,96 @@ public class Pet {
 		this.Weight = weight;
 		this.Breed = breed;
 		this.Notes = notes;
+	}
+	
+	public void createImmunization(Immunization.ImmunizationType type, int petID) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring;
+		if(type == Immunization.ImmunizationType.Rabies){
+			Calendar newCalendar = Calendar.getInstance();
+			newCalendar.add(Calendar.YEAR, 3);
+			Date StartDate = new Date();
+			Date EndDate = newCalendar.getTime();
+			java.sql.Date StartDateSQL = new java.sql.Date(StartDate.getTime());
+			java.sql.Date EndDateSQL = new java.sql.Date(EndDate.getTime());
+			commandstring = String.format("INSERT INTO Immunizations VALUES(%d, '%s', '%s', '%s')", petID, "Rabies", StartDateSQL, EndDateSQL);
+		}
+		else if(type == Immunization.ImmunizationType.Distemper){
+			Calendar newCalendar = Calendar.getInstance();
+			newCalendar.add(Calendar.YEAR, 3);
+			Date StartDate = new Date();
+			Date EndDate = newCalendar.getTime();
+			java.sql.Date StartDateSQL = new java.sql.Date(StartDate.getTime());
+			java.sql.Date EndDateSQL = new java.sql.Date(EndDate.getTime());
+			commandstring = String.format("INSERT INTO Immunizations VALUES(%d, '%s', '%s', '%s')", petID, "Distemper", StartDateSQL, EndDateSQL);
+		}
+		else{
+			Calendar newCalendar = Calendar.getInstance();
+			newCalendar.add(Calendar.YEAR, 1);
+			Date StartDate = new Date();
+			Date EndDate = newCalendar.getTime();
+			java.sql.Date StartDateSQL = new java.sql.Date(StartDate.getTime());
+			java.sql.Date EndDateSQL = new java.sql.Date(EndDate.getTime());
+			commandstring = String.format("INSERT INTO Immunizations VALUES(%d, '%s', '%s', '%s')", petID, "Bordatella", StartDateSQL, EndDateSQL);
+		}
+		state.execute(commandstring);
+	}
+	
+	public void updateImmunization(Immunization.ImmunizationType type, int petID) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring;
+		if(type == Immunization.ImmunizationType.Rabies){
+			Calendar newCalendar = Calendar.getInstance();
+			newCalendar.add(Calendar.YEAR, 3);
+			Date StartDate = new Date();
+			Date EndDate = newCalendar.getTime();
+			java.sql.Date StartDateSQL = new java.sql.Date(StartDate.getTime());
+			java.sql.Date EndDateSQL = new java.sql.Date(EndDate.getTime());
+			commandstring = String.format("UPDATE Immunizations SET Start_Date = '%s', End_Date = '%s' WHERE Pet_ID = %d AND Immunization = 'Rabies'", StartDateSQL, EndDateSQL, petID);
+		}
+		else if(type == Immunization.ImmunizationType.Distemper){
+			Calendar newCalendar = Calendar.getInstance();
+			newCalendar.add(Calendar.YEAR, 3);
+			Date StartDate = new Date();
+			Date EndDate = newCalendar.getTime();
+			java.sql.Date StartDateSQL = new java.sql.Date(StartDate.getTime());
+			java.sql.Date EndDateSQL = new java.sql.Date(EndDate.getTime());
+			commandstring = String.format("UPDATE Immunizations SET Start_Date = '%s', End_Date = '%s' WHERE Pet_ID = %d AND Immunization = 'Distemper'", StartDateSQL, EndDateSQL, petID);
+		}
+		else{
+			Calendar newCalendar = Calendar.getInstance();
+			newCalendar.add(Calendar.YEAR, 1);
+			Date StartDate = new Date();
+			Date EndDate = newCalendar.getTime();
+			java.sql.Date StartDateSQL = new java.sql.Date(StartDate.getTime());
+			java.sql.Date EndDateSQL = new java.sql.Date(EndDate.getTime());
+			commandstring = String.format("UPDATE Immunizations SET Start_Date = '%s', End_Date = '%s' WHERE Pet_ID = %d AND Immunization = 'Bordatella'", StartDateSQL, EndDateSQL, petID);
+		}
+		state.execute(commandstring);
+	}
+	
+	public void addImmunization(Immunization newImmune){
+		Immunizations.add(newImmune);
+	}
+	
+	public Date getImmunizationStartDate(Immunization.ImmunizationType type){
+		for(int i = 0; i < Immunizations.size(); i++){
+			Immunization j = Immunizations.elementAt(i);
+			if(j.getImmunizationType() == type){
+				return j.getStartDate();
+			}
+		}
+		return null;
+	}
+	
+	public Date getImmunizationEndDate(Immunization.ImmunizationType type){
+		for(int i = 0; i < Immunizations.size(); i++){
+			Immunization j = Immunizations.elementAt(i);
+			if(j.getImmunizationType() == type){
+				return j.getEndDate();
+			}
+		}
+		return null;
 	}
 	
 	public String getTypeString(){

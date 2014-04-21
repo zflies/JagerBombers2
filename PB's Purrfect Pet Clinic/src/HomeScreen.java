@@ -31,6 +31,7 @@ import com.toedter.calendar.demo.TestDateEvaluator;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -50,6 +51,7 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
@@ -94,6 +96,9 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	private JLabel lblType_Records;
 	private JLabel lblPetName_Records;
 	private JLabel lblPetBreed_Records;
+	private JLabel lblRabiesDate_Records;
+	private JLabel lblDistemperDate_Records;
+	private JLabel lblBordatellaDate_Records;
 	
 	private JTree OwnerTree;
 
@@ -167,6 +172,59 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblType_Records.setText(selectedPet.getTypeString());
 		lblPetName_Records.setText(selectedPet.getName());
 		lblPetBreed_Records.setText(selectedPet.getBreed());
+		//update immunization labels
+		//Rabies Label
+		if(selectedPet.getImmunizationStartDate(Immunization.ImmunizationType.Rabies) == null){
+			this.lblRabiesDate_Records.setText("No Record");
+			this.lblRabiesDate_Records.setForeground(Color.red);
+		}
+		else{
+			Immunization.ImmunizationType ImmuneType = Immunization.ImmunizationType.Rabies;
+			Date startDate = selectedPet.getImmunizationStartDate(ImmuneType);
+			Date endDate = selectedPet.getImmunizationEndDate(ImmuneType);
+			Date today = new Date();
+			
+			this.lblRabiesDate_Records.setText(formatter.format(startDate));
+			if(today.after(endDate))
+				this.lblRabiesDate_Records.setForeground(Color.red);
+			else
+				this.lblRabiesDate_Records.setForeground(Color.green);
+		}
+		//Distemper Label
+		if(selectedPet.getImmunizationStartDate(Immunization.ImmunizationType.Distemper) == null){
+			this.lblDistemperDate_Records.setText("No Record");
+			this.lblDistemperDate_Records.setForeground(Color.red);
+		}
+		else{
+			Immunization.ImmunizationType ImmuneType = Immunization.ImmunizationType.Distemper;
+			Date startDate = selectedPet.getImmunizationStartDate(ImmuneType);
+			Date endDate = selectedPet.getImmunizationEndDate(ImmuneType);
+			Date today = new Date();
+			
+			this.lblDistemperDate_Records.setText(formatter.format(startDate));
+			if(today.after(endDate))
+				this.lblDistemperDate_Records.setForeground(Color.red);
+			else
+				this.lblDistemperDate_Records.setForeground(Color.green);
+		}
+		//Bordatella Label
+		if(selectedPet.getImmunizationStartDate(Immunization.ImmunizationType.Bordatella) == null){
+			this.lblBordatellaDate_Records.setText("No Record");
+			this.lblBordatellaDate_Records.setForeground(Color.red);
+		}
+		else{
+			Immunization.ImmunizationType ImmuneType = Immunization.ImmunizationType.Bordatella;
+			Date startDate = selectedPet.getImmunizationStartDate(ImmuneType);
+			Date endDate = selectedPet.getImmunizationEndDate(ImmuneType);
+			Date today = new Date();
+			
+			this.lblBordatellaDate_Records.setText(formatter.format(startDate));
+			if(today.after(endDate))
+				this.lblBordatellaDate_Records.setForeground(Color.red);
+			else
+				this.lblBordatellaDate_Records.setForeground(Color.green);
+		}
+		
 	}
 	
 	public void UpdateRecordLabels(Owner selectedOwner){
@@ -186,6 +244,10 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblType_Records.setText("");
 		lblPetName_Records.setText("");
 		lblPetBreed_Records.setText("");
+		//update labels for pet immunizations
+		lblRabiesDate_Records.setText("");
+		lblDistemperDate_Records.setText("");
+		lblBordatellaDate_Records.setText("");
 	}
 
 	public void ClearRecordLabels(){
@@ -205,6 +267,10 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblType_Records.setText("");
 		lblPetName_Records.setText("");
 		lblPetBreed_Records.setText("");
+		//update labels for pet immunizations
+		lblRabiesDate_Records.setText("");
+		lblDistemperDate_Records.setText("");
+		lblBordatellaDate_Records.setText("");
 		
 	}
 	
@@ -1329,6 +1395,9 @@ comment them out.  Failure to do so will cause errors.
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
 		GroupLayout gl_panelRecords = new GroupLayout(panelRecords);
 		gl_panelRecords.setHorizontalGroup(
 			gl_panelRecords.createParallelGroup(Alignment.LEADING)
@@ -1340,13 +1409,13 @@ comment them out.  Failure to do so will cause errors.
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panelRecords.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panelRecords.createSequentialGroup()
-							.addGap(305)
-							.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
-								.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)))
-						.addGroup(gl_panelRecords.createSequentialGroup()
+							.addGap(6)
+							.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAddPet, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
+								.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)))
+						.addComponent(btnAddPet, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_panelRecords.setVerticalGroup(
@@ -1354,17 +1423,199 @@ comment them out.  Failure to do so will cause errors.
 				.addGroup(gl_panelRecords.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
 						.addGroup(gl_panelRecords.createSequentialGroup()
 							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE))
+							.addGroup(gl_panelRecords.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 232, Short.MAX_VALUE))))
 					.addGap(42)
 					.addGroup(gl_panelRecords.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewOwner)
 						.addComponent(btnAddPet))
 					.addContainerGap())
 		);
+		
+		JLabel lblImmunizations = new JLabel("Immunizations:");
+		lblImmunizations.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblRabies = new JLabel("Rabies:");
+		lblRabies.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblDistemper = new JLabel("Distemper:");
+		lblDistemper.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblBordatella = new JLabel("Bordatella:");
+		lblBordatella.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		lblDistemperDate_Records = new JLabel("Date");
+		lblDistemperDate_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		lblBordatellaDate_Records = new JLabel("Date");
+		lblBordatellaDate_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		lblRabiesDate_Records = new JLabel("Date");
+		lblRabiesDate_Records.setForeground(Color.BLACK);
+		lblRabiesDate_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnRabiesUpdate = new JButton("Update");
+		btnRabiesUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) OwnerTree.getLastSelectedPathComponent();
+			    if (node == null)
+			    //Nothing is selected.     
+			    return;
+		
+			    Object nodeInfo = node.getUserObject();
+			    if (node.isLeaf()) {
+			        Pet selectedPet = (Pet) nodeInfo;
+			        DefaultMutableTreeNode Parent = (DefaultMutableTreeNode) node.getParent();
+			        Owner selectedOwner = (Owner) Parent.getUserObject();
+			        int OwnerID;
+			        int PetID;
+			        Immunization.ImmunizationType Rabies = Immunization.ImmunizationType.Rabies;
+					try {
+						OwnerID = selectedOwner.getID();
+						PetID = selectedPet.getID(OwnerID);
+						
+						if(lblRabiesDate_Records.getText().compareTo("No Record") == 0){
+				        	selectedPet.createImmunization(Rabies, PetID);
+				        }
+				        else{
+				        	selectedPet.updateImmunization(Rabies, PetID);
+				        }
+					} catch (SQLException e) {
+						e.printStackTrace();
+						JOptionPane.showMessageDialog(contentPane, "Immunization could not be updated at this time.", "Error", JOptionPane.ERROR_MESSAGE);
+					} 
+			    }
+			    windowGainedFocus();
+			}
+		});
+		
+		JButton btnDistemperUpdate = new JButton("Update");
+		btnDistemperUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) OwnerTree.getLastSelectedPathComponent();
+			    if (node == null)
+			    //Nothing is selected.     
+			    return;
+		
+			    Object nodeInfo = node.getUserObject();
+			    if (node.isLeaf()) {
+			        Pet selectedPet = (Pet) nodeInfo;
+			        DefaultMutableTreeNode Parent = (DefaultMutableTreeNode) node.getParent();
+			        Owner selectedOwner = (Owner) Parent.getUserObject();
+			        int OwnerID;
+			        int PetID;
+			        Immunization.ImmunizationType Distemper = Immunization.ImmunizationType.Distemper;
+					try {
+						OwnerID = selectedOwner.getID();
+						PetID = selectedPet.getID(OwnerID);
+						
+						if(lblRabiesDate_Records.getText().compareTo("No Record") == 0){
+				        	selectedPet.createImmunization(Distemper, PetID);
+				        }
+				        else{
+				        	selectedPet.updateImmunization(Distemper, PetID);
+				        }
+					} catch (SQLException e2) {
+						e2.printStackTrace();
+						JOptionPane.showMessageDialog(contentPane, "Immunization could not be updated at this time.", "Error", JOptionPane.ERROR_MESSAGE);
+					} 
+			    }
+			    windowGainedFocus();
+			}
+		});
+		
+		JButton btnBordatellaUpdate = new JButton("Update");
+		btnBordatellaUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) OwnerTree.getLastSelectedPathComponent();
+			    if (node == null)
+			    //Nothing is selected.     
+			    return;
+		
+			    Object nodeInfo = node.getUserObject();
+			    if (node.isLeaf()) {
+			        Pet selectedPet = (Pet) nodeInfo;
+			        DefaultMutableTreeNode Parent = (DefaultMutableTreeNode) node.getParent();
+			        Owner selectedOwner = (Owner) Parent.getUserObject();
+			        int OwnerID;
+			        int PetID;
+			        Immunization.ImmunizationType Bordatella = Immunization.ImmunizationType.Bordatella;
+					try {
+						OwnerID = selectedOwner.getID();
+						PetID = selectedPet.getID(OwnerID);
+						
+						if(lblRabiesDate_Records.getText().compareTo("No Record") == 0){
+				        	selectedPet.createImmunization(Bordatella, PetID);
+				        }
+				        else{
+				        	selectedPet.updateImmunization(Bordatella, PetID);
+				        }
+					} catch (SQLException e2) {
+						e2.printStackTrace();
+						JOptionPane.showMessageDialog(contentPane, "Immunization could not be updated at this time.", "Error", JOptionPane.ERROR_MESSAGE);
+					} 
+			    }
+			    windowGainedFocus();
+				
+			}
+		});
+		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
+		gl_panel_3.setHorizontalGroup(
+			gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_3.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_3.createSequentialGroup()
+							.addGap(10)
+							.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblDistemper)
+								.addComponent(lblRabies)
+								.addComponent(lblBordatella))
+							.addGap(18)
+							.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_3.createSequentialGroup()
+									.addComponent(lblBordatellaDate_Records)
+									.addPreferredGap(ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+									.addComponent(btnBordatellaUpdate))
+								.addGroup(gl_panel_3.createSequentialGroup()
+									.addComponent(lblRabiesDate_Records)
+									.addPreferredGap(ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+									.addComponent(btnRabiesUpdate))
+								.addGroup(gl_panel_3.createSequentialGroup()
+									.addComponent(lblDistemperDate_Records)
+									.addPreferredGap(ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+									.addComponent(btnDistemperUpdate))))
+						.addComponent(lblImmunizations))
+					.addContainerGap())
+		);
+		gl_panel_3.setVerticalGroup(
+			gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_3.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblImmunizations)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblRabies)
+						.addComponent(lblRabiesDate_Records)
+						.addComponent(btnRabiesUpdate))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblDistemper)
+						.addComponent(lblDistemperDate_Records)
+						.addComponent(btnDistemperUpdate))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblBordatella)
+						.addComponent(lblBordatellaDate_Records)
+						.addComponent(btnBordatellaUpdate))
+					.addContainerGap(132, Short.MAX_VALUE))
+		);
+		panel_3.setLayout(gl_panel_3);
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
 		panel_2.add(OwnerTree, BorderLayout.CENTER);
@@ -1686,6 +1937,11 @@ comment them out.  Failure to do so will cause errors.
 
 	@Override
 	public void windowGainedFocus(WindowEvent e) {
+		OwnerTree.setModel(populateTree().getModel());
+		ClearRecordLabels();
+	}
+	
+	public void windowGainedFocus() {
 		OwnerTree.setModel(populateTree().getModel());
 		ClearRecordLabels();
 	}
