@@ -125,6 +125,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	private JLabel lblServiceView_Appointment;
 	private JLabel lblRoomView_Appointment;
 	private JEditorPane editorPaneNotesView_Appointment;
+	private JButton btnCreate_Appointments;
 
 	
 	// Appointments Variables
@@ -670,7 +671,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		txtFirstName_Appointments.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		txtFirstName_Appointments.setColumns(10);
 
-		JButton btnCreate_Appointments = new JButton("Create");
+		btnCreate_Appointments = new JButton("Create");
+		btnCreate_Appointments.setEnabled(false);
 		btnCreate_Appointments.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -697,7 +699,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 				if ( nOwnerID != 0 )
 				{
 					/*---- Get Pet ----*/
-					Pet pet = new Pet( Pet.Type.cat, sPetName, null, null, null, null, null, null, null, null, null );
+					Pet pet = new Pet( null, sPetName, null, null, null, null, null, null, null, null, null );
 					int nPetID = 0;
 					try {
 						nPetID = pet.getID( nOwnerID );
@@ -714,30 +716,30 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						{
 							sNotes = ""; // "Notes" is default in the box.  Do not want to save this if it has not been modified
 						}
-						
-						
-						// TODO: Query for servce ID?
-						@SuppressWarnings("unused")
+												
 						String sServiceName = "";
 
-						AbstractButton button = groupAppointmentServices.getElements().nextElement();
-
-						if (button.isSelected()) {
-							sServiceName = button.getText();
+						Enumeration<AbstractButton> en = groupAppointmentServices.getElements();
+						while(en.hasMoreElements()) {
+							JRadioButton rb = (JRadioButton) en.nextElement();
+							if(rb.isSelected())
+								sServiceName = rb.getText();
 						}
-
-						String sServiceID = "1";
+						
+						if ( sServiceName.isEmpty() )
+						{
+							JOptionPane.showMessageDialog(panelAppointments, "Please select a service", "Missing Fields", JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
 
 						Date date = calendarAppointments.getDate();
 
-						// TODO: Get Time selection from Time Spinner
 						String sTime = AppointmentTimesAvailable.get( cbTime_Appointments.getSelectedIndex() ).toString();
 
-						Appointment appointment = new Appointment( 0, nPetID, sServiceID, date, sTime, "no", sNotes);
+						Appointment appointment = new Appointment( 0, nPetID, sServiceName, date, sTime, "no", sNotes);
 
 						appointment.createAppointment();
 						
-						// TODO: Reset the UI to accept another appointment
 						resetCreateAppointmentUI();
 					}
 				}
@@ -775,9 +777,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbOfficeVisit_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				updateAppointmentTimesAvailable( 15, true, "" );
-
 			}
 		} );
 
@@ -787,7 +787,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbMicrochipping_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 30, true, "" );
+				updateAppointmentTimesAvailable( 15, true, "" );
 
 			}
 		} );
@@ -798,7 +798,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbHeartwormTesting_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateAppointmentTimesAvailable( 15, true, "" );
 			}
 		} );
 
@@ -810,7 +810,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbSpayNeuter_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateAppointmentTimesAvailable( 60, true, "" );
 			}
 		} );
 
@@ -820,7 +820,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbLabWork_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateAppointmentTimesAvailable( 15, true, "" );
 			}
 		} );
 
@@ -830,7 +830,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbDentalCleaning_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateAppointmentTimesAvailable( 15, true, "" );
 			}
 		} );
 
@@ -840,8 +840,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbXRay_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				
+				updateAppointmentTimesAvailable( 15, true, "" );
 			}
 		} );
 
@@ -1336,7 +1335,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		try {
 			refreshAppointments(); 		// Load the appointments for the week when the application is first started and fill the appointment tables
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
 
@@ -3116,11 +3115,14 @@ comment them out.  Failure to do so will cause errors.
 			int start = 480; 	// 8:00 AM
 			int end = 1080;  	// 6:00 PM
 			
-			if ( nSelectedDay == 6 )
+			if ( nSelectedDay == 6 ) // Saturday
 			{
 				start = 540;	// 9:00 AM
 				end = 780; 		// 1:00 PM
 			}
+			
+			// TODO: Determine which times are available based on appointments for that day.  Need to determine
+			// available vets and operating room/other room
 			
 			for ( int i = start; i <= end - timeBlockLength; i += timeBlockLength )
 			{
@@ -3154,11 +3156,13 @@ comment them out.  Failure to do so will cause errors.
 		{
 			cbTime_Appointments.setEnabled( false );
 			cbTime_Appointments.setToolTipText( "Closed on Sunday" );
+			btnCreate_Appointments.setEnabled(false);
 		}
 		else
 		{
 			cbTime_Appointments.setEnabled( enable );
 			cbTime_Appointments.setToolTipText( tooltip );
+			btnCreate_Appointments.setEnabled( enable );
 		}
 		
 	} // end of function updateAppointmentTimesAvailable
