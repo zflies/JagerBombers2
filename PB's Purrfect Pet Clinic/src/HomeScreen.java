@@ -28,6 +28,8 @@ import com.toedter.calendar.JDateChooser;
 //import com.toedter.calendar.demo.TestDateEvaluator;
 
 
+
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -56,8 +58,10 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
@@ -179,8 +183,13 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	
 	private JTree OwnerTree;
 
-	private JTable table;
+	private JTable servicesTable;
 	private JTextField textFieldDaysBoarded_Sales;
+	
+	//Variables for sales tab
+	String sales_column_names[]= {"Item","Price"};
+	private DecimalFormat df = new DecimalFormat("0.00");
+	private JLabel lblTotal;
 
 	/**
 	 * Launch the application.
@@ -1345,18 +1354,43 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		JLabel label_4 = new JLabel("");
 
 		JButton btnRabiesCat_Sales = new JButton("Rabies Cat");
+		btnRabiesCat_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Rabies Cat");
+			}
+		});
 		btnRabiesCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnRabiesDog_Sales = new JButton("Rabies Dog");
+		btnRabiesDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Rabies Dog");
+			}
+		});
 		btnRabiesDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnDistempterDog_Sales = new JButton("Distempter Dog");
+		btnDistempterDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Distemper Dog");
+			}
+		});
 		btnDistempterDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnDistemperCat_Sales = new JButton("Distemper Cat");
+		btnDistemperCat_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Distemper Cat");
+			}
+		});
 		btnDistemperCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnBordetella_Sales = new JButton("Bordetella");
+		btnBordetella_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Bordetella");
+			}
+		});
 		btnBordetella_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JLabel label_5 = new JLabel("");
@@ -1415,9 +1449,19 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		btnCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnSmallDog_Sales = new JButton("Bath/Groom Cat");
+		btnSmallDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Bath/Groom Cat");
+			}
+		});
 		btnSmallDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnMediumDog_Sales = new JButton("Bath/Groom Dog");
+		btnMediumDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Bath/Groom Dog");
+			}
+		});
 		btnMediumDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnBathgroomCat_Sales = new JButton("Small Dog");
@@ -1509,18 +1553,43 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		JLabel label_8 = new JLabel("");
 
 		JButton btnKittenFood_Sales = new JButton("Kitten Food (10lbs)");
+		btnKittenFood_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Kitten Food");
+			}
+		});
 		btnKittenFood_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
 		JButton btnHeartwormCat_Sales = new JButton("Heartworm");
+		btnHeartwormCat_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Heartworm Cat");
+			}
+		});
 		btnHeartwormCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
 		JButton btnlowFatAdult = new JButton("(Low Fat) Adult Food");
+		btnlowFatAdult.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Reduced Fat Adult Dog Food");
+			}
+		});
 		btnlowFatAdult.setFont(new Font("Dialog", Font.PLAIN, 10));
 
 		JButton btnFleatick_2 = new JButton("Flea/Tick");
+		btnFleatick_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Flea/Tick Dog");
+			}
+		});
 		btnFleatick_2.setFont(new Font("Dialog", Font.PLAIN, 10));
 
 		JButton btnredFatAdultCatFood_Sales = new JButton("(Low Fat) Adult Food");
+		btnredFatAdultCatFood_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Reduced Fat Adult Cat Food");
+			}
+		});
 		btnredFatAdultCatFood_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
 		JLabel lblProducts_Sales = new JLabel("Products");
@@ -1529,30 +1598,75 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblProducts_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 
 		JButton btnPuppyFoodmedlg = new JButton("Puppy Food (med/lg)");
+		btnPuppyFoodmedlg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Puppy Medium/Large Food");
+			}
+		});
 		btnPuppyFoodmedlg.setFont(new Font("Dialog", Font.PLAIN, 10));
 
 		JButton btnHeartwormLargeDog_Sales = new JButton("Heartworm (large)");
+		btnHeartwormLargeDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Heartworm Large Dog");
+			}
+		});
 		btnHeartwormLargeDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
 		JButton btnseniorAdultFood_1 = new JButton("(Senior) Adult Food");
+		btnseniorAdultFood_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Senior Adult Dog Food");
+			}
+		});
 		btnseniorAdultFood_1.setFont(new Font("Dialog", Font.PLAIN, 10));
 
 		JButton btnseniorAdultCatFood_Sales = new JButton("(Senior) Adult Food");
+		btnseniorAdultCatFood_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Senior Adult Cat Food");
+			}
+		});
 		btnseniorAdultCatFood_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
 		JButton btnAdultCatFood_Sales = new JButton("Adult Food (15lbs)");
+		btnAdultCatFood_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Adult Cat Food");
+			}
+		});
 		btnAdultCatFood_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
 		JButton btnFleatickCat_Sales = new JButton("Flea/Tick");
+		btnFleatickCat_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Flea/Tick Cat");
+			}
+		});
 		btnFleatickCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
 		JButton btnAdultFood = new JButton("Adult Food");
+		btnAdultFood.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Adult Dog Food");
+			}
+		});
 		btnAdultFood.setFont(new Font("Dialog", Font.PLAIN, 10));
 
 		JButton btnPuppyFoodSmall_Sales = new JButton("Puppy Food (sm)");
+		btnPuppyFoodSmall_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Puppy Small Food");
+			}
+		});
 		btnPuppyFoodSmall_Sales.setFont(new Font("Dialog", Font.PLAIN, 10));
 
 		JButton btnHeartwormSmallMedDog_Sales = new JButton("Heartworm (sm/med)");
+		btnHeartwormSmallMedDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Heartworm Small Medium Dog");
+			}
+		});
 		btnHeartwormSmallMedDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
 		JLabel lblNewLabel_1 = new JLabel("Dog");
@@ -1656,53 +1770,71 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		JLabel lblA_1 = new JLabel("");
 
 		JLabel lblA_2 = new JLabel("");
+		
+		JLabel lblTotalText = new JLabel("Total:");
+		lblTotalText.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		lblTotal = new JLabel("$0.00");
+		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotal.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
 		gl_panelSales.setHorizontalGroup(
-				gl_panelSales.createParallelGroup(Alignment.TRAILING)
+			gl_panelSales.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panelSales.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
 								.addGroup(gl_panelSales.createSequentialGroup()
-										.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
-										.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
-												.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-												.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-												.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-												.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE))
-												.addContainerGap())
-				);
+									.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addGap(21)
+							.addComponent(lblTotalText)
+							.addGap(18)
+							.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+						.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+						.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+						.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+						.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE))
+					.addContainerGap())
+		);
 		gl_panelSales.setVerticalGroup(
-				gl_panelSales.createParallelGroup(Alignment.LEADING)
+			gl_panelSales.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelSales.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+					.addContainerGap()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(desktopPaneServices_Sales, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneImmunizations_Sales, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneBoarding_Sales, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 485, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTotalText)
+								.addComponent(lblTotal))
+							.addGap(18)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(btnPay, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_panelSales.createSequentialGroup()
-										.addComponent(desktopPaneServices_Sales, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(desktopPaneImmunizations_Sales, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(desktopPaneBoarding_Sales, GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED))
-										.addGroup(gl_panelSales.createSequentialGroup()
-												.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING, false)
-														.addComponent(btnPay, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-														.addGroup(gl_panelSales.createSequentialGroup()
-																.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
-																		.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-																		.addComponent(lblA_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-																		.addGap(6)))))
-																		.addGap(6))
-				);
+									.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblA_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+									.addGap(6)))))
+					.addGap(6))
+		);
 
 		JLabel lblServices = new JLabel("Services");
 		lblServices.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1715,15 +1847,35 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		btnLabWork_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnSpayneuterDog_Sales = new JButton("Spay/Neuter Dog");
+		btnSpayneuterDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Spay/Neuter Dog");
+			}
+		});
 		btnSpayneuterDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnSpayneuterCat_Sales = new JButton("Spay/Neuter Cat");
+		btnSpayneuterCat_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Spay/Neuter Cat");
+			}
+		});
 		btnSpayneuterCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnDentalDog_Sales = new JButton("Dental Dog");
+		btnDentalDog_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Dental Dog");
+			}
+		});
 		btnDentalDog_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnDentalCat_Sales = new JButton("Dental Cat");
+		btnDentalCat_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTotal("Dental Cat");
+			}
+		});
 		btnDentalCat_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JLabel lblNewLabel = new JLabel("");
@@ -1776,9 +1928,10 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 														.addGap(0, 0, Short.MAX_VALUE))
 				);
 		desktopPaneServices_Sales.setLayout(gl_desktopPaneServices_Sales);
-
-		table = new JTable();
-		scrollPane.setViewportView(table);
+		
+		DefaultTableModel table_model= new DefaultTableModel(sales_column_names, 0);
+		servicesTable = new JTable(table_model);
+		scrollPane.setViewportView(servicesTable);
 		panelSales.setLayout(gl_panelSales);
 
 		JPanel panelBoarding = new JPanel();						  
@@ -2989,6 +3142,49 @@ comment them out.  Failure to do so will cause errors.
 	public void windowGainedFocus(WindowEvent e) {
 		OwnerTree.setModel(populateTree().getModel());
 		ClearRecordLabels();
+	}
+	
+	private double getItemPrice(String itemName){
+		java.sql.Statement state = DBConnection.OpenConnection();
+		String commandstring = "SELECT * FROM avalenti.Services WHERE Name = '" + itemName + "';";
+		double itemPrice = 0.00;
+		double taxRate = 0.00;
+		if(state != null){
+			try {
+				ResultSet rs = state.executeQuery(commandstring);
+				if(rs.next() == true) {
+					itemPrice = Double.parseDouble(rs.getString("Cost"));
+					taxRate = Double.parseDouble(rs.getString("Tax Rate"));
+				}
+				state.close();
+			} catch (SQLException e) {
+				System.err.println("Error in SQL Execution");
+				}
+		}
+		else
+			System.err.println("Statement was null.  No connection?");
+		
+		return itemPrice * taxRate;
+	
+	}
+	
+	private void updateTicket(String itemName, double itemPrice){
+		DefaultTableModel model = (DefaultTableModel) servicesTable.getModel();
+		model.addRow(new Object[]{itemName, df.format(itemPrice)});
+	}
+	
+	private double getCurrentTotal(){
+		String totalText = lblTotal.getText();
+		String[] totalSplit = totalText.split("\\$");
+		return Double.parseDouble(totalSplit[1]);
+	}
+	
+	private void updateTotal(String itemName){
+		double itemPrice = getItemPrice(itemName);
+		updateTicket(itemName, itemPrice);
+		double currentTotal = getCurrentTotal();
+		currentTotal += itemPrice;
+		lblTotal.setText("$" + df.format(currentTotal));
 	}
 	
 	public void windowGainedFocus() {
