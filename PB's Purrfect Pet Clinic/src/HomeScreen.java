@@ -2266,7 +2266,7 @@ comment them out.  Failure to do so will cause errors.
 						OwnerID = selectedOwner.getID();
 						PetID = selectedPet.getID(OwnerID);
 						
-						if(lblRabiesDate_Records.getText().compareTo("No Record") == 0){
+						if(lblDistemperDate_Records.getText().compareTo("No Record") == 0){
 				        	selectedPet.createImmunization(Distemper, PetID);
 				        }
 				        else{
@@ -2301,7 +2301,7 @@ comment them out.  Failure to do so will cause errors.
 						OwnerID = selectedOwner.getID();
 						PetID = selectedPet.getID(OwnerID);
 						
-						if(lblRabiesDate_Records.getText().compareTo("No Record") == 0){
+						if(lblBordatellaDate_Records.getText().compareTo("No Record") == 0){
 				        	selectedPet.createImmunization(Bordatella, PetID);
 				        }
 				        else{
