@@ -57,6 +57,150 @@ public class Pet {
 		this.Notes = notes;
 	}
 	
+	public static Pet getPetByID(int PetID) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("SELECT * FROM Pets WHERE ID = %d", PetID);
+		ResultSet rs = state.executeQuery(commandstring);
+		
+		rs.next();
+		String PetTypeString = rs.getString("Type");
+		Pet.Type PetType;
+		if(PetTypeString.compareTo("dog") == 0)
+			PetType = Pet.Type.dog;
+		else
+			PetType = Pet.Type.cat;
+		
+		String Name = rs.getString("Name");
+		//get owner name from DB
+		Statement state3 = DBConnection.OpenConnection();
+		commandstring = String.format("SELECT FirstName, LastName FROM Owner WHERE ID = %d", rs.getInt("Owner_ID"));
+		ResultSet rs3 = state3.executeQuery(commandstring);
+		rs3.next();
+		String OwnerName = rs3.getString("FirstName") + rs3.getString("LastName");
+		
+		String PetSexString = rs.getString("Sex");
+		Pet.Sex PetSex;
+		if(PetSexString.compareTo("male") == 0)
+			PetSex = Pet.Sex.male;
+		else
+			PetSex = Pet.Sex.female;
+		
+		String PetSizeString = rs.getString("Size");
+		Pet.Size PetSize;
+		if(PetSizeString.compareTo("small") == 0)
+			PetSize = Pet.Size.small;
+		else if(PetSizeString.compareTo("medium") == 0)
+			PetSize = Pet.Size.medium;
+		else
+			PetSize = Pet.Size.large;
+		
+		String Color = rs.getString("Color");
+		java.sql.Date DbDate = rs.getDate("DOB");
+		Date DateOfBirth = new Date(DbDate.getTime());
+		
+		String Prescriptions = rs.getString("Prescriptions");
+		Double Weight = rs.getDouble("Weight");
+		String Breed = rs.getString("Breed");
+		String Notes = rs.getString("Notes");
+		
+		//create new pet object from DB info and add to the owners list of pets
+		Pet newPet = new Pet(PetType, Name, OwnerName, PetSex, PetSize, Color, DateOfBirth, Prescriptions, Weight, Breed, Notes);
+		
+		//get Immunizations of pet
+		Statement state2 = DBConnection.OpenConnection();
+		commandstring = String.format("SELECT * FROM Immunizations WHERE Pet_ID = %d", PetID);
+		ResultSet rs2 = state2.executeQuery(commandstring);
+		while(rs2.next()){
+			Date StartDate = new Date(rs2.getDate("Start_Date").getTime());
+			Date EndDate = new Date(rs2.getDate("End_Date").getTime());
+			String ImmuneName = rs2.getString("Immunization");
+			
+			if(ImmuneName.compareTo("Rabies") == 0){
+				Immunization i = new Immunization(Immunization.ImmunizationType.Rabies, StartDate, EndDate);
+				newPet.addImmunization(i);
+			}
+			else if(ImmuneName.compareTo("Distemper") == 0){
+				Immunization i = new Immunization(Immunization.ImmunizationType.Distemper, StartDate, EndDate);
+				newPet.addImmunization(i);
+			}
+			else{
+				Immunization i = new Immunization(Immunization.ImmunizationType.Bordatella, StartDate, EndDate);
+				newPet.addImmunization(i);
+			}
+		}
+		
+		return newPet;
+	}
+	
+	public static Pet getPetByID(int PetID, String ownerName) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("SELECT * FROM Pets WHERE ID = %d", PetID);
+		ResultSet rs = state.executeQuery(commandstring);
+		
+		rs.next();
+		String PetTypeString = rs.getString("Type");
+		Pet.Type PetType;
+		if(PetTypeString.compareTo("dog") == 0)
+			PetType = Pet.Type.dog;
+		else
+			PetType = Pet.Type.cat;
+		
+		String Name = rs.getString("Name");
+		String OwnerName = ownerName;
+		String PetSexString = rs.getString("Sex");
+		Pet.Sex PetSex;
+		if(PetSexString.compareTo("male") == 0)
+			PetSex = Pet.Sex.male;
+		else
+			PetSex = Pet.Sex.female;
+		
+		String PetSizeString = rs.getString("Size");
+		Pet.Size PetSize;
+		if(PetSizeString.compareTo("small") == 0)
+			PetSize = Pet.Size.small;
+		else if(PetSizeString.compareTo("medium") == 0)
+			PetSize = Pet.Size.medium;
+		else
+			PetSize = Pet.Size.large;
+		
+		String Color = rs.getString("Color");
+		java.sql.Date DbDate = rs.getDate("DOB");
+		Date DateOfBirth = new Date(DbDate.getTime());
+		
+		String Prescriptions = rs.getString("Prescriptions");
+		Double Weight = rs.getDouble("Weight");
+		String Breed = rs.getString("Breed");
+		String Notes = rs.getString("Notes");
+		
+		//create new pet object from DB info and add to the owners list of pets
+		Pet newPet = new Pet(PetType, Name, OwnerName, PetSex, PetSize, Color, DateOfBirth, Prescriptions, Weight, Breed, Notes);
+		
+		//get Immunizations of pet
+		Statement state2 = DBConnection.OpenConnection();
+		commandstring = String.format("SELECT * FROM Immunizations WHERE Pet_ID = %d", PetID);
+		ResultSet rs2 = state2.executeQuery(commandstring);
+		while(rs2.next()){
+			Date StartDate = new Date(rs2.getDate("Start_Date").getTime());
+			Date EndDate = new Date(rs2.getDate("End_Date").getTime());
+			String ImmuneName = rs2.getString("Immunization");
+			
+			if(ImmuneName.compareTo("Rabies") == 0){
+				Immunization i = new Immunization(Immunization.ImmunizationType.Rabies, StartDate, EndDate);
+				newPet.addImmunization(i);
+			}
+			else if(ImmuneName.compareTo("Distemper") == 0){
+				Immunization i = new Immunization(Immunization.ImmunizationType.Distemper, StartDate, EndDate);
+				newPet.addImmunization(i);
+			}
+			else{
+				Immunization i = new Immunization(Immunization.ImmunizationType.Bordatella, StartDate, EndDate);
+				newPet.addImmunization(i);
+			}
+		}
+		
+		return newPet;
+	}
+	
 	public void createImmunization(Immunization.ImmunizationType type, int petID) throws SQLException{
 		Statement state = DBConnection.OpenConnection();
 		String commandstring;

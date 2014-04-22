@@ -687,6 +687,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 				if ( sFirstName.isEmpty() || sLastName.isEmpty() || sPetName.isEmpty() )
 				{
 					JOptionPane.showMessageDialog(panelAppointments, "Please provide all Pet and Owner Names", "Missing Fields", JOptionPane.INFORMATION_MESSAGE);
+					return;
 				}
 
 				/*---- Get Owner ----*/
@@ -708,6 +709,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						nPetID = pet.getID( nOwnerID );
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(panelAppointments, "Pet not found.  Please create a new record.", "Not Found", JOptionPane.INFORMATION_MESSAGE);
+						return;
 						//e1.printStackTrace();	
 					}
 
@@ -2040,7 +2042,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		scrollPane.setViewportView(servicesTable);
 		panelSales.setLayout(gl_panelSales);
 
-		JPanel panelBoarding = new JPanel();						  
+		final JPanel panelBoarding = new JPanel();						  
 		tabbedPane.addTab("  Boarding   ", null, panelBoarding, null);
 
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
@@ -2142,6 +2144,70 @@ comment them out.  Failure to do so will cause errors.
 		lblPetName_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnPetSearch_Boarding = new JButton("Search");
+		btnPetSearch_Boarding.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String sFirstName = txtFirstName_Boarding.getText();
+				String sLastName = txtLastName_Boarding.getText();
+				String sPetName = txtPetName_Boarding.getText();
+
+				// Validate that all info is filled in
+				if ( sFirstName.isEmpty() || sLastName.isEmpty() || sPetName.isEmpty() )
+				{
+					JOptionPane.showMessageDialog(panelBoarding, "Please provide all Pet and Owner Names", "Missing Fields", JOptionPane.INFORMATION_MESSAGE);
+					txtPetSize_Boarding.setEnabled(false);
+					txtPetType_Boarding.setEnabled(false);
+					txtPetSize_Boarding.setText("Size");
+					txtPetType_Boarding.setText("Type");
+					return;
+				}
+
+				/*---- Get Owner ----*/
+				Owner owner = new Owner( sFirstName, sLastName, "", "", "", "", "" );
+				int nOwnerID = 0;
+				try {
+					nOwnerID = owner.getID();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(panelBoarding, "Owner not found.  Please create a new record.", "Not Found", JOptionPane.INFORMATION_MESSAGE);
+					txtPetSize_Boarding.setEnabled(false);
+					txtPetType_Boarding.setEnabled(false);
+					txtPetSize_Boarding.setText("Size");
+					txtPetType_Boarding.setText("Type");
+					return;
+				}
+
+				if ( nOwnerID != 0 )
+				{
+					/*---- Get Pet ----*/
+					Pet tempPet = new Pet( Pet.Type.cat, sPetName, null, null, null, null, null, null, null, null, null );
+					int nPetID = 0;
+					try {
+						nPetID = tempPet.getID( nOwnerID );
+					} catch (SQLException e1) {
+						JOptionPane.showMessageDialog(panelAppointments, "Pet not found.  Please create a new record.", "Not Found", JOptionPane.INFORMATION_MESSAGE);
+						txtPetSize_Boarding.setEnabled(false);
+						txtPetType_Boarding.setEnabled(false);
+						txtPetSize_Boarding.setText("Size");
+						txtPetType_Boarding.setText("Type");
+						return;	
+					}
+
+					if ( nPetID != 0 )
+					{
+						try {
+							Pet curPet = Pet.getPetByID(nPetID, owner.getFullName());
+							txtPetSize_Boarding.setText(curPet.getPetSizeString());
+							txtPetType_Boarding.setText(curPet.getTypeString());
+							txtPetSize_Boarding.setEnabled(true);
+							txtPetType_Boarding.setEnabled(true);
+						} catch (SQLException e) {
+							//Should never reach this point
+							e.printStackTrace();
+						}
+						
+					}
+				}
+			}
+		});
 
 		txtPetSize_Boarding = new JTextField();
 		txtPetSize_Boarding.setText("Size");
