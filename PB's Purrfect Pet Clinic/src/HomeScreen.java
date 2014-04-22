@@ -31,6 +31,7 @@ import com.toedter.calendar.JDateChooser;
 
 
 
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -45,6 +46,7 @@ import javax.swing.JTextField;
 import javax.swing.JEditorPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
 import javax.swing.JTree;
@@ -123,9 +125,10 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	private JLabel lblDateView_Appointment;
 	private JLabel lblTimeView_Appointment;
 	private JLabel lblServiceView_Appointment;
-	private JLabel lblRoomView_Appointment;
+	private JLabel lblVetView_Appointment;
 	private JEditorPane editorPaneNotesView_Appointment;
 	private JButton btnCreate_Appointments;
+	private JComboBox cbVet_Appointment;
 
 	
 	// Appointments Variables
@@ -620,7 +623,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblDateView_Appointment = new JLabel("DATE:");
 		lblTimeView_Appointment = new JLabel("TIME:");
 		lblServiceView_Appointment = new JLabel("SERVICE:");
-		lblRoomView_Appointment = new JLabel("ROOM:");
+		lblVetView_Appointment = new JLabel("VET:");
 		
 		editorPaneNotesView_Appointment = new JEditorPane();
 		editorPaneNotesView_Appointment.setText("NOTES:");
@@ -643,7 +646,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 								.addComponent(lblDateView_Appointment, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
 							.addGap(18)
 							.addGroup(gl_desktopPaneView_AppointmentDetails.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(lblRoomView_Appointment, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblVetView_Appointment, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(lblTimeView_Appointment, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))))
 					.addContainerGap())
 		);
@@ -657,7 +660,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 					.addGap(18)
 					.addGroup(gl_desktopPaneView_AppointmentDetails.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblServiceView_Appointment)
-						.addComponent(lblRoomView_Appointment))
+						.addComponent(lblVetView_Appointment))
 					.addGap(18)
 					.addGroup(gl_desktopPaneView_AppointmentDetails.createParallelGroup(Alignment.TRAILING)
 						.addComponent(editorPaneNotesView_Appointment, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
@@ -735,8 +738,10 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						Date date = calendarAppointments.getDate();
 
 						String sTime = AppointmentTimesAvailable.get( cbTime_Appointments.getSelectedIndex() ).toString();
-
-						Appointment appointment = new Appointment( 0, nPetID, sServiceName, date, sTime, "no", sNotes);
+						
+						int nVet = cbVet_Appointment.getSelectedIndex();
+						
+						Appointment appointment = new Appointment( 0, nPetID, sServiceName, nVet, date, sTime, "no", sNotes);
 
 						appointment.createAppointment();
 						
@@ -777,7 +782,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbOfficeVisit_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 15, true, "" );
+				onSelectAppointmentService();
 			}
 		} );
 
@@ -787,8 +792,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbMicrochipping_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 15, true, "" );
-
+				onSelectAppointmentService();
 			}
 		} );
 
@@ -798,7 +802,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbHeartwormTesting_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 15, true, "" );
+				onSelectAppointmentService();
 			}
 		} );
 
@@ -810,7 +814,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbSpayNeuter_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 60, true, "" );
+				onSelectAppointmentService();
 			}
 		} );
 
@@ -820,7 +824,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbLabWork_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 15, true, "" );
+				onSelectAppointmentService();
 			}
 		} );
 
@@ -830,7 +834,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbDentalCleaning_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 15, true, "" );
+				onSelectAppointmentService();
 			}
 		} );
 
@@ -840,7 +844,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbXRay_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 15, true, "" );
+				onSelectAppointmentService();
 			}
 		} );
 
@@ -858,22 +862,47 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		cbTime_Appointments = new JComboBox();
 		cbTime_Appointments.setModel(new DefaultComboBoxModel(AppointmentTimesAvailable));
 		cbTime_Appointments.setEnabled( false );
-		cbTime_Appointments.setToolTipText("Please select a service.");
+		cbTime_Appointments.setToolTipText("Please select a vet.");
 		cbTime_Appointments.setRenderer(ListCellAlignCenter);
-
+		
+		cbVet_Appointment = new JComboBox();
+		cbVet_Appointment.setModel(new DefaultComboBoxModel(new String[] {"Select Vet", "Vet 1", "Vet 2"}));
+		cbVet_Appointment.setToolTipText("Please select a service.");
+		cbVet_Appointment.setEnabled( false );
+		cbVet_Appointment.setRenderer(ListCellAlignCenter);
+		cbVet_Appointment.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if ( cbVet_Appointment.getSelectedIndex() != 0 && cbVet_Appointment.getSelectedIndex() != -1 )
+				{
+					updateAppointmentTimesAvailable( 15, true, null );
+				}
+				else
+				{
+					cbTime_Appointments.setEnabled( false );
+				}
+			}
+		});
 
 		GroupLayout gl_desktopPaneCreate_Appointments = new GroupLayout(desktopPaneCreate_Appointments);
 		gl_desktopPaneCreate_Appointments.setHorizontalGroup(
 			gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
 					.addGap(17)
-					.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
-							.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(rbMicrochipping_Appointments, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(rbOfficeVisit_Appointments, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(rbHeartwormTesting_Appointments, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(18)
+							.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
+									.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(rbMicrochipping_Appointments, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(rbHeartwormTesting_Appointments, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addGap(18))
+								.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
+									.addComponent(rbOfficeVisit_Appointments, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
 									.addComponent(rbLabWork_Appointments, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
@@ -882,8 +911,9 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 								.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
 									.addComponent(rbSpayNeuter_Appointments, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(rbDentalCleaning_Appointments, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(Alignment.TRAILING, gl_desktopPaneCreate_Appointments.createSequentialGroup()
+									.addComponent(rbDentalCleaning_Appointments, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
+							.addGap(51))
+						.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
 							.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
 									.addComponent(dtrpnNotes_Appointments, GroupLayout.PREFERRED_SIZE, 403, GroupLayout.PREFERRED_SIZE)
@@ -898,13 +928,17 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 										.addComponent(txtFirstName_Appointments, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
 										.addComponent(txtPetName_Appointments, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE))
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblLastName_Appointments, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(cbTime_Appointments, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(txtLastName_Appointments, GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))))
+									.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
+											.addComponent(lblLastName_Appointments, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(txtLastName_Appointments, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
+											.addComponent(cbVet_Appointment, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(cbTime_Appointments, 0, 117, Short.MAX_VALUE)))))
 							.addGap(9)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		gl_desktopPaneCreate_Appointments.setVerticalGroup(
 			gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING)
@@ -917,25 +951,23 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.BASELINE)
 							.addComponent(txtLastName_Appointments, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblLastName_Appointments)))
+					.addGap(11)
 					.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
-							.addGap(11)
-							.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblPetName_Appointments)
-								.addComponent(txtPetName_Appointments, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_desktopPaneCreate_Appointments.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(lblPetName_Appointments)
+						.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.BASELINE)
+							.addComponent(txtPetName_Appointments, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+							.addComponent(cbVet_Appointment, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(cbTime_Appointments, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addGap(17)
 					.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.BASELINE)
-						.addComponent(rbOfficeVisit_Appointments)
 						.addComponent(rbDentalCleaning_Appointments)
+						.addComponent(rbOfficeVisit_Appointments)
 						.addComponent(rbSpayNeuter_Appointments))
 					.addGap(1)
 					.addGroup(gl_desktopPaneCreate_Appointments.createParallelGroup(Alignment.BASELINE)
 						.addComponent(rbMicrochipping_Appointments)
-						.addComponent(rbXRay_Appointments)
-						.addComponent(rbLabWork_Appointments))
+						.addComponent(rbLabWork_Appointments)
+						.addComponent(rbXRay_Appointments))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(rbHeartwormTesting_Appointments, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 					.addGap(16)
@@ -3106,7 +3138,7 @@ comment them out.  Failure to do so will cause errors.
 		int nSelectedDay = calendarAppointments.getDate().getDay();
 
 		if ( enable && nSelectedDay != 0 )
-		{
+		{	
 			String sHour = "";
 			String sMinute = "";
 			int nHour = 8;
@@ -3121,9 +3153,69 @@ comment them out.  Failure to do so will cause errors.
 				end = 780; 		// 1:00 PM
 			}
 			
-			// TODO: Determine which times are available based on appointments for that day.  Need to determine
-			// available vets and operating room/other room
 			
+			int nVet = cbVet_Appointment.getSelectedIndex();
+			
+			if ( nVet == -1 )
+			{
+				return;
+			}
+
+			/* Initialize the vet availabilty arrary */
+			boolean[] bIsVetAvail = new boolean[( end - start ) / 15]; // 16 fifteen minute slots on Sat, 40 for M-F
+
+			for ( int i = 0; i < bIsVetAvail.length; i++ )
+			{
+				bIsVetAvail[i] = true;
+			} 
+			
+			/* Retrieve the selected day's appointments and determine when the vets are not available */
+			Vector<Appointment> appointments = Appointment.getDayAppointments( calendarAppointments.getDate() );
+			for ( int i = 0; i < appointments.size(); i++ )
+			{
+				Appointment appt = appointments.get( i );
+				
+				String sTime = appt.getTimeSelected();
+				
+				/* Convert sTime to Minutes */
+				int nApptHour = Integer.parseInt( sTime.substring(0, 2) );
+				int nApptMin = Integer.parseInt( sTime.substring( 3 ) );
+				int nApptStartIndex = ( ( ( nApptHour * 60 ) + nApptMin ) / 15 ) - ( start  / 15 );
+						
+				int nVetID = appt.getVetID();
+				
+				if ( nVet == nVetID )
+				{
+					// Hour long scheduling
+					if ( appt.getServiceName().compareTo( "Spay/Neuter" ) == 0 )
+					{
+						for ( int j = nApptStartIndex; j < nApptStartIndex + 4 && j < end / 15; j++ )
+						{
+							bIsVetAvail[j] = false;
+						}
+					}
+					// 15 minute long scheduling
+					else
+					{
+						bIsVetAvail[nApptStartIndex] = false;
+					}
+				}
+			} // end for loop
+			
+			
+			/* Determine which service the new appointment is */
+			String sServiceName = "";
+			Enumeration<AbstractButton> en = groupAppointmentServices.getElements();
+			while(en.hasMoreElements())
+			{
+				JRadioButton rb = (JRadioButton) en.nextElement();
+				if(rb.isSelected())
+				{
+					sServiceName = rb.getText();
+				}
+			} 
+			
+			/* Populate the available appointment times drop down based on the vet's availability */
 			for ( int i = start; i <= end - timeBlockLength; i += timeBlockLength )
 			{
 				nHour = ( i / 60 );
@@ -3142,8 +3234,41 @@ comment them out.  Failure to do so will cause errors.
 					sMinute = "0" + nMinute;
 				}
 				
-				AppointmentTimesAvailable.add( sHour + ":" + sMinute );
-			}
+				/* Make sure there is at least one vet available during the entire length of the service */
+				int nIndex = (i - start) / 15;
+				
+				if ( sServiceName.compareTo( "Spay/Neuter" ) == 0 )
+				{
+					// Check the next 3 indexes to see if they are busy.  If so, need to block out the 3 blocks before since an hour is needed
+					if ( nIndex + 3 < ( end - start ) / 15 )
+					{
+						if ( !bIsVetAvail[nIndex + 1] || !bIsVetAvail[nIndex + 2] || !bIsVetAvail[nIndex + 3] )
+						{
+							bIsVetAvail[nIndex] = false;
+						}
+					}
+					else if ( nIndex + 2 < ( end - start ) / 15 )
+					{
+						if ( !bIsVetAvail[nIndex + 1] || !bIsVetAvail[nIndex + 2] )
+						{
+							bIsVetAvail[nIndex] = false;
+						}
+					}
+					else if ( nIndex + 1 < ( end - start ) / 15 )
+					{
+						if ( !bIsVetAvail[nIndex + 1] )
+						{
+							bIsVetAvail[nIndex] = false;
+						}
+					}
+				}
+		
+				if ( bIsVetAvail[nIndex] )
+				{
+					AppointmentTimesAvailable.add( sHour + ":" + sMinute );
+				}
+				
+			} // end for loop
 		}
 		else
 		{
@@ -3177,7 +3302,9 @@ comment them out.  Failure to do so will cause errors.
 		txtLastName_Appointments.setText("");
 		txtPetName_Appointments.setText("");
 		dtrpnNotes_Appointments.setText("Notes");
-		updateAppointmentTimesAvailable(0, false, "Select Service");
+		updateAppointmentTimesAvailable(0, false, "Please select a vet.");
+		cbVet_Appointment.setEnabled( false );
+		cbVet_Appointment.setToolTipText("Please select a service");
 		groupAppointmentServices.clearSelection();
 		
 	} // end of function resetCreateAppointmentUI()
@@ -3201,6 +3328,7 @@ comment them out.  Failure to do so will cause errors.
 		lblTimeView_Appointment.setText("TIME:   " + appointment.getTimeSelected() );
 		editorPaneNotesView_Appointment.setText( "NOTES:   " + appointment.getNotes() );
 		lblServiceView_Appointment.setText("SERVICE: " + appointment.getServiceName() );
+		lblVetView_Appointment.setText("Vet:  " + appointment.getVetID() );
 		lblPetOwnerView_Appointment.setText(      	"Owner:    " + owner.getFullName().toUpperCase() );
 		lblPetOwnerPhoneView_Appointment.setText( 	"Phone:    " + owner.getPhone().toUpperCase() );
 		lblPetSexView_Appointment.setText(        	"Sex:        " + pet.getPetSex().toString().toUpperCase() );;
@@ -3213,9 +3341,28 @@ comment them out.  Failure to do so will cause errors.
 		lblPetNameView_Appointment.setText( 		"Pet:     " + pet.getName() );
 		 
 		btnDeleteApptView_Appointment.setEnabled(true);
-		//lblRoomView_Appointment
 		
 	} // end of function updateViewAppointment()
+	
+	
+	/**
+	 * Called when a service radio button is selected when creating a new appointment
+	 */
+	public void onSelectAppointmentService() {
+		
+		cbVet_Appointment.setEnabled( true );
+		cbVet_Appointment.setToolTipText(null);
+		
+		if ( cbVet_Appointment.getSelectedIndex() != 0 && cbVet_Appointment.getSelectedIndex() != -1 )
+		{
+			updateAppointmentTimesAvailable( 15, true, null );
+		}
+		else
+		{
+			cbTime_Appointments.setEnabled( false );
+		}
+	} // end of function onSelectAppointmentService()
+	
 	
 	@Override
 	public void windowGainedFocus(WindowEvent e) {

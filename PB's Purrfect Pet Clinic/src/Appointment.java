@@ -14,17 +14,19 @@ public class Appointment {
 
 	final int nAppointmentID;
 	final int nPetID;
+	final int nVetID;
 	final String sServiceName;
 	final Date dateSelected;
 	final String sTimeSelected;
 	final Completed completed;
 	final String sNotes;	
 
-	public Appointment( int appointmentID, int petID, String serviceName, Date date, String time, String completeValue, String notes )
+	public Appointment( int appointmentID, int petID, String serviceName, int vetID, Date date, String time, String completeValue, String notes )
 	{
 		this.nAppointmentID = appointmentID;
 		this.nPetID = petID;
 		this.sServiceName = serviceName;
+		this.nVetID = vetID;
 		this.dateSelected = date;
 		this.sTimeSelected = time;
 
@@ -46,6 +48,10 @@ public class Appointment {
 
 	public String getServiceName() {
 		return this.sServiceName;
+	}
+	
+	public int getVetID() {
+		return this.nVetID;
 	}
 
 	public Date getDateSelected() {
@@ -182,8 +188,8 @@ public class Appointment {
 		@SuppressWarnings("deprecation")
 		String sDate = (this.dateSelected.getYear() + 1900) + "-" + this.dateSelected.getMonth() + "-" + this.dateSelected.getDate();
 
-		String commandstring = String.format("INSERT INTO Appointments (Pet_ID, Service_Name, Date, Time, Completed, Notes) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
-				this.nPetID, this.sServiceName, sDate, this.sTimeSelected, this.completed.toString(), this.sNotes);
+		String commandstring = String.format("INSERT INTO Appointments (Pet_ID, Service_Name, Vet_ID, Date, Time, Completed, Notes) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+				this.nPetID, this.sServiceName, this.nVetID, sDate, this.sTimeSelected, this.completed.toString(), this.sNotes);
 		try {
 			state.execute(commandstring);
 			state.close();
@@ -266,6 +272,7 @@ public class Appointment {
 		int ID = 0;
 		int Pet_ID = 0;
 		String Service_Name = "";
+		int Vet_ID = 1;
 		Date Date;
 		String Time = "";
 		String Completed = "";
@@ -279,11 +286,12 @@ public class Appointment {
 					ID = rs.getInt("ID");
 					Pet_ID = rs.getInt("Pet_ID");
 					Service_Name = rs.getString("Service_Name");
+					Vet_ID = rs.getInt("Vet_ID");
 					Date = rs.getDate("Date");
 					Time = rs.getString("Time");
 					Completed = rs.getString("Completed");
 					Notes = rs.getString("Notes");
-					Appointment new_appointment = new Appointment(ID, Pet_ID, Service_Name, Date, Time, Completed, Notes);
+					Appointment new_appointment = new Appointment(ID, Pet_ID, Service_Name, Vet_ID, Date, Time, Completed, Notes);
 					DayAppointments.add(new_appointment);
 				}
 			} catch (SQLException e) {
