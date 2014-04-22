@@ -30,6 +30,7 @@ import com.toedter.calendar.JDateChooser;
 
 
 
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -80,6 +81,9 @@ import java.awt.SystemColor;
 
 import javax.swing.ListSelectionModel;
 
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
+
 
 public class HomeScreen extends JFrame implements WindowFocusListener {
 
@@ -121,6 +125,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	private JLabel lblServiceView_Appointment;
 	private JLabel lblRoomView_Appointment;
 	private JEditorPane editorPaneNotesView_Appointment;
+	private JButton btnCreate_Appointments;
 
 	
 	// Appointments Variables
@@ -666,7 +671,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		txtFirstName_Appointments.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		txtFirstName_Appointments.setColumns(10);
 
-		JButton btnCreate_Appointments = new JButton("Create");
+		btnCreate_Appointments = new JButton("Create");
+		btnCreate_Appointments.setEnabled(false);
 		btnCreate_Appointments.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -694,7 +700,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 				if ( nOwnerID != 0 )
 				{
 					/*---- Get Pet ----*/
-					Pet pet = new Pet( Pet.Type.cat, sPetName, null, null, null, null, null, null, null, null, null );
+					Pet pet = new Pet( null, sPetName, null, null, null, null, null, null, null, null, null );
 					int nPetID = 0;
 					try {
 						nPetID = pet.getID( nOwnerID );
@@ -712,30 +718,30 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						{
 							sNotes = ""; // "Notes" is default in the box.  Do not want to save this if it has not been modified
 						}
-						
-						
-						// TODO: Query for servce ID?
-						@SuppressWarnings("unused")
+												
 						String sServiceName = "";
 
-						AbstractButton button = groupAppointmentServices.getElements().nextElement();
-
-						if (button.isSelected()) {
-							sServiceName = button.getText();
+						Enumeration<AbstractButton> en = groupAppointmentServices.getElements();
+						while(en.hasMoreElements()) {
+							JRadioButton rb = (JRadioButton) en.nextElement();
+							if(rb.isSelected())
+								sServiceName = rb.getText();
 						}
-
-						String sServiceID = "1";
+						
+						if ( sServiceName.isEmpty() )
+						{
+							JOptionPane.showMessageDialog(panelAppointments, "Please select a service", "Missing Fields", JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
 
 						Date date = calendarAppointments.getDate();
 
-						// TODO: Get Time selection from Time Spinner
 						String sTime = AppointmentTimesAvailable.get( cbTime_Appointments.getSelectedIndex() ).toString();
 
-						Appointment appointment = new Appointment( 0, nPetID, sServiceID, date, sTime, "no", sNotes);
+						Appointment appointment = new Appointment( 0, nPetID, sServiceName, date, sTime, "no", sNotes);
 
 						appointment.createAppointment();
 						
-						// TODO: Reset the UI to accept another appointment
 						resetCreateAppointmentUI();
 					}
 				}
@@ -773,9 +779,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbOfficeVisit_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				updateAppointmentTimesAvailable( 15, true, "" );
-
 			}
 		} );
 
@@ -785,7 +789,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbMicrochipping_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateAppointmentTimesAvailable( 30, true, "" );
+				updateAppointmentTimesAvailable( 15, true, "" );
 
 			}
 		} );
@@ -796,7 +800,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbHeartwormTesting_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateAppointmentTimesAvailable( 15, true, "" );
 			}
 		} );
 
@@ -808,7 +812,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbSpayNeuter_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateAppointmentTimesAvailable( 60, true, "" );
 			}
 		} );
 
@@ -818,7 +822,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbLabWork_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateAppointmentTimesAvailable( 15, true, "" );
 			}
 		} );
 
@@ -828,7 +832,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbDentalCleaning_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateAppointmentTimesAvailable( 15, true, "" );
 			}
 		} );
 
@@ -838,8 +842,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		rbXRay_Appointments.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				
+				updateAppointmentTimesAvailable( 15, true, "" );
 			}
 		} );
 
@@ -1334,19 +1337,27 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		try {
 			refreshAppointments(); 		// Load the appointments for the week when the application is first started and fill the appointment tables
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
 
 		desktopPaneView_Appointments.setLayout(gl_desktopPaneView_Appointments);
 		panelAppointments.setLayout(gl_panelAppointments);
 
-		JPanel panelSales = new JPanel();
+		final JPanel panelSales = new JPanel();
 		tabbedPane.addTab("    Sales    ", null, panelSales, null);
 
 		JScrollPane scrollPane = new JScrollPane();
 
-		JButton btnPay = new JButton("Pay");
+		JButton btnPay = new JButton("Cash");
+		btnPay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CashPaymentDialog cashPaymentDialog = new CashPaymentDialog(Double.parseDouble(lblTotal.getText().substring(1)));
+				cashPaymentDialog.setVisible(true);
+				cashPaymentDialog.setLocationRelativeTo(null);
+				cashPaymentDialog.setAlwaysOnTop(true);
+			}
+		});
 		btnPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 
 		JDesktopPane desktopPaneServices_Sales = new JDesktopPane();
@@ -1809,6 +1820,14 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblTotal = new JLabel("$0.00");
 		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTotal.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton btnNewButton = new JButton("Credit Card");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(panelSales, "Transaction Completed!");
+			}
+		});
+		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
 		gl_panelSales.setHorizontalGroup(
 			gl_panelSales.createParallelGroup(Alignment.TRAILING)
@@ -1817,24 +1836,26 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						.addGroup(gl_panelSales.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
 								.addGroup(gl_panelSales.createSequentialGroup()
-									.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+									.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
+									.addGap(36)
+									.addComponent(btnNewButton)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))))
+									.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))))
 						.addGroup(gl_panelSales.createSequentialGroup()
 							.addGap(21)
 							.addComponent(lblTotalText)
 							.addGap(18)
-							.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
+							.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
-						.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-						.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-						.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-						.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE))
+						.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panelSales.setVerticalGroup(
@@ -1849,22 +1870,20 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(desktopPaneBoarding_Sales, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED))
+							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
 						.addGroup(gl_panelSales.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
 							.addGap(31)
 							.addGroup(gl_panelSales.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblTotalText)
 								.addComponent(lblTotal))
-							.addGap(18)
-							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(btnPay, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_panelSales.createSequentialGroup()
-									.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblA_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-									.addGap(6)))))
+							.addPreferredGap(ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblA_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnPay, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))
+								.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))))
 					.addGap(6))
 		);
 
@@ -1873,9 +1892,34 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		lblServices.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 
 		JButton btnOfficeVisit_Sales = new JButton("Office Visit");
+		btnOfficeVisit_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OfficeVisitDialog officeVisitDialog = new OfficeVisitDialog();
+				officeVisitDialog.setVisible(true);
+				officeVisitDialog.setLocationRelativeTo(null);
+				officeVisitDialog.setAlwaysOnTop(true);
+								
+				/*double visitPrice = officeVisitDialog.visitPrice;	
+				updateTicket("Office Visit", visitPrice);
+				double currentTotal = getCurrentTotal();
+				currentTotal += visitPrice;
+				lblTotal.setText("$" + df.format(currentTotal));*/
+				
+				//TODO Get user's input value here before calling updateTicket
+			}
+		});
 		btnOfficeVisit_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnLabWork_Sales = new JButton("Lab Work");
+		btnLabWork_Sales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LabWorkDialog labWorkDialog = new LabWorkDialog();
+				labWorkDialog.setVisible(true);
+				labWorkDialog.setLocationRelativeTo(null);
+				labWorkDialog.setAlwaysOnTop(true);
+				//TODO Get user's input value here before calling updateTicket
+			}
+		});
 		btnLabWork_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		JButton btnSpayneuterDog_Sales = new JButton("Spay/Neuter Dog");
@@ -3137,11 +3181,14 @@ comment them out.  Failure to do so will cause errors.
 			int start = 480; 	// 8:00 AM
 			int end = 1080;  	// 6:00 PM
 			
-			if ( nSelectedDay == 6 )
+			if ( nSelectedDay == 6 ) // Saturday
 			{
 				start = 540;	// 9:00 AM
 				end = 780; 		// 1:00 PM
 			}
+			
+			// TODO: Determine which times are available based on appointments for that day.  Need to determine
+			// available vets and operating room/other room
 			
 			for ( int i = start; i <= end - timeBlockLength; i += timeBlockLength )
 			{
@@ -3175,11 +3222,13 @@ comment them out.  Failure to do so will cause errors.
 		{
 			cbTime_Appointments.setEnabled( false );
 			cbTime_Appointments.setToolTipText( "Closed on Sunday" );
+			btnCreate_Appointments.setEnabled(false);
 		}
 		else
 		{
 			cbTime_Appointments.setEnabled( enable );
 			cbTime_Appointments.setToolTipText( tooltip );
+			btnCreate_Appointments.setEnabled( enable );
 		}
 		
 	} // end of function updateAppointmentTimesAvailable

@@ -14,17 +14,17 @@ public class Appointment {
 
 	final int nAppointmentID;
 	final int nPetID;
-	final String sServiceID;
+	final String sServiceName;
 	final Date dateSelected;
 	final String sTimeSelected;
 	final Completed completed;
 	final String sNotes;	
 
-	public Appointment( int appointmentID, int petID, String serviceID, Date date, String time, String completeValue, String notes )
+	public Appointment( int appointmentID, int petID, String serviceName, Date date, String time, String completeValue, String notes )
 	{
 		this.nAppointmentID = appointmentID;
 		this.nPetID = petID;
-		this.sServiceID = serviceID;
+		this.sServiceName = serviceName;
 		this.dateSelected = date;
 		this.sTimeSelected = time;
 
@@ -44,39 +44,8 @@ public class Appointment {
 		return this.nPetID;
 	}
 
-	public String getServiceID() {
-		return this.sServiceID;
-	}
-	
 	public String getServiceName() {
-		String service = "";
-
-		Statement state = DBConnection.OpenConnection();
-
-		String commandstring = "SELECT Name FROM Services WHERE ID = '" + this.sServiceID + "';"; 
-
-		if(state != null){
-			try {
-				ResultSet rs = state.executeQuery(commandstring);
-				rs.next();
-
-				service = rs.getString("Name");
-
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-				System.out.println("Error: Appointment.java - getServiceName()");
-			}
-		}
-		else
-			System.err.println("Error: Appointment.java - getServiceName()");
-
-		try {
-			state.close();
-		} catch (SQLException e) {
-			System.out.println("Error: Appointment.java - getServiceName()");
-		}
-		
-		return service;
+		return this.sServiceName;
 	}
 
 	public Date getDateSelected() {
@@ -213,8 +182,8 @@ public class Appointment {
 		@SuppressWarnings("deprecation")
 		String sDate = (this.dateSelected.getYear() + 1900) + "-" + this.dateSelected.getMonth() + "-" + this.dateSelected.getDate();
 
-		String commandstring = String.format("INSERT INTO Appointments (Pet_ID, Service_ID, Date, Time, Completed, Notes) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
-				this.nPetID, this.sServiceID, sDate, this.sTimeSelected, this.completed.toString(), this.sNotes);
+		String commandstring = String.format("INSERT INTO Appointments (Pet_ID, Service_Name, Date, Time, Completed, Notes) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
+				this.nPetID, this.sServiceName, sDate, this.sTimeSelected, this.completed.toString(), this.sNotes);
 		try {
 			state.execute(commandstring);
 			state.close();
@@ -246,7 +215,7 @@ public class Appointment {
 		String sDate = sYear + "-" + sMonth + "-" + sDay;
 		
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = String.format("DELETE FROM appointments WHERE Pet_ID = '%s' AND Date = '%s' AND Time = '%s' AND Service_ID = '%s'", this.nPetID, sDate, this.sTimeSelected, this.sServiceID );
+		String commandstring = String.format("DELETE FROM appointments WHERE Pet_ID = '%s' AND Date = '%s' AND Time = '%s' AND Service_Name = '%s'", this.nPetID, sDate, this.sTimeSelected, this.sServiceName );
 		if(state != null){
 			try {
 				state.execute(commandstring);
@@ -296,7 +265,7 @@ public class Appointment {
 
 		int ID = 0;
 		int Pet_ID = 0;
-		String Service_ID = "";
+		String Service_Name = "";
 		Date Date;
 		String Time = "";
 		String Completed = "";
@@ -309,12 +278,12 @@ public class Appointment {
 
 					ID = rs.getInt("ID");
 					Pet_ID = rs.getInt("Pet_ID");
-					Service_ID = rs.getString("Service_ID");
+					Service_Name = rs.getString("Service_Name");
 					Date = rs.getDate("Date");
 					Time = rs.getString("Time");
 					Completed = rs.getString("Completed");
 					Notes = rs.getString("Notes");
-					Appointment new_appointment = new Appointment(ID, Pet_ID, Service_ID, Date, Time, Completed, Notes);
+					Appointment new_appointment = new Appointment(ID, Pet_ID, Service_Name, Date, Time, Completed, Notes);
 					DayAppointments.add(new_appointment);
 				}
 			} catch (SQLException e) {
