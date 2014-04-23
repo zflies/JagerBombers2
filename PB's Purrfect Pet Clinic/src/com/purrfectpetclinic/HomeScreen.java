@@ -22,6 +22,7 @@ import com.jgoodies.looks.FontSet;
 import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.toedter.calendar.JAppointmentCalendar;
+
 import com.toedter.calendar.JAppointmentDateChooser;
 import com.toedter.calendar.JAppointmentDayChooser;
 import com.toedter.calendar.JBoardingDateChooser;
