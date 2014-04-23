@@ -33,6 +33,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +41,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -47,6 +49,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import com.purrfectpetclinic.Boarding;
 import com.toedter.calendar.demo.BoardingDateEvaluator;
 
 /**
@@ -145,7 +148,7 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 		dayPanel = new JPanel();
 		dayPanel.setLayout(new GridLayout(7, 7));
 
-		sundayForeground = new Color(164, 0, 0);
+		sundayForeground = new Color(164, 0, 0); // Red
 		weekdayForeground = new Color(0, 90, 164);
 
 		// decorationBackgroundColor = new Color(194, 211, 252);
@@ -346,60 +349,78 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 		int n = 0;
 		Color foregroundColor = getForeground();
 
+		/* Get the boarding sessions for the month */
+		Vector<Boarding> monthBoarding = new Vector<Boarding>();
+		try {
+			monthBoarding = Boarding.getMonthBoarding(day);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		while (day.before(firstDayInNextMonth)) {
+			
+			BoardingDateEvaluator dateEvaluator = new BoardingDateEvaluator();
+
 			days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "</html>");
 			days[i + n + 7].setVisible(true);
 
 			if ((tmpCalendar.get(Calendar.DAY_OF_YEAR) == today
 					.get(Calendar.DAY_OF_YEAR))
 					&& (tmpCalendar.get(Calendar.YEAR) == today
-							.get(Calendar.YEAR))) {
-				days[i + n + 7].setForeground(sundayForeground);
-			} else {
+					.get(Calendar.YEAR))) 
+			{
+				days[i + n + 7].setForeground(dateEvaluator.getSpecialForegroundColor());
+			} else 
+			{
 				days[i + n + 7].setForeground(foregroundColor);
 			}
 
 			if ((n + 1) == this.day) {
-				days[i + n + 7].setBackground(selectedColor);
 				selectedDay = days[i + n + 7];
-			} else {
-				days[i + n + 7].setBackground(oldDayBackgroundColor);
-			}
+			} 
 
 			days[i + n + 7].setEnabled(true);
+
+			String sPets = "";
 			
-			//if ( showDateEvaluator )
-			//{
-				BoardingDateEvaluator dateEvaluator = new BoardingDateEvaluator();
-				String sPets = dateEvaluator.getPetsBoarding(day);
+			try {
+				sPets = dateEvaluator.getPetsBoarding(day, monthBoarding);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
-				//if ( sPets != "" ) {
-				days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "<br><br>" + sPets + "</html>"); // This Changes the text of each button if the day is Special
+			days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "<br><br>" + sPets + "</html>"); // This Changes the text of each button if the day is Special
 
-				if ( sPets != "" && tmpCalendar.get(Calendar.DAY_OF_YEAR) > today
-						.get(Calendar.DAY_OF_YEAR)
-						&& (tmpCalendar.get(Calendar.YEAR) >= today
-						.get(Calendar.YEAR)))
+			if ( tmpCalendar.get(Calendar.DAY_OF_YEAR) > today
+					.get(Calendar.DAY_OF_YEAR)
+					&& (tmpCalendar.get(Calendar.YEAR) >= today
+					.get(Calendar.YEAR)))
+			{
+				if ( sPets != "" )
 				{
-					days[i + n + 7].setForeground(dateEvaluator
-							.getSpecialForegroundColor());
-
-					days[i + n + 7].setBackground(dateEvaluator
-							.getSpecialBackroundColor());
-					days[i + n + 7].setToolTipText(dateEvaluator.getSpecialTooltip());
 					days[i + n + 7].setEnabled(true);
 				}
-
-				if (dateEvaluator.isInvalid(day)){
-					days[i + n + 7].setForeground(dateEvaluator
-							.getInvalidForegroundColor());
-					days[i + n + 7].setBackground(dateEvaluator
-							.getInvalidBackroundColor());
-					days[i + n + 7].setToolTipText(dateEvaluator.getInvalidTooltip());
-					days[i + n + 7].setEnabled(false);
+				else
+				{	
+					days[i + n + 7].setEnabled(false); // Disable the future days that do not have any boarding sessiongs
 				}
-			//}
+			}
+			else
+			{
+				days[i + n + 7].setEnabled(false); // Disable any expired boarding sessions
+				days[i + n + 7].setForeground(foregroundColor);
+			}
+
 			
+			if ((tmpCalendar.get(Calendar.DAY_OF_YEAR) == today
+					.get(Calendar.DAY_OF_YEAR))
+					&& (tmpCalendar.get(Calendar.YEAR) == today
+					.get(Calendar.YEAR))) 
+			{
+				days[i + n + 7].setForeground(dateEvaluator.getSpecialForegroundColor());
+				days[i + n + 7].setEnabled(true);
+			}
+
 			n++;
 			tmpCalendar.add(Calendar.DATE, 1);
 			day = tmpCalendar.getTime();
