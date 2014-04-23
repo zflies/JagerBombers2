@@ -1,3 +1,4 @@
+package com.purrfectpetclinic;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
