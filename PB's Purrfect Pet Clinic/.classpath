@@ -2,9 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/zflies/Desktop/EECS 690/jcalendar-1.4/lib/jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="/Users/zflies/Desktop/EECS 690/jcalendar-1.4/lib/jgoodies-common-1.2.0.jar"/>
-	<classpathentry kind="lib" path="/Users/zflies/Desktop/EECS 690/jcalendar-1.4/lib/jgoodies-looks-2.4.1.jar"/>
-	<classpathentry kind="lib" path="/Users/zflies/Desktop/EECS 690/jcalendar-1.4/lib/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Alex/Documents/School Work 2013-2014/Agile Processes/jcalendar/lib/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Alex/Documents/School Work 2013-2014/Agile Processes/jcalendar/lib/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Alex/Documents/School Work 2013-2014/Agile Processes/jcalendar/lib/jgoodies-common-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Alex/Documents/School Work 2013-2014/Agile Processes/jcalendar/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Alex/git/JagerBombers2/PB&apos;s Purrfect Pet Clinic/lib/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
