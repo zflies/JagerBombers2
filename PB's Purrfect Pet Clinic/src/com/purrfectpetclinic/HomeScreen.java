@@ -25,11 +25,13 @@ import com.toedter.calendar.JAppointmentCalendar;
 
 import com.toedter.calendar.JAppointmentDateChooser;
 import com.toedter.calendar.JAppointmentDayChooser;
+import com.toedter.calendar.JBoardingCalendar;
 import com.toedter.calendar.JBoardingDateChooser;
 import com.toedter.calendar.JDateChooser;
 //import com.toedter.calendar.demo.BirthdayEvaluator;
 //import com.toedter.calendar.demo.BoardingDateEvaluator;
 //import com.toedter.calendar.demo.TestDateEvaluator;
+
 
 
 
@@ -2090,29 +2092,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener, FocusList
 
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
 
-		JComponent dateChooser = new JBoardingDateChooser();
-
-		Calendar calendar = Calendar.getInstance();
-		Date date = ((JBoardingDateChooser)dateChooser).getDateEditor().getDate();
-		if (date != null) {
-			calendar.setTime(date);
-		}
-		((JBoardingDateChooser)dateChooser).getJCalendar().setCalendar(calendar);
-
-		JComponent calendarViewBoarding = ((JBoardingDateChooser) dateChooser).getJCalendar();
-		
-		//JBoardingCalendar calendarViewBoarding = new JBoardingCalendar();
-
-		/*-------------------------------------------------------------------------------------------------------------------------------------------		
----------------------------------------------------------------------------------------------------------------------------------------------		
----------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------------------------		
-Remove the two comments below for .addComponent(calendarViewBoarding... when running the code. To Work with HomeScreen in WindowBuilder view,
-comment them out.  Failure to do so will cause errors.
----------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------------------------		
----------------------------------------------------------------------------------------------------------------------------------------------		
----------------------------------------------------------------------------------------------------------------------------------------------*/		
+		JBoardingCalendar calendarViewBoarding = new JBoardingCalendar();
 
 		GroupLayout gl_panelBoarding = new GroupLayout(panelBoarding);
 		gl_panelBoarding.setHorizontalGroup(
