@@ -1976,13 +1976,11 @@ public class HomeScreen extends JFrame implements WindowFocusListener, FocusList
 				officeVisitDialog.setLocationRelativeTo(null);
 				officeVisitDialog.setAlwaysOnTop(true);
 								
-				/*double visitPrice = officeVisitDialog.visitPrice;	
+				double visitPrice = officeVisitDialog.getVisitPrice();	
 				updateTicket("Office Visit", visitPrice);
 				double currentTotal = getCurrentTotal();
 				currentTotal += visitPrice;
-				lblTotal.setText("$" + df.format(currentTotal));*/
-				
-				//TODO Get user's input value here before calling updateTicket
+				lblTotal.setText("$" + df.format(currentTotal));				
 			}
 		});
 		btnOfficeVisit_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -1994,7 +1992,12 @@ public class HomeScreen extends JFrame implements WindowFocusListener, FocusList
 				labWorkDialog.setVisible(true);
 				labWorkDialog.setLocationRelativeTo(null);
 				labWorkDialog.setAlwaysOnTop(true);
-				//TODO Get user's input value here before calling updateTicket
+				
+				double labWorkPrice = labWorkDialog.getLabWorkPrice();	
+				updateTicket("Lab Work", labWorkPrice);
+				double currentTotal = getCurrentTotal();
+				currentTotal += labWorkPrice;
+				lblTotal.setText("$" + df.format(currentTotal));
 			}
 		});
 		btnLabWork_Sales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
