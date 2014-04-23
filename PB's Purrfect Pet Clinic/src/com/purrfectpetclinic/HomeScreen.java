@@ -1,3 +1,4 @@
+package com.purrfectpetclinic;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -21,14 +22,13 @@ import com.jgoodies.looks.FontSet;
 import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.toedter.calendar.JAppointmentCalendar;
+import com.toedter.calendar.JAppointmentDateChooser;
+import com.toedter.calendar.JAppointmentDayChooser;
 import com.toedter.calendar.JBoardingDateChooser;
 import com.toedter.calendar.JDateChooser;
 //import com.toedter.calendar.demo.BirthdayEvaluator;
 //import com.toedter.calendar.demo.BoardingDateEvaluator;
 //import com.toedter.calendar.demo.TestDateEvaluator;
-
-
-
 
 
 
@@ -46,7 +46,6 @@ import javax.swing.JTextField;
 import javax.swing.JEditorPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
 import javax.swing.JTree;
@@ -63,11 +62,12 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionListener;
@@ -75,19 +75,18 @@ import javax.swing.event.TreeSelectionEvent;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-import java.awt.SystemColor;
 
 import javax.swing.ListSelectionModel;
 
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
 
-
-public class HomeScreen extends JFrame implements WindowFocusListener {
+public class HomeScreen extends JFrame implements WindowFocusListener, FocusListener {
 
 	private JPanel contentPane;
 
@@ -130,7 +129,6 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	private JButton btnCreate_Appointments;
 	private JComboBox cbVet_Appointment;
 
-	
 	// Appointments Variables
 	private static Vector<String> AppointmentTimes = new Vector<String>();
 	private static Vector<Vector<Appointment>> WeekAppointments = new Vector<Vector<Appointment>>();
@@ -368,11 +366,9 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 	public HomeScreen() {
 
 		initializeLookAndFeels(); 
-
-		calendarAppointments = new JAppointmentCalendar();
-
-		//loadAppointments();
-
+		//JPanel panel_ApptCal = new JPanel();
+		
+		
 		setTitle("PB's Purrfect Pet Clinic");
 		
 		ListCellAlignCenter = new DefaultListCellRenderer();
@@ -434,7 +430,41 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		
 		JDesktopPane desktopPaneView_Appointment = new JDesktopPane();
 		desktopPaneView_Appointment.setBackground(Color.LIGHT_GRAY);
+		/*panelApptCal.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				System.out.println("Mouse Released");
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				System.out.println("Mouse Pressed");
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				System.out.println("Mouse Exited");
+				try {
+					refreshAppointments();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				System.out.println("Mouse Entered");
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Mouse Clicked");
+			}
+		});*/
+		
 
+		calendarAppointments = new JAppointmentCalendar();
 
 		GroupLayout gl_panelAppointments = new GroupLayout(panelAppointments);
 		gl_panelAppointments.setHorizontalGroup(
@@ -442,32 +472,33 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 				.addGroup(gl_panelAppointments.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panelAppointments.createParallelGroup(Alignment.LEADING)
-						.addComponent(desktopPaneView_Appointments, GroupLayout.DEFAULT_SIZE, 1384, Short.MAX_VALUE)
+						.addComponent(desktopPaneView_Appointments)
 						.addGroup(gl_panelAppointments.createSequentialGroup()
 							.addGroup(gl_panelAppointments.createParallelGroup(Alignment.LEADING)
-								.addComponent(calendarAppointments, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_panelAppointments.createSequentialGroup()
 									.addGap(85)
-									.addComponent(btnRefreshAppointments, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(btnRefreshAppointments, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE))
+								.addComponent(calendarAppointments, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(desktopPaneCreate_Appointments, GroupLayout.PREFERRED_SIZE, 546, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(desktopPaneView_Appointment, GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)))
+							.addComponent(desktopPaneView_Appointment, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)))
 					.addContainerGap())
 		);
 		gl_panelAppointments.setVerticalGroup(
 			gl_panelAppointments.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelAppointments.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panelAppointments.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panelAppointments.createSequentialGroup()
-							.addComponent(calendarAppointments, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(btnRefreshAppointments, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_panelAppointments.createParallelGroup(Alignment.TRAILING)
 						.addComponent(desktopPaneView_Appointment, GroupLayout.PREFERRED_SIZE, 223, GroupLayout.PREFERRED_SIZE)
-						.addComponent(desktopPaneCreate_Appointments, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panelAppointments.createParallelGroup(Alignment.LEADING, false)
+							.addGroup(gl_panelAppointments.createSequentialGroup()
+								.addComponent(calendarAppointments, 0, 0, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnRefreshAppointments, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+							.addComponent(desktopPaneCreate_Appointments, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(desktopPaneView_Appointments, GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+					.addComponent(desktopPaneView_Appointments, GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		
@@ -560,7 +591,6 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			
-				// TODO: Show dialog for comfirmation
 				Appointment appointment = null;
 				
 				int row = tableSaturday_Appointments.getSelectedRow();
@@ -609,13 +639,19 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 					}
 				}
 
-				appointment.deleteAppointment();
-				btnDeleteApptView_Appointment.setEnabled(false);
-			
-				try {
-					refreshAppointments();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
+				int dialogButton = JOptionPane.YES_NO_OPTION;
+				int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to delete this appointment?","Warning",dialogButton);
+				if(dialogResult == JOptionPane.YES_OPTION){
+				
+					appointment.deleteAppointment();
+					updateViewAppointment( null );
+					btnDeleteApptView_Appointment.setEnabled(false);
+				
+					try {
+						refreshAppointments();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -748,6 +784,12 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 						appointment.createAppointment();
 						
 						resetCreateAppointmentUI();
+						
+						try {
+							refreshAppointments();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -2057,7 +2099,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener {
 		((JBoardingDateChooser)dateChooser).getJCalendar().setCalendar(calendar);
 
 		JComponent calendarViewBoarding = ((JBoardingDateChooser) dateChooser).getJCalendar();
-
+		
 		//JBoardingCalendar calendarViewBoarding = new JBoardingCalendar();
 
 		/*-------------------------------------------------------------------------------------------------------------------------------------------		
@@ -2078,7 +2120,7 @@ comment them out.  Failure to do so will cause errors.
 						.addContainerGap()
 						.addComponent(desktopPaneCreate_Boarding, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.UNRELATED)
-						//.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
+						.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
 						.addContainerGap())
 				);
 		gl_panelBoarding.setVerticalGroup(
@@ -2086,7 +2128,7 @@ comment them out.  Failure to do so will cause errors.
 				.addGroup(gl_panelBoarding.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
-								//.addComponent(calendarViewBoarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+								.addComponent(calendarViewBoarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
 								.addComponent(desktopPaneCreate_Boarding, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
 								.addContainerGap())
 				);
@@ -3381,32 +3423,52 @@ comment them out.  Failure to do so will cause errors.
 	 */
 	public void updateViewAppointment( Appointment appointment )
 	{
-		Pet pet = appointment.getPet();
-		Owner owner = appointment.getOwner();
-		
-		Date date = appointment.getDateSelected();
-		
-		lblDateView_Appointment.setText("DATE:   "+ ( date.getMonth() + 2 ) + "-" + date.getDate() + "-" + ( date.getYear() + 1900 ) );
-		
-		Date dob = pet.getDOB();
-		String sDOB = dob.getMonth() + "-" + dob.getDate() + "-" + ( dob.getYear() + 1900 );
-		
-		lblTimeView_Appointment.setText("TIME:   " + appointment.getTimeSelected() );
-		editorPaneNotesView_Appointment.setText( "NOTES:   " + appointment.getNotes() );
-		lblServiceView_Appointment.setText("SERVICE: " + appointment.getServiceName() );
-		lblVetView_Appointment.setText("Vet:  " + appointment.getVetID() );
-		lblPetOwnerView_Appointment.setText(      	"Owner:    " + owner.getFullName().toUpperCase() );
-		lblPetOwnerPhoneView_Appointment.setText( 	"Phone:    " + owner.getPhone().toUpperCase() );
-		lblPetSexView_Appointment.setText(        	"Sex:        " + pet.getPetSex().toString().toUpperCase() );;
-		lblPetBreedView_Appointment.setText( 		"Breed:    " + pet.getBreed().toUpperCase() );
-		lblPetDOBView_Appointment.setText( 			"DOB:      " + sDOB.toUpperCase() );
-		lblPetWeightView_Appointment.setText( 		"Weight:   " + pet.getWeight().toString().toUpperCase() + " lbs." );
-		lblPetColorView_Appointment.setText( 		"Color:     " + pet.getColor().toUpperCase() );
-		lblPetSizeView_Appointment.setText( 		"Size:       " + pet.getPetSize().toString().toUpperCase() );
-		lblPetTypeView_Appointment.setText( 		"Type:      " + pet.getPetType().toString().toUpperCase() );
-		lblPetNameView_Appointment.setText( 		"Pet:     " + pet.getName() );
-		 
-		btnDeleteApptView_Appointment.setEnabled(true);
+		if ( appointment != null )
+		{
+			Pet pet = appointment.getPet();
+			Owner owner = appointment.getOwner();
+			Date date = appointment.getDateSelected();
+
+			lblDateView_Appointment.setText("DATE:   "+ ( date.getMonth() + 2 ) + "-" + date.getDate() + "-" + ( date.getYear() + 1900 ) );
+
+			Date dob = pet.getDOB();
+			String sDOB = dob.getMonth() + "-" + dob.getDate() + "-" + ( dob.getYear() + 1900 );
+
+			lblTimeView_Appointment.setText("TIME:   " + appointment.getTimeSelected() );
+			editorPaneNotesView_Appointment.setText( "NOTES:   " + appointment.getNotes() );
+			lblServiceView_Appointment.setText("SERVICE: " + appointment.getServiceName() );
+			lblVetView_Appointment.setText("Vet:  " + appointment.getVetID() );
+			lblPetOwnerView_Appointment.setText(      	"Owner:    " + owner.getFullName().toUpperCase() );
+			lblPetOwnerPhoneView_Appointment.setText( 	"Phone:    " + owner.getPhone().toUpperCase() );
+			lblPetSexView_Appointment.setText(        	"Sex:        " + pet.getPetSex().toString().toUpperCase() );;
+			lblPetBreedView_Appointment.setText( 		"Breed:    " + pet.getBreed().toUpperCase() );
+			lblPetDOBView_Appointment.setText( 			"DOB:      " + sDOB.toUpperCase() );
+			lblPetWeightView_Appointment.setText( 		"Weight:   " + pet.getWeight().toString().toUpperCase() + " lbs." );
+			lblPetColorView_Appointment.setText( 		"Color:     " + pet.getColor().toUpperCase() );
+			lblPetSizeView_Appointment.setText( 		"Size:       " + pet.getPetSize().toString().toUpperCase() );
+			lblPetTypeView_Appointment.setText( 		"Type:      " + pet.getPetType().toString().toUpperCase() );
+			lblPetNameView_Appointment.setText( 		"Pet:     " + pet.getName() );
+
+			btnDeleteApptView_Appointment.setEnabled(true);
+		}
+		else
+		{
+			lblDateView_Appointment.setText(			"DATE:   ");
+			lblTimeView_Appointment.setText(			"TIME:   ");
+			editorPaneNotesView_Appointment.setText( 	"NOTES:   " );
+			lblServiceView_Appointment.setText(			"SERVICE: ");
+			lblVetView_Appointment.setText(				"Vet:  ");
+			lblPetOwnerView_Appointment.setText(      	"Owner:    " );
+			lblPetOwnerPhoneView_Appointment.setText( 	"Phone:    " );
+			lblPetSexView_Appointment.setText(        	"Sex:        " );
+			lblPetBreedView_Appointment.setText( 		"Breed:    " );
+			lblPetDOBView_Appointment.setText( 			"DOB:      " );
+			lblPetWeightView_Appointment.setText( 		"Weight:   " );
+			lblPetColorView_Appointment.setText( 		"Color:     "  );
+			lblPetSizeView_Appointment.setText( 		"Size:       " );
+			lblPetTypeView_Appointment.setText( 		"Type:      " );
+			lblPetNameView_Appointment.setText( 		"Pet:     " );
+		}
 		
 	} // end of function updateViewAppointment()
 	
@@ -3499,4 +3561,24 @@ comment them out.  Failure to do so will cause errors.
 	public void windowLostFocus(WindowEvent e) {
 
 	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		try {
+			refreshAppointments();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		try {
+			refreshAppointments();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
 }
+
+

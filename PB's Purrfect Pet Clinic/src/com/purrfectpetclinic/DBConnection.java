@@ -1,3 +1,4 @@
+package com.purrfectpetclinic;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -43,14 +44,14 @@ public class DBConnection {
 		}
 		
 		//String url = "jdbc:mysql://" + configURL + username; //server + database string
-		String url = "jdbc:mysql://localhost/" + username; //***This is connecting to the local MySQL server
+		//String url = "jdbc:mysql://localhost/" + username; //***This is connecting to the local MySQL server
 
 		/* This is for Zach */
-		/*
+		
 		username = "root";
 		password = "";
 		String url = "jdbc:mysql://localhost/" + "avalenti"; 
-	    */
+	    
 		
 		Statement stmt = null;
 		try {
