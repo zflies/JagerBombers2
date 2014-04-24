@@ -151,9 +151,9 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 		sundayForeground = new Color(164, 0, 0); // Red
 		weekdayForeground = new Color(0, 90, 164);
 
-		// decorationBackgroundColor = new Color(194, 211, 252);
-		// decorationBackgroundColor = new Color(206, 219, 246);
-		decorationBackgroundColor = new Color(210, 228, 238);
+		 //decorationBackgroundColor = new Color(194, 211, 252);
+		 //decorationBackgroundColor = new Color(206, 219, 246);	// darker blue
+		decorationBackgroundColor = new Color(210, 228, 238); // light blue
 
 		for (int y = 0; y < 7; y++) {
 			for (int x = 0; x < 7; x++) {
@@ -165,7 +165,7 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 					// Thanks to Thomas Schaefer for the focus hint :)
 					days[index] = new DecoratorButton();
 				} else {
-					days[index] = new JButton("x") {
+					days[index] = new DecoratorButton() {
 						private static final long serialVersionUID = -7433645992591669725L;
 
 						public void paint(Graphics g) {
@@ -370,6 +370,7 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 					.get(Calendar.YEAR))) 
 			{
 				days[i + n + 7].setForeground(dateEvaluator.getSpecialForegroundColor());
+				//days[i + n + 7].setBackground(new Color(194, 211, 252));
 			} else 
 			{
 				days[i + n + 7].setForeground(foregroundColor);
@@ -489,10 +490,10 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 		int oldDay = day;
 		day = d;
 
-		if (selectedDay != null) {
+		/*if (selectedDay != null) {
 			selectedDay.setBackground(oldDayBackgroundColor);
 			selectedDay.repaint();
-		}
+		}*/
 
 		for (int i = 7; i < 49; i++) {
 			if (days[i].getText().equals(Integer.toString(day))) {		

@@ -508,7 +508,6 @@ public class JAppointmentDayChooser extends JPanel implements ActionListener, Ke
 
 		drawDays();
 		
-		/* UPDATE APPOINTMENT TABLES HERE */
 	}
 
 	/**
@@ -522,7 +521,6 @@ public class JAppointmentDayChooser extends JPanel implements ActionListener, Ke
 		calendar.set(Calendar.YEAR, year);
 		drawDays();
 		
-		/* UPDATE APPOINTMENT TABLES HERE */
 	}
 
 	/**

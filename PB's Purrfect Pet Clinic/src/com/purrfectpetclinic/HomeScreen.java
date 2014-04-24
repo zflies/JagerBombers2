@@ -194,6 +194,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 	String sales_column_names[] = { "Item", "Price" };
 	private DecimalFormat df = new DecimalFormat("0.00");
 	private JLabel lblTotal;
+	
+	private static HomeScreen frame;
 
 	/**
 	 * Launch the application.
@@ -202,7 +204,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HomeScreen frame = new HomeScreen();
+					frame = new HomeScreen();
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 					frame.setVisible(true);
 
@@ -384,7 +386,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		setBounds(100, 100, 989, 649);
+		setBounds(100, 100, 989, 694);
 		// setBounds(100, 100, 1585, 649); //< Bounds for complete Window
 		// Builder UI edit
 
@@ -416,19 +418,6 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 		JDesktopPane desktopPaneCreate_Appointments = new JDesktopPane();
 
-		JButton btnRefreshAppointments = new JButton("Refresh Appointments");
-		btnRefreshAppointments.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					refreshAppointments();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-
 		JDesktopPane desktopPaneView_Appointment = new JDesktopPane();
 		desktopPaneView_Appointment.setBackground(Color.LIGHT_GRAY);
 		/*
@@ -451,107 +440,36 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		 * System.out.println("Mouse Clicked"); } });
 		 */
 
-		calendarAppointments = new JAppointmentCalendar();
+		calendarAppointments = new JAppointmentCalendar( this );
 
 		GroupLayout gl_panelAppointments = new GroupLayout(panelAppointments);
-		gl_panelAppointments
-				.setHorizontalGroup(gl_panelAppointments
-						.createParallelGroup(Alignment.TRAILING)
-						.addGroup(
-								gl_panelAppointments
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelAppointments
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																desktopPaneView_Appointments)
-														.addGroup(
-																gl_panelAppointments
-																		.createSequentialGroup()
-																		.addGroup(
-																				gl_panelAppointments
-																						.createParallelGroup(
-																								Alignment.LEADING)
-																						.addGroup(
-																								gl_panelAppointments
-																										.createSequentialGroup()
-																										.addGap(85)
-																										.addComponent(
-																												btnRefreshAppointments,
-																												GroupLayout.PREFERRED_SIZE,
-																												152,
-																												GroupLayout.PREFERRED_SIZE))
-																						.addComponent(
-																								calendarAppointments,
-																								GroupLayout.PREFERRED_SIZE,
-																								325,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				desktopPaneCreate_Appointments,
-																				GroupLayout.PREFERRED_SIZE,
-																				546,
-																				GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				desktopPaneView_Appointment,
-																				GroupLayout.DEFAULT_SIZE,
-																				51,
-																				Short.MAX_VALUE)))
-										.addContainerGap()));
-		gl_panelAppointments
-				.setVerticalGroup(gl_panelAppointments
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panelAppointments
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelAppointments
-														.createParallelGroup(
-																Alignment.TRAILING)
-														.addComponent(
-																desktopPaneView_Appointment,
-																GroupLayout.PREFERRED_SIZE,
-																223,
-																GroupLayout.PREFERRED_SIZE)
-														.addGroup(
-																gl_panelAppointments
-																		.createParallelGroup(
-																				Alignment.LEADING,
-																				false)
-																		.addGroup(
-																				gl_panelAppointments
-																						.createSequentialGroup()
-																						.addComponent(
-																								calendarAppointments,
-																								0,
-																								0,
-																								Short.MAX_VALUE)
-																						.addPreferredGap(
-																								ComponentPlacement.RELATED)
-																						.addComponent(
-																								btnRefreshAppointments,
-																								GroupLayout.PREFERRED_SIZE,
-																								35,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addComponent(
-																				desktopPaneCreate_Appointments,
-																				Alignment.TRAILING,
-																				GroupLayout.PREFERRED_SIZE,
-																				GroupLayout.DEFAULT_SIZE,
-																				GroupLayout.PREFERRED_SIZE)))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(
-												desktopPaneView_Appointments,
-												GroupLayout.DEFAULT_SIZE, 373,
-												Short.MAX_VALUE)
-										.addContainerGap()));
+		gl_panelAppointments.setHorizontalGroup(
+			gl_panelAppointments.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelAppointments.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelAppointments.createParallelGroup(Alignment.LEADING)
+						.addComponent(desktopPaneView_Appointments)
+						.addGroup(gl_panelAppointments.createSequentialGroup()
+							.addComponent(calendarAppointments, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneCreate_Appointments, GroupLayout.PREFERRED_SIZE, 546, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneView_Appointment, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		gl_panelAppointments.setVerticalGroup(
+			gl_panelAppointments.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelAppointments.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelAppointments.createParallelGroup(Alignment.TRAILING)
+						.addComponent(desktopPaneView_Appointment, GroupLayout.PREFERRED_SIZE, 223, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panelAppointments.createParallelGroup(Alignment.LEADING)
+							.addComponent(calendarAppointments, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
+							.addComponent(desktopPaneCreate_Appointments, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(desktopPaneView_Appointments, GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+					.addContainerGap())
+		);
 
 		JDesktopPane desktopPaneView_AppointmentDetails = new JDesktopPane();
 		desktopPaneView_AppointmentDetails.setBackground(UIManager
@@ -3430,44 +3348,45 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
 
 		JBoardingCalendar calendarViewBoarding = new JBoardingCalendar();
+		
+		JDesktopPane desktopPaneFood_Boarding = new JDesktopPane();
 
 		GroupLayout gl_panelBoarding = new GroupLayout(panelBoarding);
-		gl_panelBoarding.setHorizontalGroup(gl_panelBoarding
-				.createParallelGroup(Alignment.LEADING).addGroup(
-						gl_panelBoarding
-								.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(desktopPaneCreate_Boarding,
-										GroupLayout.PREFERRED_SIZE, 314,
-										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(calendarViewBoarding,
-										GroupLayout.DEFAULT_SIZE, 608,
-										Short.MAX_VALUE).addContainerGap()));
-		gl_panelBoarding
-				.setVerticalGroup(gl_panelBoarding
-						.createParallelGroup(Alignment.TRAILING)
-						.addGroup(
-								gl_panelBoarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelBoarding
-														.createParallelGroup(
-																Alignment.TRAILING)
-														.addComponent(
-																calendarViewBoarding,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																556,
-																Short.MAX_VALUE)
-														.addComponent(
-																desktopPaneCreate_Boarding,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																556,
-																Short.MAX_VALUE))
-										.addContainerGap()));
+		gl_panelBoarding.setHorizontalGroup(
+			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBoarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(desktopPaneCreate_Boarding, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
+						.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+						.addGroup(gl_panelBoarding.createSequentialGroup()
+							.addComponent(desktopPaneFood_Boarding, GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
+							.addGap(2)))
+					.addContainerGap())
+		);
+		gl_panelBoarding.setVerticalGroup(
+			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBoarding.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelBoarding.createSequentialGroup()
+							.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
+							.addGap(8)
+							.addComponent(desktopPaneFood_Boarding, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE))
+						.addComponent(desktopPaneCreate_Boarding, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		GroupLayout gl_desktopPaneFood_Boarding = new GroupLayout(desktopPaneFood_Boarding);
+		gl_desktopPaneFood_Boarding.setHorizontalGroup(
+			gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 612, Short.MAX_VALUE)
+		);
+		gl_desktopPaneFood_Boarding.setVerticalGroup(
+			gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 92, Short.MAX_VALUE)
+		);
+		desktopPaneFood_Boarding.setLayout(gl_desktopPaneFood_Boarding);
 
 		JLabel lblOwner_Boarding = new JLabel("Owner");
 		lblOwner_Boarding.setFont(new Font("Lucida Grande", Font.BOLD, 16));
@@ -4914,6 +4833,11 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 	 */
 	public void loadAppointments() {
 
+		if (calendarAppointments == null )
+		{
+			return;
+		}
+		
 		Date date = calendarAppointments.getDate(); // < Selected Date on
 													// Appointments Calendar
 
