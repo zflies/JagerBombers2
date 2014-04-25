@@ -22,7 +22,7 @@ public class LabWorkDialog extends JDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 	private JTextField textFieldLabWorkPrice;
-	private double labPrice;
+	private double labWorkPrice;
 
 	/**
 	 * Launch the application.
@@ -86,13 +86,13 @@ public class LabWorkDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						try{
-							labPrice = Double.parseDouble(textFieldLabWorkPrice.getText());
-							if(labPrice > 25.00 && labPrice < 50.00){
+							labWorkPrice = Double.parseDouble(textFieldLabWorkPrice.getText());
+							if(labWorkPrice > 25.00 && labWorkPrice < 50.00){
 								System.out.println("Valid price for lab work detected.");
 								dispose();
 							}
 							else{
-								labPrice = 0.00;
+								labWorkPrice = 0.00;
 								System.out.println("Must enter a valid value - LabWorkDialog.java");
 							}
 						}
@@ -132,6 +132,11 @@ public class LabWorkDialog extends JDialog {
 			);
 			buttonPane.setLayout(gl_buttonPane);
 		}
+		setModalityType(JDialog.DEFAULT_MODALITY_TYPE);
+	}
+	
+	public double getLabWorkPrice(){
+		return labWorkPrice;
 	}
 
 }

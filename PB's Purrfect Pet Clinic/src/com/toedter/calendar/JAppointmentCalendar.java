@@ -33,12 +33,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.sql.SQLException;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.purrfectpetclinic.HomeScreen;
 import com.toedter.components.UTF8ResourceBundle;
 
 /**
@@ -80,12 +83,19 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	private final JButton todayButton;
 
 	private final JButton nullDateButton;
-
+	
+	private static HomeScreen homescreen;
+	
 	/**
 	 * Default JCalendar constructor.
 	 */
 	public JAppointmentCalendar() {
-		this(null, null, true, true);
+		this(null, null, true, true, null);
+	}
+	
+	public JAppointmentCalendar( HomeScreen home )
+	{
+		this(null, null, true, true, home);
 	}
 
 	/**
@@ -95,7 +105,7 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	 *            the date
 	 */
 	public JAppointmentCalendar(Date date) {
-		this(date, null, true, true);
+		this(date, null, true, true, null);
 	}
 
 	/**
@@ -105,7 +115,7 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	 *            the calendar
 	 */
 	public JAppointmentCalendar(Calendar calendar) {
-		this(null, null, true, true);
+		this(null, null, true, true, null);
 		setCalendar(calendar);
 	}
 
@@ -116,7 +126,7 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	 *            the new locale
 	 */
 	public JAppointmentCalendar(Locale locale) {
-		this(null, locale, true, true);
+		this(null, locale, true, true, null);
 	}
 
 	/**
@@ -128,7 +138,7 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	 *            the new locale
 	 */
 	public JAppointmentCalendar(Date date, Locale locale) {
-		this(date, locale, true, true);
+		this(date, locale, true, true, null);
 	}
 
 	/**
@@ -141,7 +151,7 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	 *            false, if no month spinner should be used
 	 */
 	public JAppointmentCalendar(Date date, boolean monthSpinner) {
-		this(date, null, monthSpinner, true);
+		this(date, null, monthSpinner, true, null);
 	}
 
 	/**
@@ -153,7 +163,7 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	 *            false, if no month spinner should be used
 	 */
 	public JAppointmentCalendar(Locale locale, boolean monthSpinner) {
-		this(null, locale, monthSpinner, true);
+		this(null, locale, monthSpinner, true, null);
 	}
 
 	/**
@@ -163,7 +173,7 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	 *            false, if no month spinner should be used
 	 */
 	public JAppointmentCalendar(boolean monthSpinner) {
-		this(null, null, monthSpinner, true);
+		this(null, null, monthSpinner, true, null);
 	}
 
 	/**
@@ -179,9 +189,10 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 	 *            true, if weeks of year shall be visible
 	 */
 	public JAppointmentCalendar(Date date, Locale locale, boolean monthSpinner,
-			boolean weekOfYearVisible) {
+			boolean weekOfYearVisible, HomeScreen home ) {
 
 		setName("JCalendar");
+		this.homescreen = home;
 
 		// needed for setFont() etc.
 		dayChooser = null;
@@ -345,6 +356,17 @@ public class JAppointmentCalendar extends JPanel implements PropertyChangeListen
 			} else if (evt.getPropertyName().equals("date")) {
 				c.setTime((Date) evt.getNewValue());
 				setCalendar(c, true);
+			}
+			
+			/* UPDATE APPOINTMENT TABLES HERE */
+			try {
+				if ( homescreen != null )
+				{
+					homescreen.refreshAppointments();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

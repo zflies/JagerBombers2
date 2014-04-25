@@ -141,6 +141,7 @@ public class OfficeVisitDialog extends JDialog {
 			);
 			buttonPane.setLayout(gl_buttonPane);
 		}
+		setModalityType(JDialog.DEFAULT_MODALITY_TYPE);
 	}
 	
 	public double getVisitPrice(){

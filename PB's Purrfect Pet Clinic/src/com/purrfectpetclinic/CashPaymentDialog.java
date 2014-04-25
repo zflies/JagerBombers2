@@ -154,6 +154,7 @@ public class CashPaymentDialog extends JDialog {
 			);
 			buttonPane.setLayout(gl_buttonPane);
 		}
+		setModalityType(JDialog.DEFAULT_MODALITY_TYPE);
 	}
 	
 	
