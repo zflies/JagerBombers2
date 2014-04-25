@@ -7,22 +7,12 @@ import java.util.Vector;
 
 
 public class Boarding {
+	//TODO: Add options to class
 	
 	public static enum Kennel{
-		cat1,
-		cat2,
-		cat3,
-		cat4,
-		cat5,
-		cat6,
-		smallDog1,
-		smallDog2,
-		smallDog3,
-		smallDog4,
-		largeDog1,
-		largeDog2,
-		largeDog3,
-		largeDog4;
+		cat,
+		smallDog,
+		largeDog;
 	}
 	
 	final Date StartDate;
@@ -55,22 +45,29 @@ public class Boarding {
 	
 	public String getKennelString(){
 		switch(BoardingKennel){
-		case cat1: return "Cat1";
-		case cat2: return "Cat2";
-		case cat3: return "Cat3";
-		case cat4: return "Cat4";
-		case cat5: return "Cat5";
-		case cat6: return "Cat6";
-		case smallDog1: return "SmallDog1";
-		case smallDog2: return "SmallDog2";
-		case smallDog3: return "SmallDog3"; 
-		case smallDog4: return "SmallDog4";
-		case largeDog1: return "LargeDog1";
-		case largeDog2: return "LargeDog2";
-		case largeDog3: return "LargeDog3";
-		case largeDog4: return "LargeDog4";
+		case cat: return "Cat";
+		case smallDog: return "SmallDog";
+		case largeDog: return "LargeDog";
 		default: return null;
 		}
+	}
+	
+	//TODO: This function
+	public static boolean checkDateRange(Date start, Date end, Pet.Type type, Pet.Size size){
+		//grab all boarding sessions between date range given
+		//add up total number of kennels taken for each date based on the pet type and size given
+		//if number is greater than or equal to max number (for any day) return false
+		//else return true
+		return true;
+	}
+	
+	//TODO: This function
+	public static Vector<Boarding> getBoardingSessionsDateRange(Date start, Date end){
+		Vector<Boarding> Sessions = new Vector<Boarding>();
+		//get all boarding sessions in this date range
+		
+		
+		return Sessions;
 	}
 	
 	/**
@@ -90,34 +87,12 @@ public class Boarding {
 			Date EndDate = new Date(rs.getDate("EndDate").getTime());
 			String KennelString = rs.getString("Kennel");
 			Kennel kennel;
-			if(KennelString.compareTo("cat1") == 0)
-				kennel = Kennel.cat1;
-			else if(KennelString.compareTo("cat2") == 0)
-				kennel = Kennel.cat2;
-			else if(KennelString.compareTo("cat3") == 0)
-				kennel = Kennel.cat3;
-			else if(KennelString.compareTo("cat4") == 0)
-				kennel = Kennel.cat4;
-			else if(KennelString.compareTo("cat5") == 0)
-				kennel = Kennel.cat5;
-			else if(KennelString.compareTo("cat6") == 0)
-				kennel = Kennel.cat6;
-			else if(KennelString.compareTo("smallDog1") == 0)
-				kennel = Kennel.smallDog1;
-			else if(KennelString.compareTo("smallDog2") == 0)
-				kennel = Kennel.smallDog2;
-			else if(KennelString.compareTo("smallDog3") == 0)
-				kennel = Kennel.smallDog3;
-			else if(KennelString.compareTo("smallDog4") == 0)
-				kennel = Kennel.smallDog4;
-			else if(KennelString.compareTo("largeDog1") == 0)
-				kennel = Kennel.largeDog1;
-			else if(KennelString.compareTo("largeDog2") == 0)
-				kennel = Kennel.largeDog2;
-			else if(KennelString.compareTo("largeDog3") == 0)
-				kennel = Kennel.largeDog3;
-			else
-				kennel = Kennel.largeDog4;
+			if(KennelString.compareTo("cat") == 0)
+				kennel = Kennel.cat;
+			else if(KennelString.compareTo("smallDog") == 0)
+				kennel = Kennel.smallDog;
+			else 
+				kennel = Kennel.largeDog;
 			
 			Pet curPet = Pet.getPetByID(PetID);
 			Boarding curBoard = new Boarding(StartDate, EndDate, curPet, kennel);
@@ -166,34 +141,12 @@ public class Boarding {
 			Date EndDate = new Date(rs.getDate("EndDate").getTime());
 			String KennelString = rs.getString("Kennel");
 			Kennel kennel;
-			if(KennelString.compareTo("cat1") == 0)
-				kennel = Kennel.cat1;
-			else if(KennelString.compareTo("cat2") == 0)
-				kennel = Kennel.cat2;
-			else if(KennelString.compareTo("cat3") == 0)
-				kennel = Kennel.cat3;
-			else if(KennelString.compareTo("cat4") == 0)
-				kennel = Kennel.cat4;
-			else if(KennelString.compareTo("cat5") == 0)
-				kennel = Kennel.cat5;
-			else if(KennelString.compareTo("cat6") == 0)
-				kennel = Kennel.cat6;
-			else if(KennelString.compareTo("smallDog1") == 0)
-				kennel = Kennel.smallDog1;
-			else if(KennelString.compareTo("smallDog2") == 0)
-				kennel = Kennel.smallDog2;
-			else if(KennelString.compareTo("smallDog3") == 0)
-				kennel = Kennel.smallDog3;
-			else if(KennelString.compareTo("smallDog4") == 0)
-				kennel = Kennel.smallDog4;
-			else if(KennelString.compareTo("largeDog1") == 0)
-				kennel = Kennel.largeDog1;
-			else if(KennelString.compareTo("largeDog2") == 0)
-				kennel = Kennel.largeDog2;
-			else if(KennelString.compareTo("largeDog3") == 0)
-				kennel = Kennel.largeDog3;
-			else
-				kennel = Kennel.largeDog4;
+			if(KennelString.compareTo("cat") == 0)
+				kennel = Kennel.cat;
+			else if(KennelString.compareTo("smallDog") == 0)
+				kennel = Kennel.smallDog;
+			else 
+				kennel = Kennel.largeDog;
 			
 			Pet curPet = Pet.getPetByID(PetID);
 			Boarding curBoard = new Boarding(StartDate, EndDate, curPet, kennel);
@@ -250,34 +203,12 @@ public class Boarding {
 			Date EndDate = new Date(rs.getDate("EndDate").getTime());
 			String KennelString = rs.getString("Kennel");
 			Kennel kennel;
-			if(KennelString.compareTo("cat1") == 0)
-				kennel = Kennel.cat1;
-			else if(KennelString.compareTo("cat2") == 0)
-				kennel = Kennel.cat2;
-			else if(KennelString.compareTo("cat3") == 0)
-				kennel = Kennel.cat3;
-			else if(KennelString.compareTo("cat4") == 0)
-				kennel = Kennel.cat4;
-			else if(KennelString.compareTo("cat5") == 0)
-				kennel = Kennel.cat5;
-			else if(KennelString.compareTo("cat6") == 0)
-				kennel = Kennel.cat6;
-			else if(KennelString.compareTo("smallDog1") == 0)
-				kennel = Kennel.smallDog1;
-			else if(KennelString.compareTo("smallDog2") == 0)
-				kennel = Kennel.smallDog2;
-			else if(KennelString.compareTo("smallDog3") == 0)
-				kennel = Kennel.smallDog3;
-			else if(KennelString.compareTo("smallDog4") == 0)
-				kennel = Kennel.smallDog4;
-			else if(KennelString.compareTo("largeDog1") == 0)
-				kennel = Kennel.largeDog1;
-			else if(KennelString.compareTo("largeDog2") == 0)
-				kennel = Kennel.largeDog2;
-			else if(KennelString.compareTo("largeDog3") == 0)
-				kennel = Kennel.largeDog3;
-			else
-				kennel = Kennel.largeDog4;
+			if(KennelString.compareTo("cat") == 0)
+				kennel = Kennel.cat;
+			else if(KennelString.compareTo("smallDog") == 0)
+				kennel = Kennel.smallDog;
+			else 
+				kennel = Kennel.largeDog;
 			
 			Pet curPet = Pet.getPetByID(PetID);
 			Boarding curBoard = new Boarding(StartDate, EndDate, curPet, kennel);
