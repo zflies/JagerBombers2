@@ -159,6 +159,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 	private JTextField txtLastName_Boarding;
 	private JTextField txtPetType_Boarding;
 	private JTextField txtPetSize_Boarding;
+	private JDateChooser dateChooserFoodEstimate_Boarding;
 
 	private JTextField txtFirstName;
 	private JTextField textField;
@@ -386,7 +387,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		setBounds(100, 100, 989, 694);
+		setBounds(100, 100, 1094, 694);
 		// setBounds(100, 100, 1585, 649); //< Bounds for complete Window
 		// Builder UI edit
 
@@ -3359,10 +3360,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 					.addComponent(desktopPaneCreate_Boarding, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
-						.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
-						.addGroup(gl_panelBoarding.createSequentialGroup()
-							.addComponent(desktopPaneFood_Boarding, GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
-							.addGap(2)))
+						.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+						.addComponent(desktopPaneFood_Boarding))
 					.addContainerGap())
 		);
 		gl_panelBoarding.setVerticalGroup(
@@ -3377,14 +3376,105 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 						.addComponent(desktopPaneCreate_Boarding, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE))
 					.addContainerGap())
 		);
+		
+		Calendar calendar = Calendar.getInstance();
+		dateChooserFoodEstimate_Boarding = new JDateChooser(new Date());
+		
+		JButton btnCalculateFood_Boarding = new JButton("Calculate");
+		btnCalculateFood_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		
+		JLabel lblFoodEstimation_Boarding = new JLabel("FOOD ESTIMATION:");
+		lblFoodEstimation_Boarding.setFont(new Font("Lucida Grande", Font.BOLD, 16));
+		
+		JLabel lblWeekOf_Boarding = new JLabel("Week of:");
+		lblWeekOf_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblWeekOf_Boarding.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		JLabel lblAdultCatFoot_Boarding = new JLabel("Adult Cat");
+		
+		JLabel lblKittenFood_Boarding = new JLabel("Kitten");
+		
+		JLabel lblSeniorAdultCatFood_Boarding = new JLabel("Senior Adult Cat");
+		
+		JLabel lblSeniorAdultDogFood_Boarding = new JLabel("Senior Adult Dog");
+		
+		JLabel lblAdultCatLowFatFood_Boarding = new JLabel("Adult Cat (Low Fat)");
+		
+		JLabel lblAdultDogLowFatFood_Boarding = new JLabel("Adult Dog (Low Fat)");
+		
+		JLabel lblAdultDogFood_Boarding = new JLabel("Adult Dog");
+		
+		JLabel lblPuppySmallFood_Boarding = new JLabel("Puppy (sm)");
+		
+		JLabel lblPuppyMedLgFood_Boarding = new JLabel("Puppy (med/lg)");
+		
+		JLabel label_15 = new JLabel("");
 		GroupLayout gl_desktopPaneFood_Boarding = new GroupLayout(desktopPaneFood_Boarding);
 		gl_desktopPaneFood_Boarding.setHorizontalGroup(
 			gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 612, Short.MAX_VALUE)
+				.addGroup(gl_desktopPaneFood_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPaneFood_Boarding.createSequentialGroup()
+							.addComponent(lblFoodEstimation_Boarding)
+							.addGap(18)
+							.addComponent(lblWeekOf_Boarding, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(dateChooserFoodEstimate_Boarding, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnCalculateFood_Boarding, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_desktopPaneFood_Boarding.createSequentialGroup()
+							.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_desktopPaneFood_Boarding.createSequentialGroup()
+									.addComponent(lblKittenFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblAdultCatFoot_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblAdultCatLowFatFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblSeniorAdultCatFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+								.addGroup(gl_desktopPaneFood_Boarding.createSequentialGroup()
+									.addComponent(lblPuppySmallFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblPuppyMedLgFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblAdultDogFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblAdultDogLowFatFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING)
+								.addComponent(label_15, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+								.addComponent(lblSeniorAdultDogFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))))
+					.addGap(39))
 		);
 		gl_desktopPaneFood_Boarding.setVerticalGroup(
 			gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 92, Short.MAX_VALUE)
+				.addGroup(gl_desktopPaneFood_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPaneFood_Boarding.createSequentialGroup()
+							.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.BASELINE)
+									.addComponent(lblFoodEstimation_Boarding, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblWeekOf_Boarding, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+								.addComponent(dateChooserFoodEstimate_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblKittenFood_Boarding)
+								.addComponent(lblAdultCatFoot_Boarding)
+								.addComponent(lblAdultCatLowFatFood_Boarding)
+								.addComponent(lblSeniorAdultCatFood_Boarding)
+								.addComponent(label_15)))
+						.addComponent(btnCalculateFood_Boarding))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblPuppySmallFood_Boarding, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblPuppyMedLgFood_Boarding)
+							.addComponent(lblAdultDogFood_Boarding)
+							.addComponent(lblAdultDogLowFatFood_Boarding)
+							.addComponent(lblSeniorAdultDogFood_Boarding)))
+					.addGap(14))
 		);
 		desktopPaneFood_Boarding.setLayout(gl_desktopPaneFood_Boarding);
 
@@ -3560,390 +3650,169 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 		JButton btnCreate_Boarding = new JButton("Create");
 		btnCreate_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		
+		JCheckBox chckbxLowFatFood_Boarding = new JCheckBox("Low Fat Food");
+		chckbxLowFatFood_Boarding.setFont(new Font("Lucida Grande", Font.ITALIC, 14));
+		chckbxLowFatFood_Boarding.setBackground(UIManager.getColor("Desktop.background"));
 
 		GroupLayout gl_desktopPaneCreate_Boarding = new GroupLayout(
 				desktopPaneCreate_Boarding);
-		gl_desktopPaneCreate_Boarding
-				.setHorizontalGroup(gl_desktopPaneCreate_Boarding
-						.createParallelGroup(Alignment.TRAILING)
-						.addGroup(
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(lblOwner_Boarding,
-												GroupLayout.DEFAULT_SIZE, 302,
-												Short.MAX_VALUE)
-										.addContainerGap())
-						.addGroup(
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_desktopPaneCreate_Boarding
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																lblFirstName_Boarding,
-																GroupLayout.DEFAULT_SIZE,
-																108,
-																Short.MAX_VALUE)
-														.addComponent(
-																lblLastName_Boarding,
-																GroupLayout.DEFAULT_SIZE,
-																108,
-																Short.MAX_VALUE))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_desktopPaneCreate_Boarding
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																txtFirstName_Boarding,
-																GroupLayout.DEFAULT_SIZE,
-																188,
-																Short.MAX_VALUE)
-														.addComponent(
-																txtLastName_Boarding,
-																GroupLayout.DEFAULT_SIZE,
-																188,
-																Short.MAX_VALUE))
-										.addContainerGap())
-						.addGroup(
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_desktopPaneCreate_Boarding
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_desktopPaneCreate_Boarding
-																		.createSequentialGroup()
-																		.addComponent(
-																				lblPetName_Boarding,
-																				GroupLayout.DEFAULT_SIZE,
-																				75,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				txtPetName_Boarding,
-																				GroupLayout.DEFAULT_SIZE,
-																				144,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				btnPetSearch_Boarding,
-																				GroupLayout.PREFERRED_SIZE,
-																				71,
-																				Short.MAX_VALUE))
-														.addGroup(
-																gl_desktopPaneCreate_Boarding
-																		.createSequentialGroup()
-																		.addComponent(
-																				txtPetType_Boarding,
-																				GroupLayout.DEFAULT_SIZE,
-																				103,
-																				Short.MAX_VALUE)
-																		.addGap(95)
-																		.addComponent(
-																				txtPetSize_Boarding,
-																				GroupLayout.DEFAULT_SIZE,
-																				104,
-																				Short.MAX_VALUE)))
-										.addContainerGap())
-						.addGroup(
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addComponent(separator,
-												GroupLayout.DEFAULT_SIZE, 308,
-												Short.MAX_VALUE)
-										.addContainerGap())
-						.addGroup(
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(lblPet_Boarding,
-												GroupLayout.DEFAULT_SIZE, 302,
-												Short.MAX_VALUE)
-										.addContainerGap())
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addComponent(separator_1,
-												GroupLayout.DEFAULT_SIZE, 308,
-												Short.MAX_VALUE)
-										.addContainerGap())
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(lblScheduling_Boarding,
-												GroupLayout.DEFAULT_SIZE, 302,
-												Short.MAX_VALUE)
-										.addContainerGap())
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(lblFrom_Boarding,
-												GroupLayout.DEFAULT_SIZE, 75,
-												Short.MAX_VALUE).addGap(233))
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(dateChooserFrom_Boarding,
-												GroupLayout.PREFERRED_SIZE,
-												288, GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(20, Short.MAX_VALUE))
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(lblTo_Boarding,
-												GroupLayout.DEFAULT_SIZE, 75,
-												Short.MAX_VALUE).addGap(233))
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(dateChooserTo_Boarding,
-												GroupLayout.PREFERRED_SIZE,
-												288, GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(20, Short.MAX_VALUE))
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(
-												lblAvailableKenels_Boarding,
-												GroupLayout.DEFAULT_SIZE, 169,
-												Short.MAX_VALUE)
-										.addGap(27)
-										.addComponent(cbKennels_Boarding, 0,
-												106, Short.MAX_VALUE)
-										.addContainerGap())
-						.addComponent(separator_2, GroupLayout.DEFAULT_SIZE,
-								314, Short.MAX_VALUE)
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(lblKenel_Boarding,
-												GroupLayout.DEFAULT_SIZE, 302,
-												Short.MAX_VALUE)
-										.addContainerGap())
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(
-												chckbxBathinggrooming_Boarding,
-												GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE).addGap(148))
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(
-												chckbxAdditionalPlayTime_Boarding,
-												GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE).addGap(136))
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(
-												chckbxDentalCleaning_Boarding,
-												GroupLayout.DEFAULT_SIZE, 195,
-												Short.MAX_VALUE).addGap(113))
-						.addGroup(
-								Alignment.LEADING,
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(editorPaneNotes_Boarding,
-												GroupLayout.DEFAULT_SIZE, 302,
-												Short.MAX_VALUE)
-										.addContainerGap())
-						.addGroup(
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addGap(213)
-										.addComponent(btnCreate_Boarding,
-												GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addContainerGap()));
-		gl_desktopPaneCreate_Boarding
-				.setVerticalGroup(gl_desktopPaneCreate_Boarding
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_desktopPaneCreate_Boarding
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(lblOwner_Boarding)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_desktopPaneCreate_Boarding
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(
-																lblFirstName_Boarding)
-														.addComponent(
-																txtFirstName_Boarding,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_desktopPaneCreate_Boarding
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(
-																txtLastName_Boarding,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																lblLastName_Boarding))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(separator,
-												GroupLayout.PREFERRED_SIZE, 12,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(lblPet_Boarding)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_desktopPaneCreate_Boarding
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(
-																txtPetName_Boarding,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																btnPetSearch_Boarding)
-														.addComponent(
-																lblPetName_Boarding,
-																GroupLayout.PREFERRED_SIZE,
-																17,
-																GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_desktopPaneCreate_Boarding
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																txtPetSize_Boarding,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																txtPetType_Boarding,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE))
-										.addGap(5)
-										.addComponent(separator_1,
-												GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(lblScheduling_Boarding)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(lblFrom_Boarding,
-												GroupLayout.PREFERRED_SIZE, 17,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(dateChooserFrom_Boarding,
-												GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(lblTo_Boarding,
-												GroupLayout.PREFERRED_SIZE, 17,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(dateChooserTo_Boarding,
-												GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												ComponentPlacement.UNRELATED)
-										.addGroup(
-												gl_desktopPaneCreate_Boarding
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(
-																lblAvailableKenels_Boarding,
-																GroupLayout.PREFERRED_SIZE,
-																17,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																cbKennels_Boarding,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(separator_2,
-												GroupLayout.PREFERRED_SIZE, 12,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(lblKenel_Boarding,
-												GroupLayout.PREFERRED_SIZE, 16,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(
-												chckbxBathinggrooming_Boarding)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(
-												chckbxAdditionalPlayTime_Boarding)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(
-												chckbxDentalCleaning_Boarding)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(editorPaneNotes_Boarding,
-												GroupLayout.PREFERRED_SIZE, 7,
-												Short.MAX_VALUE)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(btnCreate_Boarding)
-										.addContainerGap()));
+		gl_desktopPaneCreate_Boarding.setHorizontalGroup(
+			gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblOwner_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblFirstName_Boarding, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+						.addComponent(lblLastName_Boarding, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtFirstName_Boarding, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+						.addComponent(txtLastName_Boarding, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+							.addComponent(lblPetName_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtPetName_Boarding, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnPetSearch_Boarding, GroupLayout.PREFERRED_SIZE, 71, Short.MAX_VALUE))
+						.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+							.addComponent(txtPetType_Boarding, GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+							.addGap(95)
+							.addComponent(txtPetSize_Boarding, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)))
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addComponent(separator, GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblPet_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addComponent(separator_1, GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblScheduling_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblFrom_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+					.addGap(233))
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(dateChooserFrom_Boarding, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(20, Short.MAX_VALUE))
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblTo_Boarding, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+					.addGap(233))
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(dateChooserTo_Boarding, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(20, Short.MAX_VALUE))
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblAvailableKenels_Boarding, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+					.addGap(27)
+					.addComponent(cbKennels_Boarding, 0, 106, Short.MAX_VALUE)
+					.addContainerGap())
+				.addComponent(separator_2, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblKenel_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addGap(213)
+					.addComponent(btnCreate_Boarding, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(editorPaneNotes_Boarding, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(chckbxBathinggrooming_Boarding, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(148))
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(chckbxAdditionalPlayTime_Boarding, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(136))
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(chckbxDentalCleaning_Boarding, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+					.addGap(113))
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(chckbxLowFatFood_Boarding, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+					.addGap(113))
+		);
+		gl_desktopPaneCreate_Boarding.setVerticalGroup(
+			gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPaneCreate_Boarding.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblOwner_Boarding)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblFirstName_Boarding)
+						.addComponent(txtFirstName_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.BASELINE)
+						.addComponent(txtLastName_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblLastName_Boarding))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblPet_Boarding)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.BASELINE)
+						.addComponent(txtPetName_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnPetSearch_Boarding)
+						.addComponent(lblPetName_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtPetSize_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtPetType_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(5)
+					.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblScheduling_Boarding)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblFrom_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(dateChooserFrom_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblTo_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(dateChooserTo_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_desktopPaneCreate_Boarding.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblAvailableKenels_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbKennels_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblKenel_Boarding, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(chckbxBathinggrooming_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(chckbxAdditionalPlayTime_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(chckbxDentalCleaning_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(chckbxLowFatFood_Boarding, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addGap(13)
+					.addComponent(editorPaneNotes_Boarding, GroupLayout.PREFERRED_SIZE, 12, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnCreate_Boarding)
+					.addContainerGap())
+		);
 		desktopPaneCreate_Boarding.setLayout(gl_desktopPaneCreate_Boarding);
 
 		panelBoarding.setLayout(gl_panelBoarding);
