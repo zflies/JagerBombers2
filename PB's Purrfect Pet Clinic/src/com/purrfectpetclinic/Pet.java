@@ -58,6 +58,53 @@ public class Pet {
 		this.Notes = notes;
 	}
 	
+	public static Type createType(String type){
+		if(type.compareTo("Cat") == 0)
+			return Type.cat;
+		else
+			return Type.dog;
+		
+	}
+	
+	public static Size createSize(String size){
+		if(size.compareTo("Small") == 0)
+			return Size.small;
+		else if(size.compareTo("Medium") == 0)
+			return Size.medium;
+		else
+			return Size.large;
+	}
+	
+	public boolean checkImmunizations(){
+		Date curDate = new Date();
+		boolean Rabies = false;
+		boolean Distemper = false;
+		boolean Bordatella = false;
+		
+		if(Immunizations.size() != 3)
+			return false;
+		for(int i = 0; i < Immunizations.size(); i++){
+			Immunization curImmune = Immunizations.elementAt(i);
+			if(curImmune.getImmunizationType() == Immunization.ImmunizationType.Rabies)
+				Rabies = true;
+			else if(curImmune.getImmunizationType() == Immunization.ImmunizationType.Distemper)
+				Distemper = true;
+			else if(curImmune.getImmunizationType() == Immunization.ImmunizationType.Bordatella)
+				Bordatella = true;
+		}
+		if(!(Rabies && Distemper && Bordatella))
+			return false;
+		
+		for(int i = 0; i < Immunizations.size(); i++){
+			Immunization curImmune = Immunizations.elementAt(i);
+			if(curImmune.getEndDate().after(curDate))
+				continue;
+			else
+				return false;
+		}
+		return true;
+	}
+	
 	public static Pet getPetByID(int PetID) throws SQLException{
 		Statement state = DBConnection.OpenConnection();
 		String commandstring = String.format("SELECT * FROM Pets WHERE ID = %d", PetID);

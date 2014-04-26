@@ -164,6 +164,13 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 	private JTextField txtFirstName;
 	private JTextField textField;
 	private JTextField txtPetName;
+	private JComponent dateChooserFrom_Boarding;
+	private JComponent dateChooserTo_Boarding;
+	private JEditorPane editorPaneNotes_Boarding;
+	private JCheckBox chckbxBathinggrooming_Boarding;
+	private JCheckBox chckbxAdditionalPlayTime_Boarding;
+	private JCheckBox chckbxDentalCleaning_Boarding;
+	private JCheckBox chckbxLowFatFood_Boarding;
 
 	// Owner labels for records tab
 	private JLabel lblAddress_Records;
@@ -214,6 +221,23 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 				}
 			}
 		});
+	}
+	
+	public void clearBoardingUI(){
+		txtFirstName_Boarding.setText("");
+		txtPetName_Boarding.setText("");
+		txtLastName_Boarding.setText("");
+		txtPetType_Boarding.setText("Type");
+		txtPetType_Boarding.setEnabled(false);
+		txtPetSize_Boarding.setText("Size");
+		txtPetSize_Boarding.setEnabled(false);
+		((JDateChooser)dateChooserFrom_Boarding).setCalendar(null);
+		((JDateChooser)dateChooserTo_Boarding).setCalendar(null);
+		editorPaneNotes_Boarding.setText("Notes");
+		chckbxBathinggrooming_Boarding.setSelected(false);
+		chckbxAdditionalPlayTime_Boarding.setSelected(false);
+		chckbxDentalCleaning_Boarding.setSelected(false);
+		chckbxLowFatFood_Boarding.setSelected(false);
 	}
 
 	public JTree populateTree() {
@@ -3499,26 +3523,30 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		txtPetName_Boarding = new JTextField();
 		txtPetName_Boarding.setColumns(10);
 
-		JCheckBox chckbxBathinggrooming_Boarding = new JCheckBox(
+		chckbxBathinggrooming_Boarding = new JCheckBox(
 				"Bathing/Grooming");
 		chckbxBathinggrooming_Boarding.setFont(new Font("Lucida Grande",
 				Font.ITALIC, 14));
 		chckbxBathinggrooming_Boarding.setBackground(UIManager
 				.getColor("Desktop.background"));
 
-		JCheckBox chckbxAdditionalPlayTime_Boarding = new JCheckBox(
+		chckbxAdditionalPlayTime_Boarding = new JCheckBox(
 				"Additional Play Time");
 		chckbxAdditionalPlayTime_Boarding.setFont(new Font("Lucida Grande",
 				Font.ITALIC, 14));
 		chckbxAdditionalPlayTime_Boarding.setBackground(UIManager
 				.getColor("Desktop.background"));
 
-		JCheckBox chckbxDentalCleaning_Boarding = new JCheckBox(
+		chckbxDentalCleaning_Boarding = new JCheckBox(
 				"Dental Cleaning");
 		chckbxDentalCleaning_Boarding.setFont(new Font("Lucida Grande",
 				Font.ITALIC, 14));
 		chckbxDentalCleaning_Boarding.setBackground(UIManager
 				.getColor("Desktop.background"));
+		
+		chckbxLowFatFood_Boarding = new JCheckBox("Low Fat Food");
+		chckbxLowFatFood_Boarding.setFont(new Font("Lucida Grande", Font.ITALIC, 14));
+		chckbxLowFatFood_Boarding.setBackground(UIManager.getColor("Desktop.background"));
 
 		txtLastName_Boarding = new JTextField();
 		txtLastName_Boarding.setColumns(10);
@@ -3587,7 +3615,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 					try {
 						nPetID = tempPet.getID(nOwnerID);
 					} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(panelAppointments,
+						JOptionPane.showMessageDialog(panelBoarding,
 								"Pet not found.  Please create a new record.",
 								"Not Found", JOptionPane.INFORMATION_MESSAGE);
 						txtPetSize_Boarding.setEnabled(false);
@@ -3601,11 +3629,23 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 						try {
 							Pet curPet = Pet.getPetByID(nPetID,
 									owner.getFullName());
-							txtPetSize_Boarding.setText(curPet
-									.getPetSizeString());
-							txtPetType_Boarding.setText(curPet.getTypeString());
-							txtPetSize_Boarding.setEnabled(true);
-							txtPetType_Boarding.setEnabled(true);
+							//check pet's immunizations
+							if(curPet.checkImmunizations()){
+								txtPetSize_Boarding.setText(curPet
+										.getPetSizeString());
+								txtPetType_Boarding.setText(curPet.getTypeString());
+								txtPetSize_Boarding.setEnabled(true);
+								txtPetType_Boarding.setEnabled(true);
+							}
+							else{
+								JOptionPane.showMessageDialog(panelBoarding,
+										"Pet Immunizations not up to date.  Please update immunizations before scheduling boarding session.",
+										"Immunizations not up to date", JOptionPane.INFORMATION_MESSAGE);
+								txtPetSize_Boarding.setEnabled(false);
+								txtPetType_Boarding.setEnabled(false);
+								txtPetSize_Boarding.setText("Size");
+								txtPetType_Boarding.setText("Type");
+							}
 						} catch (SQLException e) {
 							// Should never reach this point
 							e.printStackTrace();
@@ -3640,19 +3680,125 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 		JSeparator separator_2 = new JSeparator();
 
-		JComponent dateChooserFrom_Boarding = new JDateChooser();
+		dateChooserFrom_Boarding = new JDateChooser();
 
-		JComponent dateChooserTo_Boarding = new JDateChooser();
+		dateChooserTo_Boarding = new JDateChooser();
 
-		JEditorPane editorPaneNotes_Boarding = new JEditorPane();
+		editorPaneNotes_Boarding = new JEditorPane();
 		editorPaneNotes_Boarding.setText("Notes");
 
 		JButton btnCreate_Boarding = new JButton("Create");
+		btnCreate_Boarding.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//check that pet has been found after searching
+				if(!(txtPetSize_Boarding.isEnabled() && txtPetType_Boarding.isEnabled())){
+					JOptionPane.showMessageDialog(panelBoarding,
+							"Valid pet has not been selected. Please search for a pet.",
+							"Pet not selected", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				//check that other fields have been input
+				if(((JDateChooser) dateChooserFrom_Boarding).getDate() == null || ((JDateChooser) dateChooserTo_Boarding).getDate() == null){
+					JOptionPane.showMessageDialog(panelBoarding,
+							"Please select a valid date range for the boarding session.",
+							"Date not selected", JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+				//gather field info
+				Date start = ((JDateChooser) dateChooserFrom_Boarding).getDate();
+				Date end = ((JDateChooser) dateChooserTo_Boarding).getDate();
+				String PetTypeString = txtPetType_Boarding.getText();
+				String PetSizeString = txtPetSize_Boarding.getText();
+				Pet.Type PetType = Pet.createType(PetTypeString);
+				Pet.Size PetSize = Pet.createSize(PetSizeString);
+				String ownerFirstName = txtFirstName_Boarding.getText();
+				String ownerLastName = txtLastName_Boarding.getText();
+				String petName = txtPetName_Boarding.getText();
+				String Notes = editorPaneNotes_Boarding.getText();
+				
+				//create options
+				Vector<Boarding.Options> Options = new Vector<Boarding.Options>();
+				if(chckbxBathinggrooming_Boarding.isSelected())
+					Options.add(Boarding.Options.bathgroom);
+				if(chckbxAdditionalPlayTime_Boarding.isSelected())
+					Options.add(Boarding.Options.addplaytime);
+				if(chckbxDentalCleaning_Boarding.isSelected())
+					Options.add(Boarding.Options.dentalcleaning);
+				if(chckbxLowFatFood_Boarding.isSelected())
+					Options.add(Boarding.Options.lowfatfood);
+				
+				//create kennel
+				Boarding.Kennel kennel;
+				if(PetType == Pet.Type.cat)
+					kennel = Boarding.Kennel.cat;
+				else if(PetSize == Pet.Size.small)
+					kennel = Boarding.Kennel.smallDog;
+				else
+					kennel = Boarding.Kennel.largeDog;
+				
+				//create pet
+				Owner owner = new Owner(ownerFirstName, ownerLastName, "", "", "", "",
+						"");
+				int nOwnerID = 0;
+				try {
+					nOwnerID = owner.getID();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(panelBoarding,
+							"Owner not found.  Please create a new record.",
+							"Not Found", JOptionPane.INFORMATION_MESSAGE);
+					txtPetSize_Boarding.setEnabled(false);
+					txtPetType_Boarding.setEnabled(false);
+					txtPetSize_Boarding.setText("Size");
+					txtPetType_Boarding.setText("Type");
+					return;
+				}
+				Pet boardingPet = null;
+				int nPetID = 0;
+				if (nOwnerID != 0) {
+					/*---- Get Pet ----*/
+					Pet tempPet = new Pet(Pet.Type.cat, petName, null, null,
+							null, null, null, null, null, null, null);
+					try {
+						nPetID = tempPet.getID(nOwnerID);
+						boardingPet = Pet.getPetByID(nPetID);
+					} catch (SQLException e1) {
+						JOptionPane.showMessageDialog(panelBoarding,
+								"Pet not found.  Please create a new record.",
+								"Not Found", JOptionPane.INFORMATION_MESSAGE);
+						txtPetSize_Boarding.setEnabled(false);
+						txtPetType_Boarding.setEnabled(false);
+						txtPetSize_Boarding.setText("Size");
+						txtPetType_Boarding.setText("Type");
+						return;
+					}
+				}
+				
+				//check if open kennels exist
+				if(!Boarding.checkDateRange(start, end, PetType, PetSize)){
+					JOptionPane.showMessageDialog(panelBoarding,
+							"No open kennels are available for the selected pet during the given dates",
+							"Kennels Unavailable", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+					
+				
+				//create boarding session
+				Boarding newBoarding = new Boarding(start, end, boardingPet, kennel, Notes, Options);
+				
+				//add to DB
+				try {
+					newBoarding.addToDB(nPetID);
+					clearBoardingUI();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(panelBoarding,
+							"Session could not be added at this time.",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+			}
+		});
 		btnCreate_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		
-		JCheckBox chckbxLowFatFood_Boarding = new JCheckBox("Low Fat Food");
-		chckbxLowFatFood_Boarding.setFont(new Font("Lucida Grande", Font.ITALIC, 14));
-		chckbxLowFatFood_Boarding.setBackground(UIManager.getColor("Desktop.background"));
 
 		GroupLayout gl_desktopPaneCreate_Boarding = new GroupLayout(
 				desktopPaneCreate_Boarding);
