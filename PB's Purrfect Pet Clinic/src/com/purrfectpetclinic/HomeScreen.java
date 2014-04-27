@@ -2927,6 +2927,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 
 		JButton btnRemove = new JButton("Remove");
+		btnRemove.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int[] selectedRows = servicesTable.getSelectedRows();
@@ -2938,217 +2939,68 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 			}
 		});
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
-		gl_panelSales
-				.setHorizontalGroup(gl_panelSales
-						.createParallelGroup(Alignment.TRAILING)
-						.addGroup(
-								gl_panelSales
-										.createSequentialGroup()
-										.addGroup(
-												gl_panelSales
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addContainerGap()
-																		.addGroup(
-																				gl_panelSales
-																						.createParallelGroup(
-																								Alignment.LEADING)
-																						.addComponent(
-																								scrollPane,
-																								GroupLayout.DEFAULT_SIZE,
-																								307,
-																								Short.MAX_VALUE)
-																						.addGroup(
-																								gl_panelSales
-																										.createSequentialGroup()
-																										.addComponent(
-																												btnPay,
-																												GroupLayout.PREFERRED_SIZE,
-																												86,
-																												GroupLayout.PREFERRED_SIZE)
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addComponent(
-																												lblA_2,
-																												GroupLayout.DEFAULT_SIZE,
-																												18,
-																												Short.MAX_VALUE)
-																										.addGap(36)
-																										.addComponent(
-																												btnNewButton)
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addComponent(
-																												lblA_1,
-																												GroupLayout.DEFAULT_SIZE,
-																												21,
-																												Short.MAX_VALUE))))
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addGap(21)
-																		.addComponent(
-																				lblTotalText)
-																		.addGap(18)
-																		.addComponent(
-																				lblTotal,
-																				GroupLayout.DEFAULT_SIZE,
-																				219,
-																				Short.MAX_VALUE))
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addGap(70)
-																		.addComponent(
-																				btnRemove)))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panelSales
-														.createParallelGroup(
-																Alignment.TRAILING)
-														.addComponent(
-																desktopPaneProducts_Sales,
-																GroupLayout.DEFAULT_SIZE,
-																621,
-																Short.MAX_VALUE)
-														.addComponent(
-																desktopPaneServices_Sales,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																621,
-																Short.MAX_VALUE)
-														.addComponent(
-																desktopPaneImmunizations_Sales,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																621,
-																Short.MAX_VALUE)
-														.addComponent(
-																desktopPaneBoarding_Sales,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																621,
-																Short.MAX_VALUE))
-										.addContainerGap()));
-		gl_panelSales
-				.setVerticalGroup(gl_panelSales
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panelSales
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelSales
-														.createParallelGroup(
-																Alignment.TRAILING)
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addComponent(
-																				desktopPaneServices_Sales,
-																				GroupLayout.DEFAULT_SIZE,
-																				108,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				desktopPaneImmunizations_Sales,
-																				GroupLayout.DEFAULT_SIZE,
-																				110,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				desktopPaneBoarding_Sales,
-																				GroupLayout.DEFAULT_SIZE,
-																				110,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				desktopPaneProducts_Sales,
-																				GroupLayout.DEFAULT_SIZE,
-																				256,
-																				Short.MAX_VALUE))
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addComponent(
-																				scrollPane,
-																				GroupLayout.DEFAULT_SIZE,
-																				446,
-																				Short.MAX_VALUE)
-																		.addGap(31)
-																		.addGroup(
-																				gl_panelSales
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblTotalText)
-																						.addComponent(
-																								lblTotal))
-																		.addGap(16)
-																		.addComponent(
-																				btnRemove,
-																				GroupLayout.PREFERRED_SIZE,
-																				43,
-																				GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addGroup(
-																				gl_panelSales
-																						.createParallelGroup(
-																								Alignment.TRAILING,
-																								false)
-																						.addComponent(
-																								lblA_1,
-																								Alignment.LEADING,
-																								GroupLayout.PREFERRED_SIZE,
-																								37,
-																								GroupLayout.PREFERRED_SIZE)
-																						.addGroup(
-																								gl_panelSales
-																										.createSequentialGroup()
-																										.addGroup(
-																												gl_panelSales
-																														.createParallelGroup(
-																																Alignment.LEADING)
-																														.addGroup(
-																																gl_panelSales
-																																		.createSequentialGroup()
-																																		.addPreferredGap(
-																																				ComponentPlacement.RELATED)
-																																		.addComponent(
-																																				lblA_2,
-																																				GroupLayout.PREFERRED_SIZE,
-																																				37,
-																																				GroupLayout.PREFERRED_SIZE))
-																														.addGroup(
-																																gl_panelSales
-																																		.createSequentialGroup()
-																																		.addPreferredGap(
-																																				ComponentPlacement.RELATED)
-																																		.addComponent(
-																																				btnPay,
-																																				GroupLayout.PREFERRED_SIZE,
-																																				43,
-																																				GroupLayout.PREFERRED_SIZE))
-																														.addGroup(
-																																Alignment.TRAILING,
-																																gl_panelSales
-																																		.createSequentialGroup()
-																																		.addPreferredGap(
-																																				ComponentPlacement.RELATED)
-																																		.addComponent(
-																																				btnNewButton,
-																																				GroupLayout.PREFERRED_SIZE,
-																																				43,
-																																				GroupLayout.PREFERRED_SIZE)))))))
-										.addGap(6)));
+		gl_panelSales.setHorizontalGroup(
+			gl_panelSales.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelSales.createSequentialGroup()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+								.addGroup(gl_panelSales.createSequentialGroup()
+									.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
+									.addGap(36)
+									.addComponent(btnNewButton)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addGap(21)
+							.addComponent(lblTotalText)
+							.addGap(18)
+							.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addGap(106)
+							.addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(102)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+						.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_panelSales.setVerticalGroup(
+			gl_panelSales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelSales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(desktopPaneServices_Sales, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneImmunizations_Sales, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneBoarding_Sales, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+							.addGap(31)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTotalText)
+								.addComponent(lblTotal))
+							.addGap(16)
+							.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblA_2, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))))
+					.addGap(6))
+		);
 
 		JLabel lblServices = new JLabel("Services");
 		lblServices.setHorizontalAlignment(SwingConstants.CENTER);
