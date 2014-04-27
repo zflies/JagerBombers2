@@ -171,6 +171,16 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 	private JCheckBox chckbxAdditionalPlayTime_Boarding;
 	private JCheckBox chckbxDentalCleaning_Boarding;
 	private JCheckBox chckbxLowFatFood_Boarding;
+	
+	private JLabel lblAdultCatFood_Boarding;
+	private JLabel lblKittenFood_Boarding;
+	private JLabel lblSeniorAdultCatFood_Boarding;
+	private JLabel lblSeniorAdultDogFood_Boarding;
+	private JLabel lblAdultCatLowFatFood_Boarding;
+	private JLabel lblAdultDogLowFatFood_Boarding;
+	private JLabel lblAdultDogFood_Boarding;
+	private JLabel lblPuppySmallFood_Boarding;
+	private JLabel lblPuppyMedLgFood_Boarding;
 
 	// Owner labels for records tab
 	private JLabel lblAddress_Records;
@@ -238,6 +248,18 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		chckbxAdditionalPlayTime_Boarding.setSelected(false);
 		chckbxDentalCleaning_Boarding.setSelected(false);
 		chckbxLowFatFood_Boarding.setSelected(false);
+	}
+	
+	public void clearPetFoodBoardingUI(){
+		lblAdultCatFood_Boarding.setText("Adult Cat: ");
+		lblKittenFood_Boarding.setText("Kitten: ");
+		lblSeniorAdultCatFood_Boarding.setText("Senior Adult Cat: ");
+		lblSeniorAdultDogFood_Boarding.setText("Senior Adult Dog: ");
+		lblAdultCatLowFatFood_Boarding.setText("Adult Cat (Low Fat): ");
+		lblAdultDogLowFatFood_Boarding.setText("Adult Dog (Low Fat): ");
+		lblAdultDogFood_Boarding.setText("Adult Dog: ");
+		lblPuppySmallFood_Boarding.setText("Puppy (sm): ");
+		lblPuppyMedLgFood_Boarding.setText("Puppy (med/lg): ");
 	}
 
 	public JTree populateTree() {
@@ -3405,6 +3427,54 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		dateChooserFoodEstimate_Boarding = new JDateChooser(new Date());
 		
 		JButton btnCalculateFood_Boarding = new JButton("Calculate");
+		btnCalculateFood_Boarding.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//get selected date from picker
+				Date selectedDate = ((JDateChooser)dateChooserFoodEstimate_Boarding).getDate();
+				//get date start and end of week
+				Date date = new Date();
+				Calendar c = Calendar.getInstance();
+				c.setTime(date);
+				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();
+				c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
+
+				Date weekStart = c.getTime();
+				// we do not need the same day a week after, that's why use 6, not 7
+				c.add(Calendar.DAY_OF_MONTH, 6); 
+				Date weekEnd = c.getTime();
+				
+				try {
+					Vector<PetFood> PetFoods = PetFood.getFoodWeights(weekStart, weekEnd);
+					for(int i = 0; i < PetFoods.size(); i++){
+						PetFood curPetFood = PetFoods.elementAt(i);
+						if(curPetFood.FoodType == PetFood.Type.AdultCat)
+							lblAdultCatFood_Boarding.setText(lblAdultCatFood_Boarding.getText() + curPetFood.Amount);
+						else if(curPetFood.FoodType == PetFood.Type.AdultCatLowFat)
+							lblAdultCatLowFatFood_Boarding.setText(lblAdultCatLowFatFood_Boarding.getText() + curPetFood.Amount);
+						else if(curPetFood.FoodType == PetFood.Type.AdultDog)
+							lblAdultDogFood_Boarding.setText(lblAdultDogFood_Boarding.getText() + curPetFood.Amount);
+						else if(curPetFood.FoodType == PetFood.Type.AdultDogLowFat)
+							lblAdultDogLowFatFood_Boarding.setText(lblAdultDogLowFatFood_Boarding.getText() + curPetFood.Amount);
+						else if(curPetFood.FoodType == PetFood.Type.Kitten)
+							lblKittenFood_Boarding.setText(lblKittenFood_Boarding.getText() + curPetFood.Amount);
+						else if(curPetFood.FoodType == PetFood.Type.PuppyLarge)
+							lblPuppyMedLgFood_Boarding.setText(lblPuppyMedLgFood_Boarding.getText() + curPetFood.Amount);
+						else if(curPetFood.FoodType == PetFood.Type.PuppySmall)
+							lblPuppySmallFood_Boarding.setText(lblPuppySmallFood_Boarding.getText() + curPetFood.Amount);
+						else if(curPetFood.FoodType == PetFood.Type.SeniorCat)
+							lblSeniorAdultCatFood_Boarding.setText(lblSeniorAdultCatFood_Boarding.getText() + curPetFood.Amount);
+						else if(curPetFood.FoodType == PetFood.Type.SeniorDog)
+							lblSeniorAdultDogFood_Boarding.setText(lblSeniorAdultDogFood_Boarding.getText() + curPetFood.Amount);
+					}
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(panelBoarding,
+							"Pet Food information could not be retrieved at this time",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
+					clearPetFoodBoardingUI();
+				}
+			}
+		});
 		btnCalculateFood_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		
 		JLabel lblFoodEstimation_Boarding = new JLabel("FOOD ESTIMATION:");
@@ -3414,23 +3484,23 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		lblWeekOf_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		lblWeekOf_Boarding.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		JLabel lblAdultCatFoot_Boarding = new JLabel("Adult Cat");
+		lblAdultCatFood_Boarding = new JLabel("Adult Cat: ");
 		
-		JLabel lblKittenFood_Boarding = new JLabel("Kitten");
+		lblKittenFood_Boarding = new JLabel("Kitten: ");
 		
-		JLabel lblSeniorAdultCatFood_Boarding = new JLabel("Senior Adult Cat");
+		lblSeniorAdultCatFood_Boarding = new JLabel("Senior Adult Cat: ");
 		
-		JLabel lblSeniorAdultDogFood_Boarding = new JLabel("Senior Adult Dog");
+		lblSeniorAdultDogFood_Boarding = new JLabel("Senior Adult Dog: ");
 		
-		JLabel lblAdultCatLowFatFood_Boarding = new JLabel("Adult Cat (Low Fat)");
+		lblAdultCatLowFatFood_Boarding = new JLabel("Adult Cat (Low Fat): ");
 		
-		JLabel lblAdultDogLowFatFood_Boarding = new JLabel("Adult Dog (Low Fat)");
+		lblAdultDogLowFatFood_Boarding = new JLabel("Adult Dog (Low Fat): ");
 		
-		JLabel lblAdultDogFood_Boarding = new JLabel("Adult Dog");
+		lblAdultDogFood_Boarding = new JLabel("Adult Dog: ");
 		
-		JLabel lblPuppySmallFood_Boarding = new JLabel("Puppy (sm)");
+		lblPuppySmallFood_Boarding = new JLabel("Puppy (sm): ");
 		
-		JLabel lblPuppyMedLgFood_Boarding = new JLabel("Puppy (med/lg)");
+		lblPuppyMedLgFood_Boarding = new JLabel("Puppy (med/lg): ");
 		
 		JLabel label_15 = new JLabel("");
 		GroupLayout gl_desktopPaneFood_Boarding = new GroupLayout(desktopPaneFood_Boarding);
@@ -3452,7 +3522,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 								.addGroup(gl_desktopPaneFood_Boarding.createSequentialGroup()
 									.addComponent(lblKittenFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblAdultCatFoot_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+									.addComponent(lblAdultCatFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblAdultCatLowFatFood_Boarding, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
@@ -3485,7 +3555,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_desktopPaneFood_Boarding.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblKittenFood_Boarding)
-								.addComponent(lblAdultCatFoot_Boarding)
+								.addComponent(lblAdultCatFood_Boarding)
 								.addComponent(lblAdultCatLowFatFood_Boarding)
 								.addComponent(lblSeniorAdultCatFood_Boarding)
 								.addComponent(label_15)))
