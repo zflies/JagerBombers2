@@ -166,6 +166,7 @@ public class Owner {
 					
 					
 					this.Pets.add(newPet);
+					state2.close();
 				}
 			} catch (SQLException e) {
 				throw new Exception("Error in SQL Execution");
@@ -215,6 +216,7 @@ public class Owner {
 		String commandstring = String.format("INSERT INTO owner (FirstName, LastName, Address, City, State, Zip, Phone) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
 				FirstName, LastName, Address, City, State, Zip, Phone);
 		state.execute(commandstring);
+		state.close();
 	}
 	
 	public void replaceOwner(Owner oldOwner) throws Exception{

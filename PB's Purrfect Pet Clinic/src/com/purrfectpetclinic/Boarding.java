@@ -117,6 +117,7 @@ public class Boarding {
 		String commandstring = String.format("INSERT INTO Boarding (PetID, StartDate, EndDate, Kennel, Options, Notes) VALUES (%d, '%s', '%s', '%s', '%s', '%s')"
 				,PetID, new java.sql.Date(this.getStartDate().getTime()), new java.sql.Date(this.getEndDate().getTime()), this.getKennelString(), this.buildOptionsString(), this.getNotes());
 		state.execute(commandstring);
+		state.close();
 	}
 	
 	private static Vector<Options> parseOptionsString(String options){

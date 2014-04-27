@@ -177,6 +177,9 @@ public class Pet {
 			}
 		}
 		
+		state.close();
+		state2.close();
+		state3.close();
 		return newPet;
 	}
 	
@@ -246,6 +249,8 @@ public class Pet {
 			}
 		}
 		
+		state.close();
+		state2.close();
 		return newPet;
 	}
 	
@@ -280,6 +285,7 @@ public class Pet {
 			commandstring = String.format("INSERT INTO Immunizations VALUES(%d, '%s', '%s', '%s')", petID, "Bordatella", StartDateSQL, EndDateSQL);
 		}
 		state.execute(commandstring);
+		state.close();
 	}
 	
 	public void updateImmunization(Immunization.ImmunizationType type, int petID) throws SQLException{
@@ -313,6 +319,7 @@ public class Pet {
 			commandstring = String.format("UPDATE Immunizations SET Start_Date = '%s', End_Date = '%s' WHERE Pet_ID = %d AND Immunization = 'Bordatella'", StartDateSQL, EndDateSQL, petID);
 		}
 		state.execute(commandstring);
+		state.close();
 	}
 	
 	public void addImmunization(Immunization newImmune){
@@ -457,6 +464,7 @@ public class Pet {
 				Name, Size, Sex, Breed, Type, Color, DOB, OwnerID, Prescriptions, Notes, Weight);
 		
 		state.execute(commandstring);
+		state.close();
 	}
 	
 	public int getID(int OwnerID) throws SQLException{
