@@ -352,7 +352,7 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 		/* Get the boarding sessions for the month */
 		Vector<Boarding> monthBoarding = new Vector<Boarding>();
 		try {
-			monthBoarding = Boarding.getMonthBoarding(day);
+			monthBoarding = Boarding.getAllBoardingEntries();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -383,15 +383,17 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 			days[i + n + 7].setEnabled(true);
 
 			String sPets = "";
+			String sToolTip = "";
 			
 			try {
 				sPets = dateEvaluator.getPetsBoarding(day, monthBoarding);
+				sToolTip = dateEvaluator.getSpecialTooltip();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
-			days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "<br><br>" + sPets + "</html>"); // This Changes the text of each button if the day is Special
-
+			days[i + n + 7].setText("<html>" + Integer.toString(n + 1) + "<br>" + sPets + "</html>"); // This Changes the text of each button if the day is Special
+			
 			if ( tmpCalendar.get(Calendar.DAY_OF_YEAR) > today
 					.get(Calendar.DAY_OF_YEAR)
 					&& (tmpCalendar.get(Calendar.YEAR) >= today
@@ -400,6 +402,11 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 				if ( sPets != "" )
 				{
 					days[i + n + 7].setEnabled(true);
+					
+					if ( sToolTip != "" )
+					{
+						days[i + n + 7].setToolTipText("<html>" + sToolTip + "</html>");
+					}
 				}
 				else
 				{	
@@ -1089,5 +1096,9 @@ public class JBoardingDayChooser extends JPanel implements ActionListener, KeyLi
 
 	public void removeDateEvaluator(IDateEvaluator dateEvaluator) {
 		dateEvaluators.remove(dateEvaluator);
+	}
+	
+	public void refreshBoardingCalendar(){
+		drawDays();
 	}
 }

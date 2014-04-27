@@ -101,7 +101,7 @@ public class Boarding {
 			if(curOption == Options.bathgroom)
 				bathgroom = 1;
 			else if(curOption == Options.addplaytime)
-				bathgroom = 1;
+				addplaytime = 1;
 			else if(curOption == Options.dentalcleaning)
 				dentalcleaning = 1;
 			else if(curOption == Options.lowfatfood)
@@ -301,7 +301,7 @@ public class Boarding {
 		Vector<Boarding> MonthBoarding = new Vector<Boarding>();
 		
 		String sYear = (currDate.getYear() + 1900) + "";
-		String sMonth = currDate.getMonth() + "";
+		String sMonth = currDate.getMonth() + 1 + "";
 		String sDay = "01";
 
 		if ( sMonth.length() < 2 )
@@ -311,15 +311,21 @@ public class Boarding {
 
 		String sStartDate = sYear + "-" + sMonth + "-" + sDay;
 		
-		if ( currDate.getMonth() == 11 )
+		if ( currDate.getMonth() >= 11 )
 		{
 			sYear = ( currDate.getYear() + 1901 ) + "";
 			sMonth = "00";
 		}
 		else
 		{
-			sMonth = ( currDate.getMonth() + 1 ) + "";
+			sMonth = ( currDate.getMonth() + 2 ) + "";
+			
+			if ( sMonth.length() < 2 )
+			{
+				sMonth = "0" + sMonth;
+			}
 		}
+		
 		
 		String sEndDate = sYear + "-" + sMonth + "-" + sDay;
 		
