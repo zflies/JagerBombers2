@@ -3432,9 +3432,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 				//get selected date from picker
 				Date selectedDate = ((JDateChooser)dateChooserFoodEstimate_Boarding).getDate();
 				//get date start and end of week
-				Date date = new Date();
 				Calendar c = Calendar.getInstance();
-				c.setTime(date);
+				c.setTime(selectedDate);
 				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();
 				c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
 
