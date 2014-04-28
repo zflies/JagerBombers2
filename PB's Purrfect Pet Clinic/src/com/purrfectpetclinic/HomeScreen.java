@@ -2928,6 +2928,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 
 		JButton btnRemove = new JButton("Remove");
+		btnRemove.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int[] selectedRows = servicesTable.getSelectedRows();
@@ -2939,217 +2940,68 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 			}
 		});
 		GroupLayout gl_panelSales = new GroupLayout(panelSales);
-		gl_panelSales
-				.setHorizontalGroup(gl_panelSales
-						.createParallelGroup(Alignment.TRAILING)
-						.addGroup(
-								gl_panelSales
-										.createSequentialGroup()
-										.addGroup(
-												gl_panelSales
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addContainerGap()
-																		.addGroup(
-																				gl_panelSales
-																						.createParallelGroup(
-																								Alignment.LEADING)
-																						.addComponent(
-																								scrollPane,
-																								GroupLayout.DEFAULT_SIZE,
-																								307,
-																								Short.MAX_VALUE)
-																						.addGroup(
-																								gl_panelSales
-																										.createSequentialGroup()
-																										.addComponent(
-																												btnPay,
-																												GroupLayout.PREFERRED_SIZE,
-																												86,
-																												GroupLayout.PREFERRED_SIZE)
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addComponent(
-																												lblA_2,
-																												GroupLayout.DEFAULT_SIZE,
-																												18,
-																												Short.MAX_VALUE)
-																										.addGap(36)
-																										.addComponent(
-																												btnNewButton)
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addComponent(
-																												lblA_1,
-																												GroupLayout.DEFAULT_SIZE,
-																												21,
-																												Short.MAX_VALUE))))
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addGap(21)
-																		.addComponent(
-																				lblTotalText)
-																		.addGap(18)
-																		.addComponent(
-																				lblTotal,
-																				GroupLayout.DEFAULT_SIZE,
-																				219,
-																				Short.MAX_VALUE))
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addGap(70)
-																		.addComponent(
-																				btnRemove)))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panelSales
-														.createParallelGroup(
-																Alignment.TRAILING)
-														.addComponent(
-																desktopPaneProducts_Sales,
-																GroupLayout.DEFAULT_SIZE,
-																621,
-																Short.MAX_VALUE)
-														.addComponent(
-																desktopPaneServices_Sales,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																621,
-																Short.MAX_VALUE)
-														.addComponent(
-																desktopPaneImmunizations_Sales,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																621,
-																Short.MAX_VALUE)
-														.addComponent(
-																desktopPaneBoarding_Sales,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																621,
-																Short.MAX_VALUE))
-										.addContainerGap()));
-		gl_panelSales
-				.setVerticalGroup(gl_panelSales
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panelSales
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelSales
-														.createParallelGroup(
-																Alignment.TRAILING)
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addComponent(
-																				desktopPaneServices_Sales,
-																				GroupLayout.DEFAULT_SIZE,
-																				108,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				desktopPaneImmunizations_Sales,
-																				GroupLayout.DEFAULT_SIZE,
-																				110,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				desktopPaneBoarding_Sales,
-																				GroupLayout.DEFAULT_SIZE,
-																				110,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				desktopPaneProducts_Sales,
-																				GroupLayout.DEFAULT_SIZE,
-																				256,
-																				Short.MAX_VALUE))
-														.addGroup(
-																gl_panelSales
-																		.createSequentialGroup()
-																		.addComponent(
-																				scrollPane,
-																				GroupLayout.DEFAULT_SIZE,
-																				446,
-																				Short.MAX_VALUE)
-																		.addGap(31)
-																		.addGroup(
-																				gl_panelSales
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblTotalText)
-																						.addComponent(
-																								lblTotal))
-																		.addGap(16)
-																		.addComponent(
-																				btnRemove,
-																				GroupLayout.PREFERRED_SIZE,
-																				43,
-																				GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addGroup(
-																				gl_panelSales
-																						.createParallelGroup(
-																								Alignment.TRAILING,
-																								false)
-																						.addComponent(
-																								lblA_1,
-																								Alignment.LEADING,
-																								GroupLayout.PREFERRED_SIZE,
-																								37,
-																								GroupLayout.PREFERRED_SIZE)
-																						.addGroup(
-																								gl_panelSales
-																										.createSequentialGroup()
-																										.addGroup(
-																												gl_panelSales
-																														.createParallelGroup(
-																																Alignment.LEADING)
-																														.addGroup(
-																																gl_panelSales
-																																		.createSequentialGroup()
-																																		.addPreferredGap(
-																																				ComponentPlacement.RELATED)
-																																		.addComponent(
-																																				lblA_2,
-																																				GroupLayout.PREFERRED_SIZE,
-																																				37,
-																																				GroupLayout.PREFERRED_SIZE))
-																														.addGroup(
-																																gl_panelSales
-																																		.createSequentialGroup()
-																																		.addPreferredGap(
-																																				ComponentPlacement.RELATED)
-																																		.addComponent(
-																																				btnPay,
-																																				GroupLayout.PREFERRED_SIZE,
-																																				43,
-																																				GroupLayout.PREFERRED_SIZE))
-																														.addGroup(
-																																Alignment.TRAILING,
-																																gl_panelSales
-																																		.createSequentialGroup()
-																																		.addPreferredGap(
-																																				ComponentPlacement.RELATED)
-																																		.addComponent(
-																																				btnNewButton,
-																																				GroupLayout.PREFERRED_SIZE,
-																																				43,
-																																				GroupLayout.PREFERRED_SIZE)))))))
-										.addGap(6)));
+		gl_panelSales.setHorizontalGroup(
+			gl_panelSales.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelSales.createSequentialGroup()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+								.addGroup(gl_panelSales.createSequentialGroup()
+									.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblA_2, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
+									.addGap(36)
+									.addComponent(btnNewButton)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblA_1, GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addGap(21)
+							.addComponent(lblTotalText)
+							.addGap(18)
+							.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addGap(106)
+							.addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(102)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+						.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneServices_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneImmunizations_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+						.addComponent(desktopPaneBoarding_Sales, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_panelSales.setVerticalGroup(
+			gl_panelSales.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelSales.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(desktopPaneServices_Sales, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneImmunizations_Sales, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneBoarding_Sales, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(desktopPaneProducts_Sales, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+						.addGroup(gl_panelSales.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+							.addGap(31)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTotalText)
+								.addComponent(lblTotal))
+							.addGap(16)
+							.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_panelSales.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(lblA_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblA_2, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnPay, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))))
+					.addGap(6))
+		);
 
 		JLabel lblServices = new JLabel("Services");
 		lblServices.setHorizontalAlignment(SwingConstants.CENTER);
@@ -4558,144 +4410,84 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 		lblPetBreed_Records = new JLabel("");
 		lblPetBreed_Records.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lblReminders = new JLabel("Reminders:");
+		lblReminders.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1
-				.setHorizontalGroup(gl_panel_1
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panel_1
-										.createSequentialGroup()
-										.addContainerGap(341, Short.MAX_VALUE)
-										.addComponent(btnEditPetRecords,
-												GroupLayout.PREFERRED_SIZE, 71,
-												GroupLayout.PREFERRED_SIZE)
-										.addContainerGap())
-						.addGroup(
-								gl_panel_1
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																lblDateOfBirth)
-														.addComponent(lblWeight)
-														.addComponent(lblColor)
-														.addComponent(lblSize)
-														.addComponent(lblSex)
-														.addComponent(lblType)
-														.addComponent(lblPet)
-														.addComponent(lblBreed))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																lblPetBreed_Records)
-														.addComponent(
-																lblPetName_Records)
-														.addComponent(
-																lblType_Records)
-														.addComponent(
-																lblSex_Records)
-														.addComponent(
-																lblSize_Records)
-														.addComponent(
-																lblColor_Records)
-														.addComponent(
-																lblWeight_Records)
-														.addComponent(
-																lblDateOfBirth_Records))
-										.addContainerGap(289, Short.MAX_VALUE)));
-		gl_panel_1
-				.setVerticalGroup(gl_panel_1
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panel_1
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(lblPet)
-														.addComponent(
-																lblPetName_Records))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(lblType)
-														.addComponent(
-																lblType_Records))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(lblSex)
-														.addComponent(
-																lblSex_Records))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(lblSize)
-														.addComponent(
-																lblSize_Records))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(lblColor)
-														.addComponent(
-																lblColor_Records))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(
-																lblDateOfBirth)
-														.addComponent(
-																lblDateOfBirth_Records))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(lblWeight)
-														.addComponent(
-																lblWeight_Records))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(lblBreed)
-														.addComponent(
-																lblPetBreed_Records))
-										.addPreferredGap(
-												ComponentPlacement.RELATED,
-												GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addComponent(btnEditPetRecords,
-												GroupLayout.PREFERRED_SIZE, 25,
-												GroupLayout.PREFERRED_SIZE)
-										.addContainerGap()));
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap(447, Short.MAX_VALUE)
+					.addComponent(btnEditPetRecords, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblDateOfBirth)
+						.addComponent(lblWeight)
+						.addComponent(lblColor)
+						.addComponent(lblSize)
+						.addComponent(lblSex)
+						.addComponent(lblType)
+						.addComponent(lblPet)
+						.addComponent(lblBreed))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblPetBreed_Records)
+						.addComponent(lblPetName_Records)
+						.addComponent(lblType_Records)
+						.addComponent(lblSex_Records)
+						.addComponent(lblSize_Records)
+						.addComponent(lblColor_Records)
+						.addComponent(lblWeight_Records)
+						.addComponent(lblDateOfBirth_Records))
+					.addContainerGap(430, Short.MAX_VALUE))
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblReminders)
+					.addContainerGap(457, Short.MAX_VALUE))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPet)
+						.addComponent(lblPetName_Records))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblType)
+						.addComponent(lblType_Records))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSex)
+						.addComponent(lblSex_Records))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSize)
+						.addComponent(lblSize_Records))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblColor)
+						.addComponent(lblColor_Records))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblDateOfBirth)
+						.addComponent(lblDateOfBirth_Records))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblWeight)
+						.addComponent(lblWeight_Records))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblBreed)
+						.addComponent(lblPetBreed_Records))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblReminders)
+					.addPreferredGap(ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+					.addComponent(btnEditPetRecords, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
 		panel_1.setLayout(gl_panel_1);
 
 		JLabel lblOwner = new JLabel("Owner:");

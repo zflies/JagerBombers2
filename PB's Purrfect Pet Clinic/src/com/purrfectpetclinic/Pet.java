@@ -2,8 +2,10 @@ package com.purrfectpetclinic;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -35,6 +37,7 @@ public class Pet {
 	final Double Weight;
 	final String Breed;
 	final String Notes;
+	public List<Reminder> Reminders = new ArrayList<Reminder>();
 	
 	Vector<Immunization> Immunizations = new Vector<Immunization>();
 	
@@ -491,6 +494,190 @@ public class Pet {
 				+ "WHERE ID = %d", Name, getPetSizeString(), Breed, getTypeString(), Color, new java.sql.Date(this.getDOB().getTime()), Prescriptions, Notes, Weight, PetID);
 		state.execute(commandstring);
 		state.close();
+	}
+
+	public void updateReminders (int PetID, List<String> immunizationReminder, List<String> wellnessReminder, List<String> labReminder) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = "";
+		String immunizationMethods = "";
+		String wellnessMethods = "";
+		String labMethods = "";
+		String immunizationFrequency = immunizationReminder.get(immunizationReminder.size()-1);
+		String wellnessFrequency = wellnessReminder.get(wellnessReminder.size()-1);
+		String labFrequency = labReminder.get(labReminder.size()-1);
+		
+		if(!immunizationReminder.isEmpty()){
+			for(int i = 0; i < immunizationReminder.size()-1; i++){
+				if(immunizationMethods.compareTo("") == 0){
+					immunizationMethods = immunizationReminder.get(i);
+				}
+				else{
+					immunizationMethods = immunizationMethods + "," + immunizationReminder.get(i);
+				}
+			}
+		}
+		if(!wellnessReminder.isEmpty()){
+			for(int i = 0; i < wellnessReminder.size()-1; i++){
+				if(wellnessMethods.compareTo("") == 0){
+					wellnessMethods = wellnessReminder.get(i);
+				}
+				else{
+					wellnessMethods = wellnessMethods + "," + wellnessReminder.get(i);
+				}
+			}
+		}
+		if(!labReminder.isEmpty()){
+			for(int i = 0; i < labReminder.size()-1; i++){
+				if(labMethods.compareTo("") == 0){
+					labMethods = labReminder.get(i);
+				}
+				else{
+					labMethods = labMethods + "," + labReminder.get(i);
+				}
+			}
+		}
+		//INSERT INTO `avalenti`.`Reminders` (`Pet_ID`, `Reminder`, `Reminder_Method`, `Reminder_Frequency`) VALUES ('1', 'immunization,lab work', 'email,text', 'oneWeek');
+		/*
+		 * UPDATE `avalenti`.`Reminders` SET `Reminder` = 'immunization,wellness visit',
+`Reminder_Method` = 'email,postcard',
+`Reminder_Frequency` = 'twoWeeks' WHERE `Reminders`.`Pet_ID` =1 AND `Reminders`.`Reminder` = 'immunization,lab work' AND `Reminders`.`Reminder_Method` = 'email,text';
+		 */
+		
+		//DELETE FROM `avalenti`.`Reminders` WHERE `Reminders`.`Pet_ID` = 1 AND `Reminders`.`Reminder` = \'immunization,wellness visit\'
+		
+		if(immunizationReminder.isEmpty()){
+			commandstring = String.format("DELETE FROM `avalenti`.`Reminders` WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = \'immunization\'", PetID);
+			state.execute(commandstring);
+		}
+		else if(!reminderExists(PetID, "immunization")){
+			commandstring = String.format("INSERT INTO `avalenti`.`Reminders` (`Pet_ID`, `Reminder`, `Reminder_Method`, `Reminder_Frequency`) VALUES ('%s', 'immunization', '%s', '%s');", Integer.toString(PetID),immunizationMethods, immunizationFrequency);
+			state.execute(commandstring);
+		}
+		else{
+			commandstring = String.format("UPDATE `avalenti`.`Reminders` SET `Reminder` = '%s', `Reminder_Method` = 'immunization',`Reminder_Frequency` = '%s' WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = 'immunization'", immunizationMethods, immunizationFrequency, PetID);
+			state.execute(commandstring);
+		}
+		
+		if(wellnessReminder.isEmpty()){
+			commandstring = String.format("DELETE FROM `avalenti`.`Reminders` WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = \'wellness visit\'", PetID);
+			state.execute(commandstring);
+		}
+		else if(!reminderExists(PetID, "wellness visit")){
+			commandstring = String.format("INSERT INTO `avalenti`.`Reminders` (`Pet_ID`, `Reminder`, `Reminder_Method`, `Reminder_Frequency`) VALUES ('%s', 'wellness visit', '%s', '%s');", Integer.toString(PetID),wellnessMethods, wellnessFrequency);
+			state.execute(commandstring);
+		}
+		else{
+			commandstring = String.format("UPDATE `avalenti`.`Reminders` SET `Reminder` = '%s', `Reminder_Method` = 'wellness visit',`Reminder_Frequency` = '%s' WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = 'wellness visit'", wellnessMethods, wellnessFrequency, PetID);
+			state.execute(commandstring);
+		}
+		
+		if(labReminder.isEmpty()){
+			commandstring = String.format("DELETE FROM `avalenti`.`Reminders` WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = \'lab work\'", PetID);
+			state.execute(commandstring);
+		}
+		else if(!reminderExists(PetID, "lab work")){
+			commandstring = String.format("INSERT INTO `avalenti`.`Reminders` (`Pet_ID`, `Reminder`, `Reminder_Method`, `Reminder_Frequency`) VALUES ('%s', 'lab work', '%s', '%s');", Integer.toString(PetID),labMethods, labFrequency);
+			state.execute(commandstring);
+		}
+		else{
+			commandstring = String.format("UPDATE `avalenti`.`Reminders` SET `Reminder` = '%s', `Reminder_Method` = 'lab work',`Reminder_Frequency` = '%s' WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = 'lab work'", labMethods, labFrequency, PetID);
+			state.execute(commandstring);
+		}
+		state.close();
+	}
+	
+	public void addReminders (List<String> immunizationReminder, List<String> wellnessReminder, List<String> labReminder) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		int PetID = getMostRecentPetID();
+		String commandstring = "";
+		String immunizationMethods = "";
+		String wellnessMethods = "";
+		String labMethods = "";
+		String immunizationFrequency = immunizationReminder.get(immunizationReminder.size()-1);
+		String wellnessFrequency = wellnessReminder.get(wellnessReminder.size()-1);
+		String labFrequency = labReminder.get(labReminder.size()-1);
+		
+		if(!immunizationReminder.isEmpty()){
+			for(int i = 0; i < immunizationReminder.size()-1; i++){
+				if(immunizationMethods.compareTo("") == 0){
+					immunizationMethods = immunizationReminder.get(i);
+				}
+				else{
+					immunizationMethods = immunizationMethods + "," + immunizationReminder.get(i);
+				}
+			}
+		}
+		if(!wellnessReminder.isEmpty()){
+			for(int i = 0; i < wellnessReminder.size()-1; i++){
+				if(wellnessMethods.compareTo("") == 0){
+					wellnessMethods = wellnessReminder.get(i);
+				}
+				else{
+					wellnessMethods = wellnessMethods + "," + wellnessReminder.get(i);
+				}
+			}
+		}
+		if(!labReminder.isEmpty()){
+			for(int i = 0; i < labReminder.size()-1; i++){
+				if(labMethods.compareTo("") == 0){
+					labMethods = labReminder.get(i);
+				}
+				else{
+					labMethods = labMethods + "," + labReminder.get(i);
+				}
+			}
+		}
+		
+		if(immunizationReminder.isEmpty()){
+			commandstring = String.format("DELETE FROM `avalenti`.`Reminders` WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = \'immunization\'", PetID);
+			state.execute(commandstring);
+		}
+		else{
+			commandstring = String.format("INSERT INTO `avalenti`.`Reminders` (`Pet_ID`, `Reminder`, `Reminder_Method`, `Reminder_Frequency`) VALUES ('%s', 'immunization', '%s', '%s');", Integer.toString(PetID),immunizationMethods, immunizationFrequency);
+			state.execute(commandstring);
+		}
+		
+		if(wellnessReminder.isEmpty()){
+			commandstring = String.format("DELETE FROM `avalenti`.`Reminders` WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = \'wellness visit\'", PetID);
+			state.execute(commandstring);
+		}
+		else{
+			commandstring = String.format("INSERT INTO `avalenti`.`Reminders` (`Pet_ID`, `Reminder`, `Reminder_Method`, `Reminder_Frequency`) VALUES ('%s', 'wellness visit', '%s', '%s');", Integer.toString(PetID),wellnessMethods, wellnessFrequency);
+			state.execute(commandstring);
+		}
+		
+		if(labReminder.isEmpty()){
+			commandstring = String.format("DELETE FROM `avalenti`.`Reminders` WHERE `Reminders`.`Pet_ID` = %d AND `Reminders`.`Reminder` = \'lab work\'", PetID);
+			state.execute(commandstring);
+		}
+		else{
+			commandstring = String.format("INSERT INTO `avalenti`.`Reminders` (`Pet_ID`, `Reminder`, `Reminder_Method`, `Reminder_Frequency`) VALUES ('%s', 'lab work', '%s', '%s');", Integer.toString(PetID),labMethods, labFrequency);
+			state.execute(commandstring);
+		}
+		state.close();
+	}
+	
+	private boolean reminderExists(int PetID, String reminderType) throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("SELECT * FROM `avalenti`.`Reminders` WHERE `Pet_ID` = %d AND `Reminders`.`Reminder` = '%s';", PetID, reminderType);
+		ResultSet rs = state.executeQuery(commandstring);
+		if(rs.getFetchSize() == 0){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	
+	private int getMostRecentPetID() throws SQLException{
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = "SELECT MAX( `ID` ) AS ID FROM avalenti.Pets";
+		ResultSet rs = state.executeQuery(commandstring);
+		if(rs.next() == true){
+			String id = rs.toString();
+			int id1 = Integer.parseInt(rs.getString("ID"));
+		}
+		return Integer.parseInt(rs.getString("ID"));
 	}
 	
 	public String toString(){
