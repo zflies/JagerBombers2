@@ -846,4 +846,8 @@ public class JBoardingCalendar extends JPanel implements PropertyChangeListener 
 		}
 		relayoutSpecialButtonPanel();
 	}
+	
+	public void refreshBoardingCalendar(){
+		dayChooser.refreshBoardingCalendar();
+	}
 }

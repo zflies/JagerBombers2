@@ -23,15 +23,16 @@ import com.jgoodies.looks.FontSet;
 import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.toedter.calendar.JAppointmentCalendar;
-
 import com.toedter.calendar.JAppointmentDateChooser;
 import com.toedter.calendar.JAppointmentDayChooser;
 import com.toedter.calendar.JBoardingCalendar;
 import com.toedter.calendar.JBoardingDateChooser;
+import com.toedter.calendar.JBoardingDayChooser;
 import com.toedter.calendar.JDateChooser;
 //import com.toedter.calendar.demo.BirthdayEvaluator;
 //import com.toedter.calendar.demo.BoardingDateEvaluator;
 //import com.toedter.calendar.demo.TestDateEvaluator;
+
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -3246,7 +3247,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
 
-		JBoardingCalendar calendarViewBoarding = new JBoardingCalendar();
+		final JBoardingCalendar calendarViewBoarding = new JBoardingCalendar();
 		
 		JDesktopPane desktopPaneFood_Boarding = new JDesktopPane();
 
@@ -3717,6 +3718,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 					return;
 				}
 				
+				// Refresh the Boarding Calendar
+				calendarViewBoarding.refreshBoardingCalendar();
 			}
 		});
 		btnCreate_Boarding.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
@@ -4766,10 +4769,15 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 			Appointment appointment = Monday_Appointments.get(i);
 
-			data.add(pet.getName(appointment.nPetID));
-			data.add(appointment.sTimeSelected);
+			String name = pet.getName(appointment.nPetID);
+			
+			if ( name != "" )
+			{
+				data.add(name);
+				data.add(appointment.sTimeSelected);
 
-			Monday_Appointments_TableData.add(data);
+				Monday_Appointments_TableData.add(data);
+			}
 		}
 
 		for (int i = 0; i < Tuesday_Appointments.size(); i++) {
@@ -4777,10 +4785,15 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 			Appointment appointment = Tuesday_Appointments.get(i);
 
-			data.add(pet.getName(appointment.nPetID));
-			data.add(appointment.sTimeSelected);
+			String name = pet.getName(appointment.nPetID);
+			
+			if ( name != "" )
+			{
+				data.add(name);
+				data.add(appointment.sTimeSelected);
 
-			Tuesday_Appointments_TableData.add(data);
+				Tuesday_Appointments_TableData.add(data);
+			}
 		}
 
 		for (int i = 0; i < Wednesday_Appointments.size(); i++) {
@@ -4788,10 +4801,15 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 			Appointment appointment = Wednesday_Appointments.get(i);
 
-			data.add(pet.getName(appointment.nPetID));
-			data.add(appointment.sTimeSelected);
+			String name = pet.getName(appointment.nPetID);
+			
+			if ( name != "" )
+			{
+				data.add(name);
+				data.add(appointment.sTimeSelected);
 
-			Wednesday_Appointments_TableData.add(data);
+				Wednesday_Appointments_TableData.add(data);
+			}
 		}
 
 		for (int i = 0; i < Thursday_Appointments.size(); i++) {
@@ -4799,10 +4817,15 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 			Appointment appointment = Thursday_Appointments.get(i);
 
-			data.add(pet.getName(appointment.nPetID));
-			data.add(appointment.sTimeSelected);
+			String name = pet.getName(appointment.nPetID);
+			
+			if ( name != "" )
+			{
+				data.add(name);
+				data.add(appointment.sTimeSelected);
 
-			Thursday_Appointments_TableData.add(data);
+				Thursday_Appointments_TableData.add(data);
+			}
 		}
 
 		for (int i = 0; i < Friday_Appointments.size(); i++) {
@@ -4810,10 +4833,15 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 			Appointment appointment = Friday_Appointments.get(i);
 
-			data.add(pet.getName(appointment.nPetID));
-			data.add(appointment.sTimeSelected);
+			String name = pet.getName(appointment.nPetID);
+			
+			if ( name != "" )
+			{
+				data.add(name);
+				data.add(appointment.sTimeSelected);
 
-			Friday_Appointments_TableData.add(data);
+				Friday_Appointments_TableData.add(data);
+			}
 		}
 
 		for (int i = 0; i < Saturday_Appointments.size(); i++) {
@@ -4821,10 +4849,15 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 			Appointment appointment = Saturday_Appointments.get(i);
 
-			data.add(pet.getName(appointment.nPetID));
-			data.add(appointment.sTimeSelected);
+			String name = pet.getName(appointment.nPetID);
+			
+			if ( name != "" )
+			{
+				data.add(name);
+				data.add(appointment.sTimeSelected);
 
-			Saturday_Appointments_TableData.add(data);
+				Saturday_Appointments_TableData.add(data);
+			}
 		}
 
 		/* Refresh Monday Table */
