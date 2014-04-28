@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Vector;
 
 import com.purrfectpetclinic.Boarding;
+import com.purrfectpetclinic.Pet;
+import com.purrfectpetclinic.Boarding.Options;
 
 public class BoardingDateEvaluator {
 
@@ -17,18 +19,62 @@ public class BoardingDateEvaluator {
 	@SuppressWarnings("deprecation")
 	public String getPetsBoarding( Date date, Vector<Boarding> monthBoarding ) throws SQLException {
 		
-			toolTip = null;					// Can be changed to include notes for the pets
+			toolTip = "";					// Can be changed to include notes for the pets
 			
 			String sPets = "";
+			String sPetName = "";
+			Vector<Options> options = new Vector<Options>();
+			String sOptions = "";
+			String sNotes = "";
+			Pet pet = null;
 			
 			/* Get the pets that are being boarded on the given date */
 			for (int i = 0; i < monthBoarding.size(); i++ )
 			{
 				Boarding currBoarding = monthBoarding.get( i );
 
-				if ( date.getDate() <= currBoarding.getEndDate().getDate() && date.getDate() >= currBoarding.getStartDate().getDate() )
+				if( date.compareTo( currBoarding.getEndDate() ) <= 0 && currBoarding.getStartDate().compareTo( date ) <= 0 )
 				{
-					sPets += "<br>" + monthBoarding.get( i ).getPet().getName();
+					pet = monthBoarding.get( i ).getPet();
+					sPetName = pet.getName();
+					options = currBoarding.getOptions();
+										
+					for (int j = 0; j < options.size(); j++)
+					{
+						Options curOption = options.elementAt(j);
+						if(curOption == Options.bathgroom)
+							sOptions += "Bathing/Grooming; ";
+						else if(curOption == Options.addplaytime)
+							sOptions += "Additional Play Time; ";
+						else if(curOption == Options.dentalcleaning)
+							sOptions += "Dental Cleaning; ";
+						else if(curOption == Options.lowfatfood)
+							sOptions += "Low Fat Food; ";
+					}
+					
+					sNotes = currBoarding.getNotes();
+					if ( sOptions != "" )
+					{
+						if ( sNotes.compareTo("Notes") != 0 )
+						{
+							toolTip += sPetName + " -- " + sOptions + " (" + sNotes + ")" +"<br><br>"; 
+						}
+						else
+						{
+							toolTip += sPetName + " -- " + sOptions + "<br><br>"; 
+						}
+					}
+					else
+					{
+						if ( sNotes.compareTo("Notes") != 0 )
+						{
+							toolTip += sPetName + " -- " + sOptions + " (" + sNotes + ")" +"<br><br>"; 
+						}
+					}
+					
+					sPets += "<br>" + sPetName;
+					
+					
 				}
 			}
 			

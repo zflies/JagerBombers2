@@ -1,9 +1,14 @@
 package com.purrfectpetclinic;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 import java.sql.Statement;
+
+import com.purrfectpetclinic.DBConnection;
+import com.purrfectpetclinic.Owner;
+import com.purrfectpetclinic.Pet;
 
 
 public class Appointment {
@@ -296,23 +301,19 @@ public class Appointment {
 					Appointment new_appointment = new Appointment(ID, Pet_ID, Service_Name, Vet_ID, Date, Time, Completed, Notes);
 					DayAppointments.add(new_appointment);
 				}
+				state.close();
+
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
-				System.out.println("Error: Appointment.java - getWeekAppointments()");
+				System.out.println("Error: Appointment.java - getDayAppointments()");
 			}
 		}
 		else
-			System.err.println("Error: Appointment.java - getWeekAppointments()");
-		
-		try {
-			state.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			System.err.println("Error: Appointment.java - getDayAppointments()");
 
 		return DayAppointments;	
 
-	} // end of function getWeekAppointments()
+	} // end of function getDayAppointments()
 	
 	
 
