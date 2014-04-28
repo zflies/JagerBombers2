@@ -5110,43 +5110,47 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 			Pet pet = appointment.getPet();
 			Owner owner = appointment.getOwner();
 			Date date = appointment.getDateSelected();
+			
+			if ( owner != null && pet != null )
+			{
+				lblDateView_Appointment.setText("DATE:   " + (date.getMonth() + 2)
+						+ "-" + date.getDate() + "-" + (date.getYear() + 1900));
 
-			lblDateView_Appointment.setText("DATE:   " + (date.getMonth() + 2)
-					+ "-" + date.getDate() + "-" + (date.getYear() + 1900));
+				Date dob = pet.getDOB();
+				String sDOB = dob.getMonth() + "-" + dob.getDate() + "-"
+						+ (dob.getYear() + 1900);
 
-			Date dob = pet.getDOB();
-			String sDOB = dob.getMonth() + "-" + dob.getDate() + "-"
-					+ (dob.getYear() + 1900);
+				lblTimeView_Appointment.setText("TIME:   "
+						+ appointment.getTimeSelected());
+				editorPaneNotesView_Appointment.setText("NOTES:   "
+						+ appointment.getNotes());
+				lblServiceView_Appointment.setText("SERVICE: "
+						+ appointment.getServiceName());
+				lblVetView_Appointment.setText("Vet:  " + appointment.getVetID());
+				lblPetOwnerView_Appointment.setText("Owner:    "
+						+ owner.getFullName().toUpperCase());
+				lblPetOwnerPhoneView_Appointment.setText("Phone:    "
+						+ owner.getPhone().toUpperCase());
+				lblPetSexView_Appointment.setText("Sex:        "
+						+ pet.getPetSex().toString().toUpperCase());
+				;
+				lblPetBreedView_Appointment.setText("Breed:    "
+						+ pet.getBreed().toUpperCase());
+				lblPetDOBView_Appointment
+				.setText("DOB:      " + sDOB.toUpperCase());
+				lblPetWeightView_Appointment.setText("Weight:   "
+						+ pet.getWeight().toString().toUpperCase() + " lbs.");
+				lblPetColorView_Appointment.setText("Color:     "
+						+ pet.getColor().toUpperCase());
+				lblPetSizeView_Appointment.setText("Size:       "
+						+ pet.getPetSize().toString().toUpperCase());
+				lblPetTypeView_Appointment.setText("Type:      "
+						+ pet.getPetType().toString().toUpperCase());
+				lblPetNameView_Appointment.setText("Pet:     " + pet.getName());
 
-			lblTimeView_Appointment.setText("TIME:   "
-					+ appointment.getTimeSelected());
-			editorPaneNotesView_Appointment.setText("NOTES:   "
-					+ appointment.getNotes());
-			lblServiceView_Appointment.setText("SERVICE: "
-					+ appointment.getServiceName());
-			lblVetView_Appointment.setText("Vet:  " + appointment.getVetID());
-			lblPetOwnerView_Appointment.setText("Owner:    "
-					+ owner.getFullName().toUpperCase());
-			lblPetOwnerPhoneView_Appointment.setText("Phone:    "
-					+ owner.getPhone().toUpperCase());
-			lblPetSexView_Appointment.setText("Sex:        "
-					+ pet.getPetSex().toString().toUpperCase());
-			;
-			lblPetBreedView_Appointment.setText("Breed:    "
-					+ pet.getBreed().toUpperCase());
-			lblPetDOBView_Appointment
-					.setText("DOB:      " + sDOB.toUpperCase());
-			lblPetWeightView_Appointment.setText("Weight:   "
-					+ pet.getWeight().toString().toUpperCase() + " lbs.");
-			lblPetColorView_Appointment.setText("Color:     "
-					+ pet.getColor().toUpperCase());
-			lblPetSizeView_Appointment.setText("Size:       "
-					+ pet.getPetSize().toString().toUpperCase());
-			lblPetTypeView_Appointment.setText("Type:      "
-					+ pet.getPetType().toString().toUpperCase());
-			lblPetNameView_Appointment.setText("Pet:     " + pet.getName());
-
-			btnDeleteApptView_Appointment.setEnabled(true);
+				btnDeleteApptView_Appointment.setEnabled(true); 
+			}
+			
 		} else {
 			lblDateView_Appointment.setText("DATE:   ");
 			lblTimeView_Appointment.setText("TIME:   ");

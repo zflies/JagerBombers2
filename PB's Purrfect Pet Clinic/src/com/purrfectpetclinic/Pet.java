@@ -378,9 +378,9 @@ public class Pet {
 			{
 				name = rs.getString("Name");
 			}
+			state.close();
 		}
 
-		state.close();
 		
 		return name;
 	}
