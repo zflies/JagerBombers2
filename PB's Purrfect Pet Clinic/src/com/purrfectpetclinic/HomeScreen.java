@@ -3442,6 +3442,9 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 				c.add(Calendar.DAY_OF_MONTH, 6); 
 				Date weekEnd = c.getTime();
 				
+				//reset pet food UI labels
+				clearPetFoodBoardingUI();
+				
 				try {
 					Vector<PetFood> PetFoods = PetFood.getFoodWeights(weekStart, weekEnd);
 					for(int i = 0; i < PetFoods.size(); i++){
