@@ -24,10 +24,14 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.toedter.calendar.JBoardingDateChooser;
 import com.toedter.calendar.JDateChooser;
+
+import javax.swing.JCheckBox;
 
 
 public class NewPetFrame extends JFrame {
@@ -39,6 +43,23 @@ public class NewPetFrame extends JFrame {
 	private JTextField txtPetBreed;
 	private JTextField txtPetPrescriptions;
 	private JComponent DateChooser;
+	
+	private JCheckBox chckbxImmunization;
+	private JCheckBox chckbxWellnessVisit;
+	private JCheckBox chckbxLabWork;
+	private JComboBox comboBoxImmunization;
+	private JComboBox comboBoxWellness;
+	private JComboBox comboBoxLabWork;
+	
+	private JCheckBox chckbxEmailImmunization;
+	private JCheckBox chckbxTextImmunization;
+	private JCheckBox chckbxPostcardImmunization;
+	private JCheckBox chckbxEmailWellness;
+	private JCheckBox chckbxTextWellness;
+	private JCheckBox chckbxPostcardWellness;
+	private JCheckBox chckbxEmailLabWork;
+	private JCheckBox chckbxTextLabWork;
+	private JCheckBox chckbxPostcardLabWork;
 
 	/**
 	 * Launch the application.
@@ -71,7 +92,7 @@ public class NewPetFrame extends JFrame {
 	public NewPetFrame(final Owner owner) {
 		setTitle("Add a Pet");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 600);
+		setBounds(100, 100, 450, 887);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -169,11 +190,82 @@ public class NewPetFrame extends JFrame {
 				String Breed = txtPetBreed.getText();
 				Date DOB = ((JDateChooser) DateChooser).getDateEditor().getDate();
 				
+				List<String> immunizationReminder = new ArrayList<String> ();
+				List<String> wellnessReminder = new ArrayList<String> ();
+				List<String> labReminder = new ArrayList<String> ();
+				
+				if(chckbxImmunization.isSelected()){
+					if(chckbxEmailImmunization.isSelected()){
+						immunizationReminder.add("email");
+					}
+					if(chckbxTextImmunization.isSelected()){
+						immunizationReminder.add("text");		
+					}
+					if(chckbxPostcardImmunization.isSelected()){
+						immunizationReminder.add("postcard");
+					}
+					int index = comboBoxImmunization.getSelectedIndex();
+					if(index == 0){
+						immunizationReminder.add("oneWeek");
+					}
+					else if(index == 1){
+						immunizationReminder.add("twoWeeks");
+					}
+					else{
+						immunizationReminder.add("oneMonth");
+					}
+				}
+				
+				if(chckbxWellnessVisit.isSelected()){
+					if(chckbxEmailWellness.isSelected()){
+						wellnessReminder.add("email");
+					}
+					if(chckbxTextWellness.isSelected()){
+						wellnessReminder.add("text");		
+					}
+					if(chckbxPostcardWellness.isSelected()){
+						wellnessReminder.add("postcard");
+					}
+					int index = comboBoxWellness.getSelectedIndex();
+					if(index == 0){
+						wellnessReminder.add("oneWeek");
+					}
+					else if(index == 1){
+						wellnessReminder.add("twoWeeks");
+					}
+					else{
+						wellnessReminder.add("oneMonth");
+					}
+				}
+				
+				if(chckbxLabWork.isSelected()){
+					if(chckbxEmailLabWork.isSelected()){
+						labReminder.add("email");
+					}
+					if(chckbxTextLabWork.isSelected()){
+						labReminder.add("text");		
+					}
+					if(chckbxPostcardLabWork.isSelected()){
+						labReminder.add("postcard");
+					}
+					int index = comboBoxLabWork.getSelectedIndex();
+					if(index == 0){
+						labReminder.add("oneWeek");
+					}
+					else if(index == 1){
+						labReminder.add("twoWeeks");
+					}
+					else{
+						labReminder.add("oneMonth");
+					}
+				}
+				
 				
 				//create and add pet to DB
 				Pet newPet = new Pet(Type, Name, owner.getFullName(), Sex, Size, Color, DOB, Prescriptions, Double.valueOf(WeightString), Breed, Notes);
 				try {
 					newPet.addPetDB();
+					newPet.addReminders(immunizationReminder, wellnessReminder, labReminder);
 					dispose();
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(contentPane, "Could not add Pet at this time.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -182,42 +274,123 @@ public class NewPetFrame extends JFrame {
 		});
 		
 		DateChooser = new JDateChooser();
+		
+		JLabel lblReminders = new JLabel("Reminders:");
+		
+		chckbxImmunization = new JCheckBox("Immunization");
+		
+		chckbxEmailImmunization = new JCheckBox("Email");
+		
+		chckbxTextImmunization = new JCheckBox("Text");
+		
+		chckbxPostcardImmunization = new JCheckBox("Postcard");
+		
+		comboBoxImmunization = new JComboBox(new DefaultComboBoxModel(new String[] {"1 Week", "2 Weeks", "1 Month"}));
+		
+		chckbxWellnessVisit = new JCheckBox("Wellness Visit");
+		
+		chckbxEmailWellness = new JCheckBox("Email");
+		
+		chckbxTextWellness = new JCheckBox("Text");
+		
+		chckbxPostcardWellness = new JCheckBox("Postcard");
+		
+		comboBoxWellness = new JComboBox(new DefaultComboBoxModel(new String[] {"1 Week", "2 Weeks", "1 Month"}));
+		
+		chckbxLabWork = new JCheckBox("Lab Work");
+		
+		chckbxEmailLabWork = new JCheckBox("Email");
+		
+		chckbxTextLabWork = new JCheckBox("Text");
+		
+	    chckbxPostcardLabWork = new JCheckBox("Postcard");
+		
+		comboBoxLabWork = new JComboBox(new DefaultComboBoxModel(new String[] {"1 Week", "2 Weeks", "1 Month"}));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblPrescriptions)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtPetPrescriptions, GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
-						.addComponent(lblNotes)
+							.addContainerGap()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(panel, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(lblPrescriptions)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtPetPrescriptions, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+								.addComponent(lblNotes)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblDateOfBirth)
+										.addComponent(lblColor)
+										.addComponent(lblWeight)
+										.addComponent(lblBreed)
+										.addComponent(lblName)
+										.addComponent(lblSex)
+										.addComponent(lblType)
+										.addComponent(lblSize))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(cboPetType, 0, 345, Short.MAX_VALUE)
+										.addComponent(cboPetSex, 0, 345, Short.MAX_VALUE)
+										.addComponent(txtPetName, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+										.addComponent(cboPetSize, Alignment.TRAILING, 0, 345, Short.MAX_VALUE)
+										.addComponent(txtPetColor, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+										.addComponent(DateChooser, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+										.addComponent(txtPetWeight, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+										.addComponent(txtPetBreed, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)))))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnCancel)
-							.addPreferredGap(ComponentPlacement.RELATED, 268, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 262, Short.MAX_VALUE)
 							.addComponent(btnAddPet))
 						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblReminders))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblDateOfBirth)
-								.addComponent(lblColor)
-								.addComponent(lblWeight)
-								.addComponent(lblBreed)
-								.addComponent(lblName)
-								.addComponent(lblSex)
-								.addComponent(lblType)
-								.addComponent(lblSize))
-							.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(29)
+									.addComponent(chckbxEmailImmunization)
+									.addGap(18)
+									.addComponent(chckbxTextImmunization)
+									.addGap(18)
+									.addComponent(chckbxPostcardImmunization))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(chckbxImmunization)
+									.addPreferredGap(ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+									.addComponent(comboBoxImmunization, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(cboPetType, 0, 335, Short.MAX_VALUE)
-								.addComponent(cboPetSex, 0, 335, Short.MAX_VALUE)
-								.addComponent(txtPetName, GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
-								.addComponent(cboPetSize, Alignment.TRAILING, 0, 335, Short.MAX_VALUE)
-								.addComponent(txtPetColor, GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
-								.addComponent(DateChooser, GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
-								.addComponent(txtPetWeight, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
-								.addComponent(txtPetBreed, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(29)
+									.addComponent(chckbxEmailWellness)
+									.addGap(18)
+									.addComponent(chckbxTextWellness)
+									.addGap(18)
+									.addComponent(chckbxPostcardWellness)
+									.addGap(115))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(chckbxWellnessVisit)
+									.addPreferredGap(ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+									.addComponent(comboBoxWellness, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(29)
+									.addComponent(chckbxEmailLabWork)
+									.addGap(18)
+									.addComponent(chckbxTextLabWork)
+									.addGap(18)
+									.addComponent(chckbxPostcardLabWork))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(chckbxLabWork)
+									.addPreferredGap(ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+									.addComponent(comboBoxLabWork, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -264,10 +437,40 @@ public class NewPetFrame extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
+					.addComponent(lblReminders)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chckbxImmunization)
+						.addComponent(comboBoxImmunization, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chckbxEmailImmunization)
+						.addComponent(chckbxTextImmunization)
+						.addComponent(chckbxPostcardImmunization))
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chckbxWellnessVisit)
+						.addComponent(comboBoxWellness, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chckbxEmailWellness)
+						.addComponent(chckbxTextWellness)
+						.addComponent(chckbxPostcardWellness))
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chckbxLabWork)
+						.addComponent(comboBoxLabWork, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chckbxEmailLabWork)
+						.addComponent(chckbxTextLabWork)
+						.addComponent(chckbxPostcardLabWork))
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(btnCancel)
-						.addComponent(btnAddPet))
-					.addContainerGap())
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(btnAddPet)
+							.addContainerGap())))
 		);
 		panel.setLayout(new BorderLayout(0, 0));
 		
