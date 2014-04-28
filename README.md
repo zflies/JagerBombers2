@@ -20,3 +20,5 @@ Option 2. Ensure Eclipse is installed and supports Swing/Window
 ------------------------------------------------------------------------
 Program Description
 ------------------------------------------------------------------------
+
+Used custom JCalendar varient from http://toedter.com/jcalendar/
