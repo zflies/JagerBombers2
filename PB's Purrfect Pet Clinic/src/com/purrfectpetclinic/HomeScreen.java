@@ -34,6 +34,7 @@ import com.toedter.calendar.JDateChooser;
 //import com.toedter.calendar.demo.TestDateEvaluator;
 
 
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -2945,7 +2946,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 				DefaultTableModel model = (DefaultTableModel) servicesTable
 						.getModel();
 				for (int i = 0; i < selectedRows.length; i++) {
-					model.removeRow(i);
+					removeFromTotal(Double.parseDouble((String) model.getValueAt(selectedRows[i], 1)));
+					model.removeRow(selectedRows[i]);
 				}
 			}
 		});
@@ -5174,6 +5176,12 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		updateTicket(itemName, itemPrice);
 		double currentTotal = getCurrentTotal();
 		currentTotal += itemPrice;
+		lblTotal.setText("$" + df.format(currentTotal));
+	}
+	
+	private void removeFromTotal(double itemPrice){
+		double currentTotal = getCurrentTotal();
+		currentTotal -= itemPrice;
 		lblTotal.setText("$" + df.format(currentTotal));
 	}
 
