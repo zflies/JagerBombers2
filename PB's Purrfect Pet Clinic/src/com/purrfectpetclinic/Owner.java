@@ -164,7 +164,18 @@ public class Owner {
 						}
 					}
 					
-					
+					//get Reminders of pet
+					Statement state3 = DBConnection.OpenConnection();
+					commandstring = String.format("SELECT * FROM Reminders WHERE Pet_ID = %d", PetID);
+					ResultSet rs3 = state2.executeQuery(commandstring);
+					while(rs3.next()){
+						String reminder = rs3.getString("Reminder");
+						String reminderMethod = rs3.getString("Reminder_Method");
+						String reminderFrequency = rs3.getString("Reminder_Frequency");
+						Reminder petReminder = new Reminder(reminder, reminderMethod, reminderFrequency);
+						newPet.Reminders.add(petReminder);
+					}
+					state3.close();
 					this.Pets.add(newPet);
 					state2.close();
 				}

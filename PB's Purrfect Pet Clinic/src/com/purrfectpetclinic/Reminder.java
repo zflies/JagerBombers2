@@ -22,9 +22,19 @@ public class Reminder{
 	public ReminderFrequency frequency;
 	public ReminderMethod method;
 	
+	public String typeDisplay;
+	public String frequencyDisplay;
+	public String methodDisplay;
+	
 	public Reminder(ReminderType Type, ReminderFrequency Frequency, ReminderMethod Method){
 		this.type = Type;
 		this.frequency = Frequency;
 		this.method = Method;
+	}
+
+	public Reminder(String reminder, String reminderMethod, String reminderFrequency) {
+		this.typeDisplay = reminder;
+		this.methodDisplay = reminderMethod;
+		this.frequencyDisplay = reminderFrequency;
 	}
 }
