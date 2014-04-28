@@ -161,6 +161,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 	private JTextField txtPetType_Boarding;
 	private JTextField txtPetSize_Boarding;
 	private JDateChooser dateChooserFoodEstimate_Boarding;
+	private JBoardingCalendar calendarViewBoarding;
 
 	private JTextField txtFirstName;
 	private JTextField textField;
@@ -3246,10 +3247,10 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		tabbedPane.addTab("  Boarding   ", null, panelBoarding, null);
 
 		JDesktopPane desktopPaneCreate_Boarding = new JDesktopPane();
-
-		final JBoardingCalendar calendarViewBoarding = new JBoardingCalendar();
 		
 		JDesktopPane desktopPaneFood_Boarding = new JDesktopPane();
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
 
 		GroupLayout gl_panelBoarding = new GroupLayout(panelBoarding);
 		gl_panelBoarding.setHorizontalGroup(
@@ -3258,23 +3259,28 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 					.addContainerGap()
 					.addComponent(desktopPaneCreate_Boarding, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
-						.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
-						.addComponent(desktopPaneFood_Boarding))
-					.addContainerGap())
+					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.LEADING)
+						.addComponent(desktopPaneFood_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panelBoarding.createSequentialGroup()
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+							.addGap(2)))
+					.addGap(4))
 		);
 		gl_panelBoarding.setVerticalGroup(
 			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelBoarding.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panelBoarding.createSequentialGroup()
-							.addComponent(calendarViewBoarding, GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
-							.addGap(8)
+						.addGroup(Alignment.TRAILING, gl_panelBoarding.createSequentialGroup()
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(desktopPaneFood_Boarding, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE))
 						.addComponent(desktopPaneCreate_Boarding, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE))
 					.addContainerGap())
 		);
+		
+		calendarViewBoarding = new JBoardingCalendar();
+		scrollPane_1.setViewportView(calendarViewBoarding);
 		
 		Calendar calendar = Calendar.getInstance();
 		dateChooserFoodEstimate_Boarding = new JDateChooser(new Date());
