@@ -44,9 +44,9 @@ public class DBConnection {
 		}
 		
 
-		//String url = "jdbc:mysql://" + configURL + username; //server + database string
+		String url = "jdbc:mysql://" + configURL + username; //server + database string
 
-		String url = "jdbc:mysql://localhost/" + username; //***This is connecting to the local MySQL server
+		//String url = "jdbc:mysql://localhost/" + username; //***This is connecting to the local MySQL server
 
 		/* This is for Zach */
 		/*

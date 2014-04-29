@@ -87,17 +87,18 @@ public class Owner {
 	
 	public int getID() throws SQLException{
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = String.format("SELECT ID FROM owner WHERE FirstName = '%s' AND LastName = '%s'", FirstName, LastName);
+		String commandstring = String.format("SELECT ID FROM Owner WHERE FirstName = '%s' AND LastName = '%s'", FirstName, LastName);
 		ResultSet rs = state.executeQuery(commandstring);
 		rs.next();
 		int ID = rs.getInt("ID");
 		state.close();
+		rs.close();
 		return ID;
 	}
 	
 	public void getPetsDB() throws Exception{
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = "SELECT * FROM pets WHERE Pets.Owner_ID = (SELECT ID FROM owner WHERE FirstName = '" + this.FirstName + "' AND LastName = '" + this.LastName + "') ORDER BY Name ASC;";
+		String commandstring = "SELECT * FROM Pets WHERE Pets.Owner_ID = (SELECT ID FROM Owner WHERE FirstName = '" + this.FirstName + "' AND LastName = '" + this.LastName + "') ORDER BY Name ASC;";
 		
 		if(state != null){
 			try {
@@ -179,6 +180,7 @@ public class Owner {
 					this.Pets.add(newPet);
 					state2.close();
 				}
+				rs.close();
 			} catch (SQLException e) {
 				throw new Exception("Error in SQL Execution");
 				}
@@ -192,7 +194,7 @@ public class Owner {
 		Vector<Owner> Owners = new Vector<Owner>();
 		
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = "SELECT * FROM owner ORDER BY LastName ASC;";
+		String commandstring = "SELECT * FROM Owner ORDER BY LastName ASC;";
 		
 		if(state != null){
 			try {
@@ -210,6 +212,7 @@ public class Owner {
 					newOwner.getPetsDB();
 					Owners.add(newOwner);
 				}
+				rs.close();
 			} catch (SQLException e) {
 				throw new Exception("Error in SQL Execution");
 				}
@@ -224,7 +227,7 @@ public class Owner {
 	public void addOwnerDB() throws SQLException{
 		//add this Owner to the DB
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = String.format("INSERT INTO owner (FirstName, LastName, Address, City, State, Zip, Phone) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+		String commandstring = String.format("INSERT INTO Owner (FirstName, LastName, Address, City, State, Zip, Phone) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
 				FirstName, LastName, Address, City, State, Zip, Phone);
 		state.execute(commandstring);
 		state.close();
@@ -235,7 +238,7 @@ public class Owner {
 		Statement state = DBConnection.OpenConnection();
 		
 		//Find OwnerID of owner being replaced
-		String commandstring = String.format("SELECT ID FROM owner WHERE FirstName = '%s' AND LastName = '%s' AND Phone = '%s';",
+		String commandstring = String.format("SELECT ID FROM Owner WHERE FirstName = '%s' AND LastName = '%s' AND Phone = '%s';",
 				oldOwner.getFirstName(), oldOwner.getLastName(), oldOwner.getPhone());
 		
 		if(state != null){
@@ -244,9 +247,10 @@ public class Owner {
 				int ID = rs.getInt("ID");
 				
 				//update owner record in DB
-				commandstring = String.format("UPDATE owner SET FirstName = '%s', LastName = '%s', Address = '%s', City = '%s', State = '%s', Zip = '%s', Phone = '%s' WHERE ID = %d",
+				commandstring = String.format("UPDATE Owner SET FirstName = '%s', LastName = '%s', Address = '%s', City = '%s', State = '%s', Zip = '%s', Phone = '%s' WHERE ID = %d",
 						FirstName, LastName, Address, City, State, Zip, Phone, ID);
 				state.execute(commandstring);
+				rs.close();
 		}
 		else
 			System.err.println("Statement was null.  No connection?");
@@ -256,7 +260,7 @@ public class Owner {
 	public void deleteOwner() throws SQLException{
 		Statement state = DBConnection.OpenConnection();
 		//Find OwnerID of owner being replaced
-		String commandstring = String.format("SELECT ID FROM owner WHERE FirstName = '%s' AND LastName = '%s' AND Phone = '%s';",
+		String commandstring = String.format("SELECT ID FROM Owner WHERE FirstName = '%s' AND LastName = '%s' AND Phone = '%s';",
 						this.getFirstName(), this.getLastName(), this.getPhone());
 		
 		int ID;
@@ -264,17 +268,18 @@ public class Owner {
 			ResultSet rs = state.executeQuery(commandstring);
 			rs.next();
 			ID = rs.getInt("ID");
+			rs.close();
 		}
 		else{
 			System.err.println("Statement was null.  No connection?");
 			return;
 		}
 		//delete owner from DB
-		commandstring = String.format("DELETE FROM owner WHERE ID = %d;", ID);
+		commandstring = String.format("DELETE FROM Owner WHERE ID = %d;", ID);
 		state.execute(commandstring);
 		
 		//delete the owners pets from DB
-		commandstring = String.format("DELETE FROM pets WHERE Owner_ID = %d;", ID);
+		commandstring = String.format("DELETE FROM Pets WHERE Owner_ID = %d;", ID);
 		state.execute(commandstring);
 		
 		state.close();
