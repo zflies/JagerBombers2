@@ -5459,8 +5459,8 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 						petName = rs2.getString("Name");
 					}
 					state2.close();
-					rs.close();
-					JOptionPane.showMessageDialog(panelAppointments, petName + "'s owner needs to have a " + labVisitsNeeded.get(i+2) + " sent to them for lab works");
+					rs2.close();
+					JOptionPane.showMessageDialog(panelAppointments, petName + "'s owner needs to have a " + labVisitsNeeded.get(i+2) + " sent to them for lab work");
 				}
 			}
 			state.close();
