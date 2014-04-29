@@ -5249,9 +5249,12 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		while(rs.next()){
 			petIDs.add(Integer.parseInt(rs.getString("Pet_ID")));
 		}
+		rs.close();
 		state.close();
 		
 		displayImmunizations(petIDs);
+		displayWellness(petIDs);
+		displayLab(petIDs);
 	}
 	
 	private void displayImmunizations(List petIDs) throws SQLException, ParseException{
@@ -5271,6 +5274,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 				immunizationsNeeded.add(rs.getString("Reminder_Frequency"));
 				immunizationsNeeded.add(rs.getString("Reminder_Method"));
 			}
+			rs.close();
 			state.close();
 		}
 		
@@ -5292,9 +5296,13 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 					while(rs2.next()){
 						petName = rs2.getString("Name");
 					}
+					state2.close();
+					rs2.close();
 					JOptionPane.showMessageDialog(panelAppointments, petName + "'s owner needs to have a " + immunizationsNeeded.get(i+2) + " sent to them for " + immunization);
 				}
 			}
+			state.close();
+			rs.close();
 		}
 	}
 	
@@ -5326,6 +5334,138 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 			}
 		}
 		return false;
+	}
+	
+	private void displayWellness(List petIDs) throws SQLException, ParseException{
+		//get all pets that have immunization reminders
+		List visitsNeeded = new ArrayList ();
+		Statement state;
+		String commandstring = "";
+		ResultSet rs;
+		String reminderMethod = "";
+		String reminderFrequency = "";
+		for(int i = 0; i < petIDs.size(); i++){
+			state = DBConnection.OpenConnection();
+			commandstring = String.format("SELECT Reminder_Frequency, Reminder_Method FROM Reminders WHERE Pet_ID = %d AND Reminder = 'wellness visit'", petIDs.get(i));
+			rs = state.executeQuery(commandstring);
+			while(rs.next()){
+				visitsNeeded.add(petIDs.get(i));
+				visitsNeeded.add(rs.getString("Reminder_Frequency"));
+				visitsNeeded.add(rs.getString("Reminder_Method"));
+			}
+			rs.close();
+			state.close();
+		}
+		
+		//go through each one and check to see if we need to display a reminder
+		for(int i = 0; i < visitsNeeded.size(); i += 3){
+			state = DBConnection.OpenConnection();
+			int wellnessID = getMostRecentIDWellnessOrLab((int) visitsNeeded.get(i), "Office Visit");
+			commandstring = String.format("SELECT Date FROM Appointments WHERE ID = %d", wellnessID);
+			rs = state.executeQuery(commandstring);
+			while(rs.next()){
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = dateFormat.parse(rs.getString("Date"));
+				boolean alertNeeded = wellnessUpcoming(date, (String)visitsNeeded.get(i+1));
+				if(alertNeeded){
+					String petName = "";
+					Statement state2 = DBConnection.OpenConnection();
+					commandstring = String.format("SELECT Name FROM Pets WHERE ID = %d", visitsNeeded.get(i));
+					ResultSet rs2 = state2.executeQuery(commandstring);
+					while(rs2.next()){
+						petName = rs2.getString("Name");
+					}
+					rs2.close();
+					state2.close();
+					JOptionPane.showMessageDialog(panelAppointments, petName + "'s owner needs to have a " + visitsNeeded.get(i+2) + " sent to them for a wellness visit");
+				}
+			}
+			state.close();
+			rs.close();
+		}
+	}
+	
+	private boolean wellnessUpcoming(Date endDate, String reminderFrequency){
+		int daysBefore = 0;
+		if(reminderFrequency.compareTo("oneWeek") == 0){
+			daysBefore = 7;
+		}
+		else if(reminderFrequency.compareTo("twoWeeks") == 0){
+			daysBefore = 14;
+		}
+		else{
+			daysBefore = 30;
+		}
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date currentDate = new Date();
+		long diff = Math.abs(endDate.getTime() - currentDate.getTime());
+		int diffDays = (int) (diff / (24*60*60*1000));
+		if(diffDays <= 365-daysBefore){
+			return true;
+		}
+		return false;
+	}
+	
+	private int getMostRecentIDWellnessOrLab(int petID, String visit) throws SQLException{
+		int ID = 0;
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = String.format("SELECT MAX(ID) AS ID FROM Appointments WHERE Pet_ID = %d AND Service_Name = '%s'", petID, visit);
+		ResultSet rs = state.executeQuery(commandstring);
+		while(rs.next()){
+			ID = Integer.parseInt(rs.getString("ID"));
+		}
+		state.close();
+		rs.close();
+		return ID;
+	}
+	
+	private void displayLab(List petIDs) throws SQLException, ParseException{
+		//get all pets that have immunization reminders
+		List labVisitsNeeded = new ArrayList ();
+		Statement state;
+		String commandstring = "";
+		ResultSet rs;
+		String reminderMethod = "";
+		String reminderFrequency = "";
+		for(int i = 0; i < petIDs.size(); i++){
+			state = DBConnection.OpenConnection();
+			commandstring = String.format("SELECT Reminder_Frequency, Reminder_Method FROM Reminders WHERE Pet_ID = %d AND Reminder = 'lab work'", petIDs.get(i));
+			rs = state.executeQuery(commandstring);
+			while(rs.next()){
+				labVisitsNeeded.add(petIDs.get(i));
+				labVisitsNeeded.add(rs.getString("Reminder_Frequency"));
+				labVisitsNeeded.add(rs.getString("Reminder_Method"));
+			}
+			rs.close();
+			state.close();
+		}
+		
+		//go through each one and check to see if we need to display a reminder
+		for(int i = 0; i < labVisitsNeeded.size(); i += 3){
+			state = DBConnection.OpenConnection();
+			int labID = getMostRecentIDWellnessOrLab((int) labVisitsNeeded.get(i), "Lab Work");
+			commandstring = String.format("SELECT Date FROM Appointments WHERE ID = %d", labID);
+			rs = state.executeQuery(commandstring);
+			while(rs.next()){
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = dateFormat.parse(rs.getString("Date"));
+				boolean alertNeeded = wellnessUpcoming(date, (String)labVisitsNeeded.get(i+1));
+				if(alertNeeded){
+					String petName = "";
+					Statement state2 = DBConnection.OpenConnection();
+					commandstring = String.format("SELECT Name FROM Pets WHERE ID = %d", labVisitsNeeded.get(i));
+					ResultSet rs2 = state2.executeQuery(commandstring);
+					while(rs2.next()){
+						petName = rs2.getString("Name");
+					}
+					state2.close();
+					rs.close();
+					JOptionPane.showMessageDialog(panelAppointments, petName + "'s owner needs to have a " + labVisitsNeeded.get(i+2) + " sent to them for lab works");
+				}
+			}
+			state.close();
+			rs.close();
+		}
 	}
 
 	private void clearServicesTable() {
