@@ -228,6 +228,7 @@ public class Boarding {
 		
 		
 		state.close();
+		rs.close();
 		return AllBoarding;
 	}
 	
@@ -285,6 +286,7 @@ public class Boarding {
 			DayBoarding.add(curBoard);
 		}
 		state.close();
+		rs.close();
 		return DayBoarding;
 	}
 	
@@ -356,6 +358,7 @@ public class Boarding {
 		}
 		
 		state.close();
+		rs.close();
 		return MonthBoarding;
 	}
 }

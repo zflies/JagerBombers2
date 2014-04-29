@@ -183,6 +183,9 @@ public class Pet {
 		state.close();
 		state2.close();
 		state3.close();
+		rs.close();
+		rs2.close();
+		rs3.close();
 		return newPet;
 	}
 	
@@ -254,6 +257,8 @@ public class Pet {
 		
 		state.close();
 		state2.close();
+		rs.close();
+		rs2.close();
 		return newPet;
 	}
 	
@@ -369,7 +374,7 @@ public class Pet {
 		String name = "";
 		
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = String.format("SELECT Name FROM pets WHERE ID = '%s'", Pet_ID);
+		String commandstring = String.format("SELECT Name FROM Pets WHERE ID = '%s'", Pet_ID);
 		
 		if ( state != null )
 		{
@@ -379,6 +384,7 @@ public class Pet {
 				name = rs.getString("Name");
 			}
 			state.close();
+			rs.close();
 		}
 
 		
@@ -461,7 +467,7 @@ public class Pet {
 			OwnerID = rs.getString("ID");
 		
 		//insert pet to DB
-		commandstring = String.format("INSERT INTO pets "
+		commandstring = String.format("INSERT INTO Pets "
 				+ "(Name, Size, Sex, Breed, Type, Color, DOB, Owner_ID, Prescriptions, Notes, Weight) "
 				+ "VALUES ('%s', '%s', '%s', '%s' , '%s', '%s', '%s', %s, '%s', '%s', %s);",
 				Name, Size, Sex, Breed, Type, Color, DOB, OwnerID, Prescriptions, Notes, Weight);
@@ -472,24 +478,25 @@ public class Pet {
 	
 	public int getID(int OwnerID) throws SQLException{
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = String.format("SELECT ID FROM pets WHERE Name = '%s' AND Owner_ID = %d", Name, OwnerID);
+		String commandstring = String.format("SELECT ID FROM Pets WHERE Name = '%s' AND Owner_ID = %d", Name, OwnerID);
 		ResultSet rs = state.executeQuery(commandstring);
 		rs.next();
 		int ID = rs.getInt("ID");
 		state.close();
+		rs.close();
 		return ID;
 	}
 	
 	public void deletePet(int OwnerID) throws SQLException{
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = String.format("DELETE FROM pets WHERE Name = '%s' AND Type = '%s' AND Owner_ID = %d", Name, getTypeString(), OwnerID);
+		String commandstring = String.format("DELETE FROM Pets WHERE Name = '%s' AND Type = '%s' AND Owner_ID = %d", Name, getTypeString(), OwnerID);
 		state.execute(commandstring);
 		state.close();
 	}
 	
 	public void replacePet(int PetID) throws SQLException{
 		Statement state = DBConnection.OpenConnection();
-		String commandstring = String.format("UPDATE pets "
+		String commandstring = String.format("UPDATE Pets "
 				+ "SET Name = '%s', Size = '%s', Breed = '%s', Type = '%s', Color = '%s', DOB = '%s', Prescriptions = '%s', Notes = '%s', Weight = %f  "
 				+ "WHERE ID = %d", Name, getPetSizeString(), Breed, getTypeString(), Color, new java.sql.Date(this.getDOB().getTime()), Prescriptions, Notes, Weight, PetID);
 		state.execute(commandstring);
@@ -671,9 +678,11 @@ public class Pet {
 		String commandstring = String.format("SELECT * FROM `avalenti`.`Reminders` WHERE `Pet_ID` = %d AND `Reminders`.`Reminder` = '%s';", PetID, reminderType);
 		ResultSet rs = state.executeQuery(commandstring);
 		if(rs.getFetchSize() == 0){
+			rs.close();
 			return false;
 		}
 		else{
+			rs.close();
 			return true;
 		}
 	}
@@ -686,6 +695,8 @@ public class Pet {
 			String id = rs.toString();
 			int id1 = Integer.parseInt(rs.getString("ID"));
 		}
+		rs.close();
+		state.close();
 		return Integer.parseInt(rs.getString("ID"));
 	}
 	
