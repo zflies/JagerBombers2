@@ -179,13 +179,14 @@ public class Owner {
 					this.Pets.add(newPet);
 					state2.close();
 				}
+				state.close();
+
 			} catch (SQLException e) {
 				throw new Exception("Error in SQL Execution");
 				}
 		}
 		else
 			System.err.println("Statement was null.  No connection?");
-		state.close();
 	}
 	
 	public static Vector<Owner> getAllOwners() throws Exception{
@@ -210,13 +211,13 @@ public class Owner {
 					newOwner.getPetsDB();
 					Owners.add(newOwner);
 				}
+				state.close();
 			} catch (SQLException e) {
 				throw new Exception("Error in SQL Execution");
 				}
 		}
 		else
 			System.err.println("Statement was null.  No connection?");
-		state.close();
 		return Owners;
 	
 	}
@@ -247,10 +248,10 @@ public class Owner {
 				commandstring = String.format("UPDATE owner SET FirstName = '%s', LastName = '%s', Address = '%s', City = '%s', State = '%s', Zip = '%s', Phone = '%s' WHERE ID = %d",
 						FirstName, LastName, Address, City, State, Zip, Phone, ID);
 				state.execute(commandstring);
+				state.close();
 		}
 		else
 			System.err.println("Statement was null.  No connection?");
-		state.close();
 	}
 	
 	public void deleteOwner() throws SQLException{
