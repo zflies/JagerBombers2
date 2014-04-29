@@ -5387,7 +5387,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		//go through each one and check to see if we need to display a reminder
 		for(int i = 0; i < visitsNeeded.size(); i += 3){
 			state = DBConnection.OpenConnection();
-			int wellnessID = getMostRecentIDWellnessOrLab((int) visitsNeeded.get(i), "Office Visit");
+			int wellnessID = getMostRecentIDWellnessOrLab((Integer) visitsNeeded.get(i), "Office Visit");
 			commandstring = String.format("SELECT Date FROM Appointments WHERE ID = %d", wellnessID);
 			rs = state.executeQuery(commandstring);
 			while(rs.next()){
@@ -5470,7 +5470,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		//go through each one and check to see if we need to display a reminder
 		for(int i = 0; i < labVisitsNeeded.size(); i += 3){
 			state = DBConnection.OpenConnection();
-			int labID = getMostRecentIDWellnessOrLab((int) labVisitsNeeded.get(i), "Lab Work");
+			int labID = getMostRecentIDWellnessOrLab((Integer) labVisitsNeeded.get(i), "Lab Work");
 			commandstring = String.format("SELECT Date FROM Appointments WHERE ID = %d", labID);
 			rs = state.executeQuery(commandstring);
 			while(rs.next()){
