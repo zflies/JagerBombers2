@@ -3,9 +3,11 @@ package com.purrfectpetclinic;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,6 +34,15 @@ import com.toedter.calendar.JDateChooser;
 //import com.toedter.calendar.demo.BirthdayEvaluator;
 //import com.toedter.calendar.demo.BoardingDateEvaluator;
 //import com.toedter.calendar.demo.TestDateEvaluator;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,7 +76,10 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
@@ -93,6 +107,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		FocusListener {
 
 	private JPanel contentPane;
+	final JPanel panelAppointments;
 
 	// Appointments UI
 	private JTextField txtFirstName_Appointments;
@@ -230,7 +245,6 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 					frame = new HomeScreen();
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 					frame.setVisible(true);
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -392,10 +406,12 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		lblType_Records.setText("");
 		lblPetName_Records.setText("");
 		lblPetBreed_Records.setText("");
+		textFieldReminders.setText("");
 		// update labels for pet immunizations
 		lblRabiesDate_Records.setText("");
 		lblDistemperDate_Records.setText("");
 		lblBordatellaDate_Records.setText("");
+		
 	}
 
 	public void ClearRecordLabels() {
@@ -471,7 +487,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 						.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE,
 								614, Short.MAX_VALUE).addGap(3)));
 
-		final JPanel panelAppointments = new JPanel();
+		panelAppointments = new JPanel();
 		tabbedPane.addTab("Appointments", null, panelAppointments, null);
 
 		JDesktopPane desktopPaneView_Appointments = new JDesktopPane();
@@ -4607,6 +4623,18 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 		panel.setLayout(gl_panel);
 		panelRecords.setLayout(gl_panelRecords);
 		contentPane.setLayout(gl_contentPane);
+		try {
+			displayReminders();
+		} catch (NumberFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	/**
@@ -5204,6 +5232,100 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 			lblTotal.setText("$" + df.format(currentTotal));
 		}
 		textFieldDaysBoarded_Sales.setText("0");
+	}
+	
+	private void displayReminders() throws NumberFormatException, SQLException, ParseException{
+		//wellness - 1 year
+		//lab work - 1 year
+		//rabies - 3 years
+		//distemper - 3 years
+		//Bordetella - 1 year
+		Statement state = DBConnection.OpenConnection();
+		String commandstring = "SELECT DISTINCT(Pet_ID) FROM Reminders";
+		List petIDs = new ArrayList ();
+		ResultSet rs = state.executeQuery(commandstring);
+		
+		// get all the Pet IDs that have reminders
+		while(rs.next()){
+			petIDs.add(Integer.parseInt(rs.getString("Pet_ID")));
+		}
+		state.close();
+		
+		displayImmunizations(petIDs);
+	}
+	
+	private void displayImmunizations(List petIDs) throws SQLException, ParseException{
+		//get all pets that have immunization reminders
+		List immunizationsNeeded = new ArrayList ();
+		Statement state;
+		String commandstring = "";
+		ResultSet rs;
+		String reminderMethod = "";
+		String reminderFrequency = "";
+		for(int i = 0; i < petIDs.size(); i++){
+			state = DBConnection.OpenConnection();
+			commandstring = String.format("SELECT Reminder_Frequency, Reminder_Method FROM Reminders WHERE Pet_ID = %d AND Reminder = 'immunization'", petIDs.get(i));
+			rs = state.executeQuery(commandstring);
+			while(rs.next()){
+				immunizationsNeeded.add(petIDs.get(i));
+				immunizationsNeeded.add(rs.getString("Reminder_Frequency"));
+				immunizationsNeeded.add(rs.getString("Reminder_Method"));
+			}
+			state.close();
+		}
+		
+		//go through each one and check to see if we need to display a reminder
+		for(int i = 0; i < immunizationsNeeded.size(); i += 3){
+			state = DBConnection.OpenConnection();
+			commandstring = String.format("SELECT Immunization, End_Date FROM Immunizations WHERE Pet_ID = %d", immunizationsNeeded.get(i));
+			rs = state.executeQuery(commandstring);
+			while(rs.next()){
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = dateFormat.parse(rs.getString("End_Date"));
+				String immunization = rs.getString("Immunization");
+				boolean alertNeeded = immunizationUpcoming(immunization, date, (String)immunizationsNeeded.get(i+1));
+				if(alertNeeded){
+					String petName = "";
+					Statement state2 = DBConnection.OpenConnection();
+					commandstring = String.format("SELECT Name FROM Pets WHERE ID = %d", immunizationsNeeded.get(i));
+					ResultSet rs2 = state2.executeQuery(commandstring);
+					while(rs2.next()){
+						petName = rs2.getString("Name");
+					}
+					JOptionPane.showMessageDialog(panelAppointments, petName + "'s owner needs to have a " + immunizationsNeeded.get(i+2) + " sent to them for " + immunization);
+				}
+			}
+		}
+	}
+	
+	private boolean immunizationUpcoming(String immunizationName, Date endDate, String reminderFrequency){
+		int daysBefore = 0;
+		if(reminderFrequency.compareTo("oneWeek") == 0){
+			daysBefore = 7;
+		}
+		else if(reminderFrequency.compareTo("twoWeeks") == 0){
+			daysBefore = 14;
+		}
+		else{
+			daysBefore = 30;
+		}
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date currentDate = new Date();
+		if(immunizationName.compareTo("Bordatella") == 0){
+			long diff = Math.abs(endDate.getTime() - currentDate.getTime());
+			int diffDays = (int) (diff / (24*60*60*1000));
+			if(diffDays <= 365-daysBefore){
+				return true;
+			}
+		}
+		else{
+			long diff = Math.abs(endDate.getTime() - currentDate.getTime());
+			int diffDays = (int) (diff / (24*60*60*1000));
+			if(diffDays <= (365*3)-daysBefore){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void clearServicesTable() {
