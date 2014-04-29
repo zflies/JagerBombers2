@@ -46,6 +46,7 @@ import com.toedter.calendar.JDateChooser;
 
 
 
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -3288,7 +3289,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 					.addComponent(desktopPaneCreate_Boarding, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.LEADING)
-						.addComponent(desktopPaneFood_Boarding, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(desktopPaneFood_Boarding)
 						.addGroup(gl_panelBoarding.createSequentialGroup()
 							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
 							.addGap(2)))
@@ -3298,12 +3299,12 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 			gl_panelBoarding.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelBoarding.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_panelBoarding.createSequentialGroup()
-							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+					.addGroup(gl_panelBoarding.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelBoarding.createSequentialGroup()
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(desktopPaneFood_Boarding, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE))
-						.addComponent(desktopPaneCreate_Boarding, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE))
+						.addComponent(desktopPaneCreate_Boarding, GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		
@@ -4905,6 +4906,7 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 	 * @param tooltip
 	 *            - String for the tool tip.
 	 */
+	@SuppressWarnings("deprecation")
 	public void updateAppointmentTimesAvailable(int timeBlockLength,
 			boolean enable, String tooltip) {
 		AppointmentTimesAvailable.clear();
@@ -4951,8 +4953,33 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 			 * Retrieve the selected day's appointments and determine when the
 			 * vets are not available
 			 */
-			Vector<Appointment> appointments = Appointment
-					.getDayAppointments(calendarAppointments.getDate());
+			int nDayOfWeek = calendarAppointments.getDate().getDay();
+			Vector<Appointment> appointments = new Vector<Appointment>();
+			
+			switch (nDayOfWeek)
+			{
+			case 1: 	// Monday
+				appointments = Monday_Appointments;
+				break;
+			case 2:
+				appointments = Tuesday_Appointments;
+				break;
+			case 3:
+				appointments = Wednesday_Appointments;
+				break;
+			case 4:
+				appointments = Thursday_Appointments;
+				break;
+			case 5:
+				appointments = Friday_Appointments;
+				break;
+			case 6:
+				appointments = Saturday_Appointments;
+				break;
+			default:
+				break;
+			}
+			
 			for (int i = 0; i < appointments.size(); i++) {
 				Appointment appt = appointments.get(i);
 
