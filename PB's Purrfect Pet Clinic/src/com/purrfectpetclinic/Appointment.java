@@ -316,5 +316,91 @@ public class Appointment {
 	} // end of function getDayAppointments()
 	
 	
+	
+	public static Vector<Appointment>  getWeekAppointments ( Date currDate ) 
+	{
+		
+		Vector<Appointment> WeekAppointments = new Vector<Appointment>();					//< Holds the appointments for a single day
+
+		Statement state = DBConnection.OpenConnection();
+
+		String sYear = (currDate.getYear() + 1900) + "";
+		String sMonth = currDate.getMonth() + "";
+		String sDay = currDate.getDate() + "";
+
+		if ( sMonth.length() < 2 )
+		{
+			sMonth = "0" + sMonth;
+		}
+
+		if ( sDay.length() < 2 )
+		{
+			sDay = "0" + sDay;
+		}
+
+		String sStartDate = sYear + "-" + sMonth + "-" + sDay;
+		
+		currDate.setDate(currDate.getDate() + 5); // End date is always a Saturday
+		
+		sYear = (currDate.getYear() + 1900) + "";
+		sMonth = currDate.getMonth() + "";
+		sDay = currDate.getDate() + "";
+
+		if ( sMonth.length() < 2 )
+		{
+			sMonth = "0" + sMonth;
+		}
+
+		if ( sDay.length() < 2 )
+		{
+			sDay = "0" + sDay;
+		}
+		
+		String sEndDate = sYear + "-" + sMonth + "-" + sDay;
+
+		String commandstring = "";
+
+		//commandstring = "SELECT * FROM Appointments WHERE Date = '" + sDate + "' ORDER BY Time;"; //ORDER BY ID DESC;";
+		commandstring = "SELECT * FROM Appointments WHERE Date >= STR_TO_DATE('" + sStartDate + "', '%Y-%m-%d') AND Date <= STR_TO_DATE('" + sEndDate + "', '%Y-%m-%d');";
+
+		int ID = 0;
+		int Pet_ID = 0;
+		String Service_Name = "";
+		int Vet_ID = 1;
+		Date Date;
+		String Time = "";
+		String Completed = "";
+		String Notes = "";
+
+		if(state != null){
+			try {
+				ResultSet rs = state.executeQuery(commandstring);
+				while(rs.next()) {
+
+					ID = rs.getInt("ID");
+					Pet_ID = rs.getInt("Pet_ID");
+					Service_Name = rs.getString("Service_Name");
+					Vet_ID = rs.getInt("Vet_ID");
+					Date = rs.getDate("Date");
+					Time = rs.getString("Time");
+					Completed = rs.getString("Completed");
+					Notes = rs.getString("Notes");
+					Appointment new_appointment = new Appointment(ID, Pet_ID, Service_Name, Vet_ID, Date, Time, Completed, Notes);
+					WeekAppointments.add(new_appointment);
+				}
+				state.close();
+
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+				System.out.println("Error: Appointment.java - getWeekAppointments()");
+			}
+		}
+		else
+			System.err.println("Error: Appointment.java - getWeekAppointments()");
+
+		return WeekAppointments;	
+
+	} // end of function getWeekAppointments()
+	
 
 }

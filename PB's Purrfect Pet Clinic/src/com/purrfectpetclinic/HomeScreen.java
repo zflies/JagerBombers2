@@ -47,6 +47,7 @@ import com.toedter.calendar.JDateChooser;
 
 
 
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -4704,8 +4705,55 @@ public class HomeScreen extends JFrame implements WindowFocusListener,
 
 		WeekAppointments.clear(); // < Reset the Week Appointment Table's data
 
+		Vector<Appointment> appointments = Appointment.getWeekAppointments(date);
+		date.setDate( date.getDate() - 5 ); // Reset the date to Monday
+		
 		while (WeekAppointments.size() < 6) {
-			WeekAppointments.add(Appointment.getDayAppointments(date));
+			
+			Vector<Appointment> dayAppointments = new Vector<Appointment>();
+			for ( int i = 0; i < appointments.size(); i++ )
+			{
+				Appointment appointment = appointments.get( i );
+				Date currDate = appointment.getDateSelected();
+				String sYear = (currDate.getYear() + 1900) + "";
+				String sMonth = currDate.getMonth() + 1 + "";
+				String sDay = currDate.getDate() + "";
+
+				if ( sMonth.length() < 2 )
+				{
+					sMonth = "0" + sMonth;
+				}
+
+				if ( sDay.length() < 2 )
+				{
+					sDay = "0" + sDay;
+				}
+
+				String sAppointmentDate = sYear + "-" + sMonth + "-" + sDay;
+				
+				sYear = (date.getYear() + 1900) + "";
+				sMonth = date.getMonth() + "";
+				sDay = date.getDate() + "";
+
+				if ( sMonth.length() < 2 )
+				{
+					sMonth = "0" + sMonth;
+				}
+
+				if ( sDay.length() < 2 )
+				{
+					sDay = "0" + sDay;
+				}
+				
+				String sCurrDate = sYear + "-" + sMonth + "-" + sDay;
+				
+				
+				if ( sCurrDate.compareTo( sAppointmentDate ) == 0 )
+				{
+					dayAppointments.add( appointments.get( i ));
+				}
+			}
+			WeekAppointments.add( dayAppointments );
 			date.setDate(date.getDate() + 1); // < Move on to the next day
 		}
 
