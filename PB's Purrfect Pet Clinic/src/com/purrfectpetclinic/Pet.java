@@ -509,11 +509,12 @@ public class Pet {
 		String immunizationMethods = "";
 		String wellnessMethods = "";
 		String labMethods = "";
-		String immunizationFrequency = immunizationReminder.get(immunizationReminder.size()-1);
-		String wellnessFrequency = wellnessReminder.get(wellnessReminder.size()-1);
-		String labFrequency = labReminder.get(labReminder.size()-1);
+		String immunizationFrequency = "";
+		String wellnessFrequency = "";
+		String labFrequency = "";
 		
 		if(!immunizationReminder.isEmpty()){
+			immunizationFrequency = immunizationReminder.get(immunizationReminder.size()-1);
 			for(int i = 0; i < immunizationReminder.size()-1; i++){
 				if(immunizationMethods.compareTo("") == 0){
 					immunizationMethods = immunizationReminder.get(i);
@@ -524,6 +525,7 @@ public class Pet {
 			}
 		}
 		if(!wellnessReminder.isEmpty()){
+			wellnessFrequency = wellnessReminder.get(wellnessReminder.size()-1);
 			for(int i = 0; i < wellnessReminder.size()-1; i++){
 				if(wellnessMethods.compareTo("") == 0){
 					wellnessMethods = wellnessReminder.get(i);
@@ -534,6 +536,7 @@ public class Pet {
 			}
 		}
 		if(!labReminder.isEmpty()){
+			labFrequency = labReminder.get(labReminder.size()-1);
 			for(int i = 0; i < labReminder.size()-1; i++){
 				if(labMethods.compareTo("") == 0){
 					labMethods = labReminder.get(i);
