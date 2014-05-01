@@ -142,14 +142,13 @@ public class Owner {
 					Pet newPet = new Pet(PetType, Name, OwnerName, PetSex, PetSize, Color, DateOfBirth, Prescriptions, Weight, Breed, Notes);
 					
 					//get Immunizations of pet
-					Statement state2 = DBConnection.OpenConnection();
 					int PetID = newPet.getID(this.getID());
 					commandstring = String.format("SELECT * FROM Immunizations WHERE Pet_ID = %d", PetID);
-					ResultSet rs2 = state2.executeQuery(commandstring);
-					while(rs2.next()){
-						Date StartDate = new Date(rs2.getDate("Start_Date").getTime());
-						Date EndDate = new Date(rs2.getDate("End_Date").getTime());
-						String ImmuneName = rs2.getString("Immunization");
+					rs = state.executeQuery(commandstring);
+					while(rs.next()){
+						Date StartDate = new Date(rs.getDate("Start_Date").getTime());
+						Date EndDate = new Date(rs.getDate("End_Date").getTime());
+						String ImmuneName = rs.getString("Immunization");
 						
 						if(ImmuneName.compareTo("Rabies") == 0){
 							Immunization i = new Immunization(Immunization.ImmunizationType.Rabies, StartDate, EndDate);
@@ -166,19 +165,16 @@ public class Owner {
 					}
 					
 					//get Reminders of pet
-					Statement state3 = DBConnection.OpenConnection();
 					commandstring = String.format("SELECT * FROM Reminders WHERE Pet_ID = %d", PetID);
-					ResultSet rs3 = state2.executeQuery(commandstring);
-					while(rs3.next()){
-						String reminder = rs3.getString("Reminder");
-						String reminderMethod = rs3.getString("Reminder_Method");
-						String reminderFrequency = rs3.getString("Reminder_Frequency");
+					rs = state.executeQuery(commandstring);
+					while(rs.next()){
+						String reminder = rs.getString("Reminder");
+						String reminderMethod = rs.getString("Reminder_Method");
+						String reminderFrequency = rs.getString("Reminder_Frequency");
 						Reminder petReminder = new Reminder(reminder, reminderMethod, reminderFrequency);
 						newPet.Reminders.add(petReminder);
 					}
-					state3.close();
 					this.Pets.add(newPet);
-					state2.close();
 				}
 
 				rs.close();

@@ -121,14 +121,6 @@ public class Pet {
 		else
 			PetType = Pet.Type.cat;
 		
-		String Name = rs.getString("Name");
-		//get owner name from DB
-		Statement state3 = DBConnection.OpenConnection();
-		commandstring = String.format("SELECT FirstName, LastName FROM Owner WHERE ID = %d", rs.getInt("Owner_ID"));
-		ResultSet rs3 = state3.executeQuery(commandstring);
-		rs3.next();
-		String OwnerName = rs3.getString("FirstName") + rs3.getString("LastName");
-		
 		String PetSexString = rs.getString("Sex");
 		Pet.Sex PetSex;
 		if(PetSexString.compareTo("male") == 0)
@@ -153,18 +145,25 @@ public class Pet {
 		Double Weight = rs.getDouble("Weight");
 		String Breed = rs.getString("Breed");
 		String Notes = rs.getString("Notes");
+		String Name = rs.getString("Name");
+		int OwnerID = rs.getInt("Owner_ID");
+		
+		//get owner name from DB
+		commandstring = String.format("SELECT FirstName, LastName FROM Owner WHERE ID = %d", OwnerID);
+		rs = state.executeQuery(commandstring);
+		rs.next();
+		String OwnerName = rs.getString("FirstName") + rs.getString("LastName");
 		
 		//create new pet object from DB info and add to the owners list of pets
 		Pet newPet = new Pet(PetType, Name, OwnerName, PetSex, PetSize, Color, DateOfBirth, Prescriptions, Weight, Breed, Notes);
 		
 		//get Immunizations of pet
-		Statement state2 = DBConnection.OpenConnection();
 		commandstring = String.format("SELECT * FROM Immunizations WHERE Pet_ID = %d", PetID);
-		ResultSet rs2 = state2.executeQuery(commandstring);
-		while(rs2.next()){
-			Date StartDate = new Date(rs2.getDate("Start_Date").getTime());
-			Date EndDate = new Date(rs2.getDate("End_Date").getTime());
-			String ImmuneName = rs2.getString("Immunization");
+		rs = state.executeQuery(commandstring);
+		while(rs.next()){
+			Date StartDate = new Date(rs.getDate("Start_Date").getTime());
+			Date EndDate = new Date(rs.getDate("End_Date").getTime());
+			String ImmuneName = rs.getString("Immunization");
 			
 			if(ImmuneName.compareTo("Rabies") == 0){
 				Immunization i = new Immunization(Immunization.ImmunizationType.Rabies, StartDate, EndDate);
@@ -181,11 +180,8 @@ public class Pet {
 		}
 		
 		state.close();
-		state2.close();
-		state3.close();
 		rs.close();
-		rs2.close();
-		rs3.close();
+
 		return newPet;
 	}
 	
@@ -233,13 +229,12 @@ public class Pet {
 		Pet newPet = new Pet(PetType, Name, OwnerName, PetSex, PetSize, Color, DateOfBirth, Prescriptions, Weight, Breed, Notes);
 		
 		//get Immunizations of pet
-		Statement state2 = DBConnection.OpenConnection();
 		commandstring = String.format("SELECT * FROM Immunizations WHERE Pet_ID = %d", PetID);
-		ResultSet rs2 = state2.executeQuery(commandstring);
-		while(rs2.next()){
-			Date StartDate = new Date(rs2.getDate("Start_Date").getTime());
-			Date EndDate = new Date(rs2.getDate("End_Date").getTime());
-			String ImmuneName = rs2.getString("Immunization");
+		rs = state.executeQuery(commandstring);
+		while(rs.next()){
+			Date StartDate = new Date(rs.getDate("Start_Date").getTime());
+			Date EndDate = new Date(rs.getDate("End_Date").getTime());
+			String ImmuneName = rs.getString("Immunization");
 			
 			if(ImmuneName.compareTo("Rabies") == 0){
 				Immunization i = new Immunization(Immunization.ImmunizationType.Rabies, StartDate, EndDate);
@@ -256,9 +251,7 @@ public class Pet {
 		}
 		
 		state.close();
-		state2.close();
 		rs.close();
-		rs2.close();
 		return newPet;
 	}
 	

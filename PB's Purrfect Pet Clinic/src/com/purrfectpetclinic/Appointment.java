@@ -153,7 +153,7 @@ public class Appointment {
 	public Owner getOwner() {
 		Statement state = DBConnection.OpenConnection();
 
-		String commandstring = "SELECT * FROM Owner WHERE ID = (SELECT Owner_ID FROM pets WHERE ID = '" + this.nPetID + "');"; 
+		String commandstring = "SELECT * FROM Owner WHERE ID = (SELECT Owner_ID FROM Pets WHERE ID = '" + this.nPetID + "');"; 
 
 		Owner owner = null;
 		
